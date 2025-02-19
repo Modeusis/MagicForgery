@@ -17,70 +17,74 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
     [SerializeField] private KeyCode runKey = KeyCode.LeftShift;
     
-    
-    
     private float _horizontal;
     private float _vertical;
     private Vector3 _movement;
-    private Vector2 _inertia;
     
     private float _speed;
     private float _yVelocity;
     private CharacterController _controller;
     
-    private SpeedState _speedState = SpeedState.Walking;
-    private enum SpeedState
-    {
-        Walking,
-        Running
-    }
+
     private bool _charIsGrounded;
     void Awake()
     {
         _controller = GetComponent<CharacterController>();
-        
     }
 
     private void Update()
     {
-        if (Player.PlayerEnabled)
+        if (Player.IsPlayerEnabled)
         {
-            HandleRunning();
             HandleMovement();
             _charIsGrounded = _controller.isGrounded;
         }
-        
     }
 
     void HandleMovement()
     {
-        if (_speedState == SpeedState.Walking)
-        {
-            _speed = walkSpeed;
-        }
-        else if (_speedState == SpeedState.Running)
-        {
-            _speed = runSpeed;
-        }
-        
-        _horizontal = Input.GetAxisRaw("Horizontal") * _speed;
-        _vertical = Input.GetAxisRaw("Vertical") * _speed;
-        
         _yVelocity = _movement.y;
-        
-        _movement = transform.right * _horizontal + transform.forward * _vertical;
-        
-        HandleJump();
         
         if (!_charIsGrounded)
         {
-            if (_movement is { x: 0, z: 0 })
+            float tempH = Input.GetAxisRaw("Horizontal");
+            float tempV = Input.GetAxisRaw("Vertical");
+
+            if (tempH != 0 || tempV != 0)
             {
-                _movement.x = _inertia.x;
-                _movement.z = _inertia.y;
+                _horizontal = tempH;
+                _vertical = tempV;
             }
+            
             _yVelocity -= gravity * Time.deltaTime;
         }
+        else
+        {
+            _horizontal = Input.GetAxisRaw("Horizontal");
+            _vertical = Input.GetAxisRaw("Vertical");
+            
+            if (_horizontal == 0 && _vertical == 0)
+            {
+                Player.State = Player.PlayerState.Standing;
+            }
+            else
+            {
+                HandleRunning();
+            }
+            
+            if (Player.State == Player.PlayerState.Walking)
+            {
+                _speed = walkSpeed;
+            }
+            else if (Player.State == Player.PlayerState.Running)
+            {
+                _speed = runSpeed;
+            }
+
+        }
+        HandleJump();
+        
+        _movement = transform.right * (_horizontal * _speed) + transform.forward * (_vertical  * _speed);
         _movement.y = _yVelocity;
         _controller.Move(_movement * Time.deltaTime);
     }
@@ -89,8 +93,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_charIsGrounded && Input.GetKey(jumpKey))
         {
-            _inertia.x = _movement.x; 
-            _inertia.y = _movement.z; 
+            Player.State = Player.PlayerState.Jumping; 
             _yVelocity = jumpStrength;
         }
     }
@@ -99,11 +102,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_charIsGrounded && Input.GetKey(runKey))
         {
-            _speedState = SpeedState.Running;
+            Player.State = Player.PlayerState.Running;
         }
         else
         {
-            _speedState = SpeedState.Walking;
+            Player.State = Player.PlayerState.Walking;
         }
     }
 }
