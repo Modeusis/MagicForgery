@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: c051fe5a20f72814f9643eb10ebbd2fc, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 0d5771081eb9abb43b1792b52260d914, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -256,7 +256,7 @@ Transform:
   m_GameObject: {fileID: 105142472}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.564, z: 0}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -378,8 +378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 239963062a9c9754895e090d73fe6f93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensX: 40
-  sensY: 40
+  sensX: 400
+  sensY: 400
   playerTransform: {fileID: 847956259}
 --- !u!1001 &116627316
 PrefabInstance:
@@ -733,6 +733,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1355417003}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &596954597
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 43867860915be574ab091075f9d140a9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 127.27
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 43867860915be574ab091075f9d140a9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.65
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 43867860915be574ab091075f9d140a9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 12.68
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 43867860915be574ab091075f9d140a9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.866295
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 43867860915be574ab091075f9d140a9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 43867860915be574ab091075f9d140a9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.49953288
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 43867860915be574ab091075f9d140a9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 43867860915be574ab091075f9d140a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 43867860915be574ab091075f9d140a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 59.938
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 43867860915be574ab091075f9d140a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 43867860915be574ab091075f9d140a9, type: 3}
+      propertyPath: m_Name
+      value: House
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 43867860915be574ab091075f9d140a9, type: 3}
 --- !u!1 &659045300
 GameObject:
   m_ObjectHideFlags: 0
@@ -1035,7 +1092,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 3
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -1051,7 +1108,7 @@ Transform:
   m_GameObject: {fileID: 847956257}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100, y: 3, z: 18.3}
+  m_LocalPosition: {x: 125.511, y: 3, z: 27.444}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1702,7 +1759,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 847956259}
@@ -2768,3 +2825,4 @@ SceneRoots:
   - {fileID: 2100977346}
   - {fileID: 2046603729}
   - {fileID: 1946897071}
+  - {fileID: 596954597}
