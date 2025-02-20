@@ -3,7 +3,22 @@ guid: f9d30e6fdbee9454bb9744ef6dfd80f6
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RockWallTower
+    second: {fileID: 2100000, guid: 07c2afd092347d645a6338b80480acb8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: StoenArk
+    second: {fileID: 2100000, guid: 3269894f55835174793fc5d0cb5c04e5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WoodGates
+    second: {fileID: 2100000, guid: ed6a5f7a9c2585a459b2170940beb408, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
