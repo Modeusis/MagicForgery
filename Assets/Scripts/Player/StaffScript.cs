@@ -12,11 +12,10 @@ namespace Player
         
         [Header("Key bindings")]
         [SerializeField] private KeyCode flashLight  = KeyCode.F;
-        // [SerializeField] private KeyCode useMagic  = KeyCode.Mouse0;
         
         private bool _isFlashLightEnabled;
         private Animator _animator;
-
+        
         
         
         void Start()

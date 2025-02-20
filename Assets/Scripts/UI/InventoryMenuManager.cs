@@ -68,7 +68,7 @@ namespace UI
         void ToggleMenu()
         {
             inventoryMenu.SetActive(IsInventoryOpen);
-            if (!IsInventoryOpen)
+            if (!IsInventoryOpen && _toggledSlot != null)
             {
                 _lastSelectedSlot = _toggledSlot;
                 inventorySlots.Find(x => x.slotId == _lastSelectedSlot).IsSlotSelected = true;
