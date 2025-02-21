@@ -38,8 +38,8 @@ namespace Player
 
         void HandleCameraMovement()
         {
-            _mouseX = Input.GetAxisRaw("Mouse X") * sensX;
-            _mouseY = Input.GetAxisRaw("Mouse Y") * sensY;
+            _mouseX = Input.GetAxis("Mouse X") * sensX;
+            _mouseY = Input.GetAxis("Mouse Y") * sensY;
             
             _cameraHorizontal += _mouseX * Time.deltaTime;
             

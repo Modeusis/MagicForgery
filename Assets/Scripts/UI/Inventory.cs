@@ -8,9 +8,9 @@ namespace UI
         private static Inventory _playerInventory;
         public static Inventory PlayerInventory = _playerInventory ??= new Inventory();
         
-        private List<Item> _items;
+        private List<InventoryItem> _items;
 
-        public List<Item> Items
+        public List<InventoryItem> Items
         {
             get => _items;
             set
@@ -18,7 +18,20 @@ namespace UI
                 _items = value;
             }
         }
-        
-        
+
+        private Inventory()
+        {
+            _items = new List<InventoryItem>();
+        }
+
+        void AddItem(InventoryItem item)
+        {
+            Items.Add(item);
+        }
+
+        void RemoveItem(InventoryItem item)
+        {
+            Items.Remove(item);
+        }
     }
 }

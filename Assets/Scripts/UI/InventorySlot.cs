@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using JetBrains.Annotations;
 
 namespace UI
 {
@@ -10,7 +11,9 @@ namespace UI
     {
         public int slotId;
         private bool _isSlotSelected;
-
+        
+        [CanBeNull] private InventoryItem _item;
+        
         public bool IsSlotSelected
         {
             get => _isSlotSelected;
@@ -51,7 +54,7 @@ namespace UI
 
         private void SelectItem()
         {
-            Debug.Log($"Item {slotId} was selected");
+            _item.IsSelected = true;
         }
     }
 }
