@@ -1,0 +1,41 @@
+using System;
+using System.Collections.Generic;
+using NUnit.Framework;
+using UnityEngine;
+
+namespace UI
+{
+    public class Inventory : MonoBehaviour
+    {
+        public static Inventory instance;
+        [SerializeField] private List<ItemData> items;
+        [SerializeField] private List<InventorySlot> slots;
+        
+        private void Awake()
+        {
+            instance = this;
+            items.Capacity = 4;
+            slots.Capacity = 4;
+        }
+        
+        public void AddItem(ItemData item)
+        {
+            InventorySlot slot = slots.Find(x => !x.Item);
+            if (slot)
+            {
+                items.Add(item);
+                slot.Item = item;
+            }
+        }
+
+        public void RemoveItem(ItemData item)
+        {
+            InventorySlot slot = slots.Find(x => x.IsSlotSelected == true);
+            if (slot && slot.Item)
+            {
+                items.Remove(item);
+                slot.Item = null;
+            }
+        }
+    }
+}
