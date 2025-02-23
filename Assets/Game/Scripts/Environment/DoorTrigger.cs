@@ -1,5 +1,6 @@
 using DG.Tweening;
 using TMPro;
+using UI;
 using UnityEngine;
 
 namespace Environment
@@ -8,9 +9,13 @@ namespace Environment
     {
         [SerializeField] private Animator door;
         [SerializeField] private TMP_Text tooltipText;
-        [SerializeField] private int layerNumber = 6;
         [SerializeField] private float raycastLenght = 6;
     
+        [Header("Sounds")]
+        [SerializeField] private AudioClip doorOpenSound;
+        [SerializeField] private AudioClip doorCloseSound;
+        // [SerializeField] private AudioSource doorSound;
+        
         [Header("Keycodes")]
         [SerializeField] private KeyCode enteractKey = KeyCode.E;
     
@@ -42,6 +47,7 @@ namespace Environment
                     return;
                 _isDoorOpen = value;
                 door.SetBool("IsDoorOpened", _isDoorOpen);
+                SoundManager.instance.PlaySfx(_isDoorOpen ? doorOpenSound : doorCloseSound);
             }
         }
 
@@ -55,11 +61,11 @@ namespace Environment
 
         private void Update()
         {
-            if (Player.Player.IsPlayerEnabled && _isTriggered)
+            if (Player.Player.instance.IsPlayerEnabled && _isTriggered)
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             
-                if (Physics.Raycast(ray,out var hit, raycastLenght, 1 << layerNumber ))
+                if (Physics.Raycast(ray,out var hit, raycastLenght ))
                 {
                     if (hit.collider.CompareTag("Door"))
                     {
@@ -79,8 +85,11 @@ namespace Environment
 
         private void OnTriggerExit(Collider other)
         {
-            _isTriggered = false;
-            IsDoorInFocus = false;
+            if (other.CompareTag("Player"))
+            {
+                _isTriggered = false;
+                IsDoorInFocus = false;
+            }
         }
     }
 }

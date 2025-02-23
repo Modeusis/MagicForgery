@@ -8,8 +8,10 @@ namespace UI
     public class Inventory : MonoBehaviour
     {
         public static Inventory instance;
+        //Коллекция для дебага
         [SerializeField] private List<ItemData> items;
         [SerializeField] private List<InventorySlot> slots;
+        
         
         private void Awake()
         {
@@ -21,20 +23,22 @@ namespace UI
         public void AddItem(ItemData item)
         {
             InventorySlot slot = slots.Find(x => !x.Item);
-            if (slot)
+            if (slot && items.Count < items.Capacity)
             {
                 items.Add(item);
                 slot.Item = item;
             }
         }
 
-        public void RemoveItem(ItemData item)
+        public void RemoveItem()
         {
-            InventorySlot slot = slots.Find(x => x.IsSlotSelected == true);
+            InventorySlot slot = slots.Find(x => x.IsSlotSelected);
             if (slot && slot.Item)
             {
-                items.Remove(item);
+                items.Remove(slot.Item);
+                slot.IsSlotSelected = false;
                 slot.Item = null;
+                // slot.ItemPrefab = null;
             }
         }
     }

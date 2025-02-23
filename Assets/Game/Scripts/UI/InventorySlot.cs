@@ -11,30 +11,50 @@ namespace UI
     public class InventorySlot : MonoBehaviour
     {
         public int slotId;
+        [SerializeField] private Transform handTransform;
         private bool _isSlotSelected;
         
-        [CanBeNull] private ItemData item;
+        [CanBeNull] private ItemData _item; 
+        [CanBeNull] private GameObject _itemPrefab;
+        
+        [CanBeNull]
+        public GameObject ItemPrefab
+        {
+            get => _itemPrefab;
+            set
+            {
+                if (_itemPrefab == value) return;
+                if (!value)
+                {
+                    MovedFromSlot();
+                    _itemPrefab = value;
+                    return;
+                }
+                _itemPrefab = value;
+            }
+        }
 
         [CanBeNull]
         public ItemData Item
         {
-            get => item;
+            get => _item;
             set
             {
-                if (item == value)
+                if (_item == value)
                     return;
                 if (value == null)
                 {
                     ItemUnset();
-                    item = value;
+                    _item = value;
+                    return;
                 }
-                item = value;
+                _item = value;
                 ItemSet();
             }
         }
         
         public bool IsSlotSelected
-        {
+        {   
             get => _isSlotSelected;
             set
             {
@@ -93,10 +113,24 @@ namespace UI
 
         private void SelectItem()
         {
-            if (item)
+            if (_item && IsSlotSelected)
             {
-                
+                _itemPrefab = Instantiate(_item.prefab, handTransform);
+                _itemPrefab.transform.position = handTransform.position;
+                _itemPrefab.SetActive(true);
+                Debug.Log($"Slot {slotId}: ItemName: {_itemPrefab.name}");
             }
+            else if (_item && !IsSlotSelected)
+            {
+                Debug.Log($"Slot {slotId}: ItemName: {_itemPrefab.name}");
+                Destroy(_itemPrefab);
+                _itemPrefab = null;
+            }
+        }
+
+        private void MovedFromSlot()
+        {
+            Destroy(_itemPrefab);
         }
     }
 }

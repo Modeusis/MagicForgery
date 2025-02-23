@@ -29,7 +29,7 @@ namespace Player
 
         private void Update()
         {
-            if (Player.IsPlayerEnabled)
+            if (Player.instance.IsPlayerEnabled)
             {
                 HandleCameraMovement();
             }

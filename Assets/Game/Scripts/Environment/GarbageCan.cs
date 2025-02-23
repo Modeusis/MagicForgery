@@ -7,19 +7,21 @@ namespace Environment
     {
         private Action _onMoveToTrash;
 
-        private void OnEnable()
+        private void Update()
         {
-            _onMoveToTrash += MoveToTrash;
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.name == gameObject.name)
+                {
+                    MoveToTrash();
+                }
+            }
         }
-
-        private void OnDisable()
-        {
-            _onMoveToTrash -= MoveToTrash;
-        }
-
+        
         void MoveToTrash()
         {
-            
+            UI.Inventory.instance.RemoveItem();
         }
     }
 }

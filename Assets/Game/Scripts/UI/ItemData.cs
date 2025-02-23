@@ -16,5 +16,7 @@ namespace UI
         public bool isEnchantable;
         public bool isEssention;
         public bool isInstrument;
+
+        public GameObject prefab;
     }
 }

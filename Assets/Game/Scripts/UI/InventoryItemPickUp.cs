@@ -1,40 +1,41 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UI
 {
     public class InventoryItemPickUp : MonoBehaviour
     {
         [SerializeField] private ItemData itemData;
-        private Action _onPickedUp;
-
-        private void OnEnable()
-        {
-            _onPickedUp += PickUp;
-        }
-
-        private void OnDestroy()
-        {
-            _onPickedUp -= PickUp;
-        }
-
+        [SerializeField] private GameObject pickup;
+        
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.CompareTag("PickUp"))
+                if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.name == gameObject.name)
                 {
-                    _onPickedUp?.Invoke();
+                    PickUp();
                 }
             }
         }
 
         private void PickUp()
         {
-            Inventory.instance.AddItem(itemData);
-            Debug.Log("Picked up item");
-            Destroy(gameObject);
+            if (!pickup)
+            {
+                itemData.prefab = gameObject;
+                Inventory.instance.AddItem(itemData);
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                itemData.prefab = pickup;
+                Inventory.instance.AddItem(itemData);
+            }
+            Player.Player.instance.staffAnimator.SetTrigger("OnInteract");
         }
     }
 }

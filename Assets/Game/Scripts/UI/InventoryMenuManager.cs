@@ -16,7 +16,6 @@ namespace UI
         
         private bool _isInventoryOpen;
         private int? _toggledSlot;
-        private int? _lastSelectedSlot;
 
         private int? ToggledSlot
         {
@@ -68,12 +67,15 @@ namespace UI
         void ToggleMenu()
         {
             inventoryMenu.SetActive(IsInventoryOpen);
-            if (!IsInventoryOpen && _toggledSlot != null)
+            if (!IsInventoryOpen && ToggledSlot != null)
             {
-                _lastSelectedSlot = _toggledSlot;
-                inventorySlots.Find(x => x.slotId == _lastSelectedSlot).IsSlotSelected = true;
+                var selectedSlot = inventorySlots.Find(x => x.slotId == ToggledSlot);
+                foreach (var slot in inventorySlots)
+                {
+                    slot.IsSlotSelected = slot.slotId == selectedSlot.slotId;
+                }
             }
-            Player.Player.IsPlayerEnabled = !IsInventoryOpen;
+            Player.Player.instance.IsPlayerEnabled = !IsInventoryOpen;
         }
 
         void ItemSelect()
@@ -102,7 +104,7 @@ namespace UI
             }
             else
             {
-                ToggledSlot = _lastSelectedSlot;
+                ToggledSlot = null;
             }
         }
         
