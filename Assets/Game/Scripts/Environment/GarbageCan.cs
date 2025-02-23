@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System;
+using UI;
 
 namespace Environment
 {
     public class GarbageCan : MonoBehaviour
     {
-        private Action _onMoveToTrash;
+        [SerializeField] private AudioClip toTrashSound;
 
         private void Update()
         {
@@ -21,7 +22,8 @@ namespace Environment
         
         void MoveToTrash()
         {
-            UI.Inventory.instance.RemoveItem();
+            Inventory.instance.RemoveItem();
+            SoundManager.instance.PlaySfx(toTrashSound);
         }
     }
 }

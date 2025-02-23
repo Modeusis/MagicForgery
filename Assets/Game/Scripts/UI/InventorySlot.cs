@@ -12,6 +12,7 @@ namespace UI
     {
         public int slotId;
         [SerializeField] private Transform handTransform;
+        [SerializeField] private Animator handAnimator;
         private bool _isSlotSelected;
         
         [CanBeNull] private ItemData _item; 
@@ -117,12 +118,11 @@ namespace UI
             {
                 _itemPrefab = Instantiate(_item.prefab, handTransform);
                 _itemPrefab.transform.position = handTransform.position;
+                handAnimator.SetTrigger("OnSelect");
                 _itemPrefab.SetActive(true);
-                Debug.Log($"Slot {slotId}: ItemName: {_itemPrefab.name}");
             }
             else if (_item && !IsSlotSelected)
             {
-                Debug.Log($"Slot {slotId}: ItemName: {_itemPrefab.name}");
                 Destroy(_itemPrefab);
                 _itemPrefab = null;
             }

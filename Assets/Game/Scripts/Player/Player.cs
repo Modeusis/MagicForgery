@@ -9,6 +9,7 @@ namespace Player
         
         private bool _isPlayerEnabled = true;
         public Animator staffAnimator;
+        public Animator handAnimator;
         public bool IsPlayerEnabled
         {
             get => _isPlayerEnabled;
@@ -44,21 +45,31 @@ namespace Player
                 {
                     case PlayerState.Standing:
                         staffAnimator.SetFloat("Speed", 0);
+                        handAnimator.SetFloat("Speed", 0);
                         break;
                     case PlayerState.Walking:
                         staffAnimator.SetFloat("Speed", 1);
+                        handAnimator.SetFloat("Speed", 1);
                         break;
                     case PlayerState.Running:
                         staffAnimator.SetFloat("Speed", 2);
+                        handAnimator.SetFloat("Speed", 2);
                         break;
                 }
-                Debug.Log(_state);
             }
         }
 
         private void Awake()
         {
-            instance = this;
+            if (instance == null)
+            {
+                instance = this;
+                // DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
         
     }

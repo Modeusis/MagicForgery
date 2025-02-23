@@ -15,7 +15,16 @@ namespace UI
         
         private void Awake()
         {
-            instance = this;
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+                return;
+            }
+            
             items.Capacity = 4;
             slots.Capacity = 4;
         }

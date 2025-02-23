@@ -15,7 +15,7 @@ namespace UI
             if (Input.GetKeyDown(KeyCode.E))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.name == gameObject.name)
+                if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.name == gameObject.name)
                 {
                     PickUp();
                 }
