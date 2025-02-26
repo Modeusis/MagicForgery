@@ -12,7 +12,6 @@ namespace Environment
         {
             if (other.CompareTag("Player"))
             {
-                Debug.Log("Entered BgMusicTrigger");
                 SoundManager.instance.PlayBgMusic(currentBgMusic);
             }
         }
