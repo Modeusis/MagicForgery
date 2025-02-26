@@ -15,7 +15,7 @@ namespace UI
         
         private void Awake()
         {
-            if (instance == null)
+            if (!instance)
             {
                 instance = this;
             }

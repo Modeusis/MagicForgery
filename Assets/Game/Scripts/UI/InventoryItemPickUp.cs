@@ -10,11 +10,6 @@ namespace UI
     {
         [SerializeField] private ItemData itemData;
         [SerializeField] private GameObject pickup;
-        [SerializeField] private Material outlineMaterial;
-        
-        private List<Material> _pickupMaterials;
-        private Material _originalMaterial;
-        private Renderer _rend;
 
         private bool _inFocus;
 
@@ -26,57 +21,35 @@ namespace UI
                 if (_inFocus == value)
                     return;
                 _inFocus = value;
-                if (_rend)
+                if (!pickup)
                 {
-                    if (_inFocus)
-                    {
-                        Debug.Log("In Focus");
-                        _pickupMaterials.Add(outlineMaterial);
-                        _rend.materials = _pickupMaterials.ToArray();
-                    }
-                    else
-                    {
-                        _pickupMaterials.Remove(outlineMaterial);
-                        _rend.materials = _pickupMaterials.ToArray();
-                        Debug.Log("Out Focus");
-                    }
+                    gameObject.layer = LayerMask.NameToLayer(_inFocus ? "Interactable" : "Default");
                 }
             }
         }
-        
-        private void Awake()
-        {
-            if (!pickup)
-            {
-                _rend = GetComponent<Renderer>();
-            }
-
-            if (_rend)
-            {
-                _pickupMaterials = new List<Material>(_rend.materials);
-            }
-        }
-
         private void Update()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            
-            if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.name == gameObject.name)
+            if (Player.Player.instance.IsPlayerEnabled)
             {
-                if (_rend)
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            
+                if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.name == gameObject.name)
                 {
-                    InFocus = true;
+                    if (!pickup)
+                    {
+                        InFocus = true;
+                    }
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        InFocus = false;
+                        PickUp();
+                    }
                 }
-                if (Input.GetKeyDown(KeyCode.E))
+                else
                 {
-                    PickUp();
+                    InFocus = false;
                 }
             }
-            else
-            {
-                InFocus = false;
-            }
-            
         }
 
         private void PickUp()

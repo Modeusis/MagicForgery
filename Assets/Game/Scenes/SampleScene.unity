@@ -869,7 +869,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: a65bf72bec7afa540a9e381c7324cee9, type: 2}
   pickup: {fileID: 0}
-  outlineMaterial: {fileID: 0}
 --- !u!65 &183822726
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1707,7 +1706,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: ca6e2cc7854553b46a8f8ba8c676a631, type: 2}
   pickup: {fileID: 0}
-  outlineMaterial: {fileID: -876546973899608171, guid: bc365e315753f294f8a95e2a48d8252b, type: 3}
 --- !u!65 &688509917
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4155,7 +4153,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  - {fileID: 2100000, guid: c80fa756dda6e0e4985a9615b0896a49, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6539,7 +6536,7 @@ GameObject:
   - component: {fileID: 8236666822014610565}
   - component: {fileID: 1903833195}
   - component: {fileID: 1903833197}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: MainEnterance
   m_TagString: Door
   m_Icon: {fileID: 0}
@@ -6625,7 +6622,7 @@ GameObject:
   - component: {fileID: 1711813856157034324}
   - component: {fileID: 183822725}
   - component: {fileID: 183822726}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: RedPotion
   m_TagString: PickUp
   m_Icon: {fileID: 0}
@@ -6645,7 +6642,7 @@ GameObject:
   - component: {fileID: 1711813856145925183}
   - component: {fileID: 688509913}
   - component: {fileID: 688509917}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: YellowPotion
   m_TagString: PickUp
   m_Icon: {fileID: 0}

@@ -8,14 +8,37 @@ namespace Environment
     {
         [SerializeField] private AudioClip toTrashSound;
 
+        private bool _inFocus;
+
+        private bool InFocus
+        {
+            get => _inFocus;
+            set
+            {
+                if (_inFocus == value)
+                    return;
+                _inFocus = value;
+                gameObject.layer = LayerMask.NameToLayer(_inFocus ? "Interactable" : "Default");
+            }
+        }
+        
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Player.Player.instance.IsPlayerEnabled)
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.name == gameObject.name)
+            
+                if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.name == gameObject.name)
                 {
-                    MoveToTrash();
+                    InFocus = true;
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        MoveToTrash();
+                    }
+                }
+                else
+                {
+                    InFocus = false;
                 }
             }
         }
