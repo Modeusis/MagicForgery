@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 namespace UI
@@ -9,7 +11,6 @@ namespace UI
         
         [Header("Animation")]
         [SerializeField] private Animator swordHandlerAnimator;
-        [SerializeField] private Animator magicConverterAnimator;
         [SerializeField] private Animator featherAnimator;
     
         [Header("Sounds")]
@@ -25,6 +26,9 @@ namespace UI
         [SerializeField] private GameObject magicConverterHead;
         [SerializeField] private GameObject magicCrystal;
         
+        [Header("Materials")]
+        [SerializeField] private Material magicFluidMaterial;
+        
         private ItemData _firstItemData;
         private ItemData _secondItemData;
         private ItemData _thirdItemData;
@@ -38,6 +42,7 @@ namespace UI
         private bool _isMagicEnchanterReady;
         private bool _isEnchantingFinished;
         private bool _isWorkstationAvailable;
+        private bool _isWorkstationPowered;
 
         public bool IsSwordHandlerOpened
         {
@@ -114,11 +119,23 @@ namespace UI
             }
         }
         
+        public bool IsWorkstationPowered
+        {
+            get => _isWorkstationPowered;
+            set
+            {
+                if (_isWorkstationPowered == value) return;
+                _isWorkstationPowered = value;
+                AnimateMagicConverter();
+            }
+        }
+        
         private void Awake()
         {
-            if (Instance == null)
+            if (!Instance)
             {
                 Instance = this;
+                magicFluidMaterial.SetFloat("_FlowPower", 0f);
             }
             else
             {
@@ -126,9 +143,52 @@ namespace UI
             }
         }
 
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                ToggleWorkstationPower();
+            }
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                OpenSwordHandler();
+            }
+        }
+
         void ToggleWorkstationPower()
         {
+            IsWorkstationPowered = !IsWorkstationPowered;
             
+        }
+
+        void AnimateMagicConverter()
+        {
+            magicConverterHead.transform.DOKill();
+            magicCrystal.transform.DOKill();
+            magicFluidMaterial.DOKill();
+            
+            if (IsWorkstationPowered)
+            {
+                magicConverterHead.transform.DOLocalRotate(new Vector3(0, 360f, 0), 3f, RotateMode.FastBeyond360);
+                magicConverterHead.transform.DOLocalMove(new Vector3(0, 1f, 0), 3f);
+                
+                magicCrystal.transform.DOLocalMove(new Vector3(0, 0.7f, 0), 3f);
+                magicCrystal.transform.DOLocalRotate(new Vector3(0, 360f, 0), 3f, RotateMode.FastBeyond360);
+
+
+                magicFluidMaterial.DOFloat(.25f, "_FlowPower", 2f);
+            }
+            else
+            {
+                
+                magicConverterHead.transform.DOLocalRotate(new Vector3(0, -360f, 0), 3f, RotateMode.FastBeyond360);
+                magicConverterHead.transform.DOLocalMove(new Vector3(0, 0.6f, 0), 3f);
+                
+                magicCrystal.transform.DOLocalRotate(new Vector3(90f, -360f, 0), 3f, RotateMode.FastBeyond360);
+                magicCrystal.transform.DOLocalMove(new Vector3(0, 0.5f, 0), 3f);
+                
+                magicFluidMaterial.DOFloat(.0f, "_FlowPower", 2f);
+            }
         }
         
         void OpenSwordHandler()

@@ -6259,7 +6259,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: de4c6810f19ab304eb3f9f4f6133e0a8, type: 2}
+  - {fileID: 2100000, guid: 6c341a76548f9a542970819aa81eb521, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6480,7 +6480,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 006fe471f147a85438dc05f6b5e2fd45, type: 2}
-  - {fileID: 2100000, guid: de4c6810f19ab304eb3f9f4f6133e0a8, type: 2}
+  - {fileID: 2100000, guid: 95bebf9f0f787c9409c1ca54c77fc95e, type: 2}
   - {fileID: 2100000, guid: 037842ff20745a242bea4887ae2bd39e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -6864,7 +6864,7 @@ MeshRenderer:
   - {fileID: 2100000, guid: 3399f1d6a60c648439ae13b6487a83ff, type: 2}
   - {fileID: 2100000, guid: a84fbe50cf7af474a8c082669d07daaf, type: 2}
   - {fileID: 2100000, guid: 0c09d3e10df414f4a9bca56589a8d386, type: 2}
-  - {fileID: 2100000, guid: de4c6810f19ab304eb3f9f4f6133e0a8, type: 2}
+  - {fileID: 2100000, guid: e7c5f4bacef4bce4fbde39c9d8b100e9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8626,7 +8626,7 @@ Transform:
   m_GameObject: {fileID: 2666093402614625338}
   serializedVersion: 2
   m_LocalRotation: {x: 0.6532815, y: 0.27059805, z: -0.27059805, w: 0.6532815}
-  m_LocalPosition: {x: -0.038, y: 0.4906, z: -0.038}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 0.72059065, y: 1, z: 0.25150347}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8729,7 +8729,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9fae5d83f8a501b4ea9e1494d1e0e548, type: 2}
+  - {fileID: 2100000, guid: 170a677643e4e5044a96a2065d3f7b3b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9389,8 +9389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e772f9163942fc4ebf595e2ea7a4982, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swordHandlerAnimator: {fileID: 0}
-  magicConverterAnimator: {fileID: 0}
+  swordHandlerAnimator: {fileID: 8049470472662457138}
   featherAnimator: {fileID: 0}
   magicConverterSound: {fileID: 0}
   magicCrystalSound: {fileID: 0}
@@ -9398,8 +9397,9 @@ MonoBehaviour:
   magicSphereOpenSound: {fileID: 0}
   featherWritingSound: {fileID: 0}
   featherLevitatingSound: {fileID: 0}
-  magicConverterHead: {fileID: 0}
-  magicCrystal: {fileID: 0}
+  magicConverterHead: {fileID: 1333711287043452218}
+  magicCrystal: {fileID: 2666093402614625338}
+  magicFluidMaterial: {fileID: 2100000, guid: 037842ff20745a242bea4887ae2bd39e, type: 2}
 --- !u!4 &6878276037557097838
 Transform:
   m_ObjectHideFlags: 0
@@ -9502,6 +9502,7 @@ GameObject:
   - component: {fileID: 5723272258152856641}
   - component: {fileID: 5673443068351974843}
   - component: {fileID: 3379640760045749651}
+  - component: {fileID: 7271746447223772962}
   m_Layer: 0
   m_Name: feather
   m_TagString: Untagged
@@ -9509,6 +9510,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!95 &7271746447223772962
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7271746447223772961}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a011b4553c39ca9449257929c6ebc89c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7462657854909665722
 GameObject:
   m_ObjectHideFlags: 0

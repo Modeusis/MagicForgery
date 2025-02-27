@@ -61,7 +61,7 @@ namespace Player
 
         private void Awake()
         {
-            if (instance == null)
+            if (!instance)
             {
                 instance = this;
                 // DontDestroyOnLoad(gameObject);
