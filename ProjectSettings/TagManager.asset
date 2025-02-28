@@ -7,6 +7,7 @@ TagManager:
   - Door
   - PickUp
   - TrashCan
+  - PhotoCam
   layers:
   - Default
   - TransparentFX
