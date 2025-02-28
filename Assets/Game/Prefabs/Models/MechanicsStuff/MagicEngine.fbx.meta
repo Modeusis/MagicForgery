@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3387830c38477884f9186d7959cd1d72
+guid: 509c828ca58f46842af24570ea372b66
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,58 +7,53 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: BarrelMetal
+    second: {fileID: 2100000, guid: fabc79e87fd86ee468ce82376f107b3f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: CartoonGold
-    second: {fileID: 2100000, guid: 0c09d3e10df414f4a9bca56589a8d386, type: 2}
+    second: {fileID: 2100000, guid: dd11118bcddf0ed42874aaf482638a48, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CartoonMetal
+    second: {fileID: 2100000, guid: bfa23f9d536d971448d6a6237f0688e2, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: CartoonWood
-    second: {fileID: 2100000, guid: 877567d61f1ba9f48b867704d16e1f90, type: 2}
+    second: {fileID: 2100000, guid: 19b2c679c6fa9f64bb81c8e5ef4c9634, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Feather
-    second: {fileID: 2100000, guid: d4796c8036b77f640bd7c655d00985da, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: FeatherStick
-    second: {fileID: 2100000, guid: 4734ed696f2c7774da6d49f066669b52, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: MagicCrystal
-    second: {fileID: 2100000, guid: 6c341a76548f9a542970819aa81eb521, type: 2}
+      name: CrystalConnector
+    second: {fileID: 2100000, guid: a982e71618b40654fbf3c94a9ce3b545, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: MagicFluid
-    second: {fileID: 2100000, guid: 037842ff20745a242bea4887ae2bd39e, type: 2}
+    second: {fileID: 2100000, guid: bdc0e49ae6780cc4c90cfcd7aa38bb11, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: MagicMetal
-    second: {fileID: 2100000, guid: 006fe471f147a85438dc05f6b5e2fd45, type: 2}
+    second: {fileID: 2100000, guid: d9ccb788c8084a14b8650ad430ef98d9, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: MagicSphere
-    second: {fileID: 2100000, guid: 170a677643e4e5044a96a2065d3f7b3b, type: 2}
+      name: MainCrystal
+    second: {fileID: 2100000, guid: 30fe065983fd85b4d9ceb8949424e8e0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Paper
-    second: {fileID: 2100000, guid: ba78409aaed502b47b92a6a1aa823078, type: 2}
+      name: ManaData
+    second: {fileID: 2100000, guid: 7da62079681a3f945b8317ed7b079f88, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: SolidRedWood
-    second: {fileID: 2100000, guid: 3399f1d6a60c648439ae13b6487a83ff, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: SwordPlaceInside
-    second: {fileID: 2100000, guid: a84fbe50cf7af474a8c082669d07daaf, type: 2}
+      name: WaterMat
+    second: {fileID: 2100000, guid: 3a1fa011dc7a741458fae6ea1510255f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -88,7 +83,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.65
+    globalScale: 0.3
     meshCompression: 0
     addColliders: 1
     useSRGBMaterialColor: 1
@@ -143,7 +138,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.65
+    globalScale: 0.3
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
