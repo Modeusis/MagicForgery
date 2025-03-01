@@ -9,6 +9,7 @@ TagManager:
   - TrashCan
   - PhotoCam
   - Lever
+  - PlaceHolder
   layers:
   - Default
   - TransparentFX

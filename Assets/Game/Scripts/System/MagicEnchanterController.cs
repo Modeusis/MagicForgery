@@ -14,6 +14,7 @@ namespace UI
         [SerializeField] private Animator featherAnimator;
     
         [Header("Sounds")]
+        // Для мини игры на запуск начала заклинаний писать слова на время например 5 слов из 100 случайно выбранных на каждое слово опред время
         // [SerializeField] private AudioClip swordSound; добавить звук в сами объекты для поднятия и положить
         [SerializeField] private AudioClip magicConverterSound;
         [SerializeField] private AudioClip magicCrystalSound;
@@ -23,8 +24,7 @@ namespace UI
         [SerializeField] private AudioClip featherLevitatingSound;
         
         [Header("GameObjects")]
-        [SerializeField] private GameObject magicConverterHead;
-        [SerializeField] private GameObject magicCrystal;
+
         
         [Header("Materials")]
         [SerializeField] private Material magicFluidMaterial;
@@ -126,7 +126,6 @@ namespace UI
             {
                 if (_isWorkstationPowered == value) return;
                 _isWorkstationPowered = value;
-                AnimateMagicConverter();
             }
         }
         
@@ -141,68 +140,6 @@ namespace UI
             {
                 Destroy(gameObject);
             }
-        }
-
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                ToggleWorkstationPower();
-            }
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                OpenSwordHandler();
-            }
-        }
-
-        void ToggleWorkstationPower()
-        {
-            IsWorkstationPowered = !IsWorkstationPowered;
-            
-        }
-
-        void AnimateMagicConverter()
-        {
-            magicConverterHead.transform.DOKill();
-            magicCrystal.transform.DOKill();
-            magicFluidMaterial.DOKill();
-            
-            if (IsWorkstationPowered)
-            {
-                magicConverterHead.transform.DOLocalRotate(new Vector3(0, 360f, 0), 3f, RotateMode.FastBeyond360);
-                magicConverterHead.transform.DOLocalMove(new Vector3(0, 1f, 0), 3f);
-                
-                magicCrystal.transform.DOLocalMove(new Vector3(0, 0.7f, 0), 3f);
-                magicCrystal.transform.DOLocalRotate(new Vector3(0, 360f, 0), 3f, RotateMode.FastBeyond360);
-
-
-                magicFluidMaterial.DOFloat(.25f, "_FlowPower", 2f);
-            }
-            else
-            {
-                
-                magicConverterHead.transform.DOLocalRotate(new Vector3(0, -360f, 0), 3f, RotateMode.FastBeyond360);
-                magicConverterHead.transform.DOLocalMove(new Vector3(0, 0.6f, 0), 3f);
-                
-                magicCrystal.transform.DOLocalRotate(new Vector3(90f, -360f, 0), 3f, RotateMode.FastBeyond360);
-                magicCrystal.transform.DOLocalMove(new Vector3(0, 0.5f, 0), 3f);
-                
-                magicFluidMaterial.DOFloat(.0f, "_FlowPower", 2f);
-            }
-        }
-        
-        void OpenSwordHandler()
-        {
-            if (IsWorkstationAvailable)
-            {
-                swordHandlerAnimator.SetBool("IsOpened", !IsSwordHandlerOpened);
-                IsSwordHandlerOpened = !IsSwordHandlerOpened;
-            }
-        }
-        
-        void PlaceSword()
-        {
-            
         }
 
         void ValidateEnchanting()

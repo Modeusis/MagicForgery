@@ -118,6 +118,7 @@ namespace UI
             {
                 _itemPrefab = Instantiate(_item.prefab, handTransform);
                 _itemPrefab.transform.position = handTransform.position;
+                _itemPrefab.transform.rotation = handTransform.rotation;
                 handAnimator.SetTrigger("OnSelect");
                 _itemPrefab.SetActive(true);
             }

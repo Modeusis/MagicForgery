@@ -22,8 +22,6 @@ namespace UI
             get => _toggledSlot;
             set
             {
-                if (!value.HasValue)
-                    return;
                 if (_toggledSlot == value)
                     return;
                 _toggledSlot = value;
