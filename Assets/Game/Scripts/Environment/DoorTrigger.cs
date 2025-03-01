@@ -8,13 +8,11 @@ namespace Environment
     public class DoorTrigger : MonoBehaviour
     {
         [SerializeField] private Animator door;
-        [SerializeField] private TMP_Text tooltipText;
         [SerializeField] private float raycastLenght = 6;
     
         [Header("Sounds")]
         [SerializeField] private AudioClip doorOpenSound;
         [SerializeField] private AudioClip doorCloseSound;
-        // [SerializeField] private AudioSource doorSound;
         
         [Header("Keycodes")]
         [SerializeField] private KeyCode enteractKey = KeyCode.E;
@@ -31,8 +29,8 @@ namespace Environment
                 if (_isDoorInFocus == value)
                     return;
                 _isDoorInFocus = value;
-                tooltipText.text = $"{enteractKey.ToString()} to {(_isDoorOpen ? "close" : "open")}";
-                tooltipText.DOFade(value ? 1 : 0, 1f);
+                TooltipController.Instance.TooltipMessage = $"{enteractKey.ToString()} to {(_isDoorOpen ? "close" : "open")}";
+                TooltipController.Instance.IsTooltipShowed = value;
             }
         }
 
@@ -47,6 +45,7 @@ namespace Environment
                     return;
                 _isDoorOpen = value;
                 door.SetBool("IsDoorOpened", _isDoorOpen);
+                TooltipController.Instance.TooltipMessage = $"{enteractKey.ToString()} to {(_isDoorOpen ? "close" : "open")}";
                 SoundManager.instance.PlaySfx(_isDoorOpen ? doorOpenSound : doorCloseSound);
             }
         }
@@ -65,12 +64,9 @@ namespace Environment
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             
-                if (Physics.Raycast(ray,out var hit, raycastLenght ))
+                if (Physics.Raycast(ray,out var hit, raycastLenght ) && hit.collider.CompareTag("Door"))
                 {
-                    if (hit.collider.CompareTag("Door"))
-                    {
-                        IsDoorInFocus = true;
-                    }
+                    IsDoorInFocus = true;
                     if (Input.GetKeyDown(enteractKey) && IsDoorInFocus)
                     {
                         IsDoorOpen = !IsDoorOpen;
