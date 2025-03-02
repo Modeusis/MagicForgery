@@ -154,10 +154,10 @@ namespace UI
             
             loopSequence.Append(goldenLoop.transform.DOLocalRotate(Vector3.zero, 1f, RotateMode.FastBeyond360)
                 .SetEase(Ease.OutSine));
-            loopSequence.Append(goldenLoop.transform.DOLocalMoveY(1.335f, 1f).SetEase(Ease.InSine));
+            loopSequence.Append(goldenLoop.transform.DOLocalMoveY(1.285f, 1f).SetEase(Ease.InSine));
             miniLoopSequence.Append(goldenLoopMini.transform.DOLocalRotate(Vector3.zero, .8f, RotateMode.FastBeyond360)
                 .SetEase(Ease.OutSine));
-            miniLoopSequence.Append(goldenLoopMini.transform.DOLocalMoveY(1.335f, .8f).SetEase(Ease.InSine));
+            miniLoopSequence.Append(goldenLoopMini.transform.DOLocalMoveY(1.295f, .8f).SetEase(Ease.InSine));
             sequence.Append(mainCrystal.transform.DOLocalRotate(Vector3.zero, .3f, RotateMode.FastBeyond360).SetEase(Ease.InSine));
             sequence.Append(mainCrystal.transform.DOScale(1f, .5f));
             sequence.Append(mainCrystal.transform.DOLocalMoveY(1.4f, 1.2f).SetEase(Ease.InSine));
@@ -181,14 +181,11 @@ namespace UI
 
         void InfiniteCrystalRotation()
         {
-            // mainCrystal.transform.rotation = Quaternion.identity;
-            
             mainCrystal.transform.DOLocalRotate(new Vector3(10f, 30f, -10f), 0.1f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
         }
 
         void InfiniteGoldenLoop()
         {
-            
             goldenLoop.transform.DOLocalRotate(new Vector3(0, 0, 30f), .6f).SetEase(Ease.OutSine).OnComplete(() =>
             {
                 goldenLoop.transform.DOLocalRotate(new Vector3(0, 360f, 0), 4f, RotateMode.FastBeyond360)

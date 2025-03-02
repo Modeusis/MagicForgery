@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   itemName: Red potion
-  itemSprite: {fileID: 21300000, guid: 6bd5ea2779dc9fc4d9af2519ecbf6c7f, type: 3}
+  itemSprite: {fileID: 21300000, guid: 75deb5189d3aab44c8a3471e1e37e742, type: 3}
   itemDescription: Red potion, the symbol of life. required for fire enchantements
   isWeapon: 0
   isEnchantable: 0
   isEssention: 1
   isInstrument: 0
-  isEnchantmentBook: 0
+  prefab: {fileID: 0}

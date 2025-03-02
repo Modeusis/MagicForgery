@@ -7,6 +7,9 @@ namespace Player
     {
         public static Player instance;
         
+        [SerializeField] private GameObject cursor;
+        [SerializeField] private GameObject background;
+        
         private bool _isPlayerEnabled = true;
         public Animator staffAnimator;
         public Animator handAnimator;
@@ -17,6 +20,8 @@ namespace Player
             {
                 _isPlayerEnabled = value;
                 Cursor.lockState = _isPlayerEnabled ? CursorLockMode.Locked : CursorLockMode.Confined;
+                cursor.SetActive(_isPlayerEnabled);
+                background.SetActive(!_isPlayerEnabled);
                 if (!_isPlayerEnabled)
                 {
                     State = PlayerState.Standing;

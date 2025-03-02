@@ -2,27 +2,31 @@ using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
     public class TooltipController : MonoBehaviour
     {
         public static TooltipController Instance;
-        
+
+        [SerializeField] private GameObject tooltipBorder;
+        [SerializeField] private GameObject mechanicsBorder;
         [SerializeField] private TMP_Text tooltipText;
         [SerializeField] private TMP_Text mechanicsDescription;
         
-        private string tooltipMessage;
-
+        private string _tooltipMessage;
+        private Image _tooltipImage;
+        
         public string TooltipMessage
         {
-            get => tooltipMessage;
+            get => _tooltipMessage;
             set
             {
-                if (tooltipMessage == value)
+                if (_tooltipMessage == value)
                     return;
-                tooltipMessage = value;
-                tooltipText.text = tooltipMessage;
+                _tooltipMessage = value;
+                tooltipText.text = _tooltipMessage;
             }
         }
         
@@ -38,7 +42,7 @@ namespace UI
                 _isTooltipShowed = value;
                 if (_isTooltipShowed)
                 {
-                    ShowTooltip(tooltipMessage);
+                    ShowTooltip(_tooltipMessage);
                 }
                 else
                 {
@@ -52,6 +56,7 @@ namespace UI
             if (!Instance)
             {
                 Instance = this;
+                _tooltipImage = tooltipBorder.GetComponent<Image>();
             }
             else
             {
@@ -61,17 +66,22 @@ namespace UI
 
         void ShowTooltip(string text)
         {
+            _tooltipImage.DOKill();
             tooltipText.DOKill();
             
             tooltipText.text = text;
-            tooltipText.DOFade(1, 1f);
+            
+            _tooltipImage.DOFade(1, .6f);
+            tooltipText.DOFade(1, .6f);
         }
 
         void HideTooltip()
         {
+            _tooltipImage.DOKill();
             tooltipText.DOKill();
-            
-            tooltipText.DOFade(0, .6f).OnComplete(() =>
+
+            tooltipText.DOFade(0, .6f);
+            _tooltipImage.DOFade(0, .6f).OnComplete(() =>
             {
                 tooltipText.text = string.Empty;
             });

@@ -10,6 +10,7 @@ TagManager:
   - PhotoCam
   - Lever
   - PlaceHolder
+  - MagicSphere
   layers:
   - Default
   - TransparentFX

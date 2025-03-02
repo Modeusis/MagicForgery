@@ -37,7 +37,8 @@ namespace Environment
                 if (_isPlaceHolderOpened == value)
                     return;
                 _isPlaceHolderOpened = value;
-                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(value ? "close" : "open")}";
+                _placeHolderAnimator.SetBool("IsOpened", IsPlaceHolderOpened); 
+                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(IsPlaceHolderOpened ? "close" : "open")} sword handler";
             }
         }
         
@@ -49,7 +50,7 @@ namespace Environment
                 if (_isPlaceHolderInFocus == value)
                     return;
                 _isPlaceHolderInFocus = value;
-                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(value ? "close" : "open")}";
+                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(IsPlaceHolderOpened ? "close" : "open")} sword handler";
                 TooltipController.Instance.IsTooltipShowed = value;
                 gameObject.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
                 swordPlace.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
@@ -72,7 +73,7 @@ namespace Environment
                     IsPlaceHolderInFocus = true;
                     if (Input.GetKeyDown(interactKey))
                     {
-                        OpenSwordHandler();
+                        IsPlaceHolderOpened = !IsPlaceHolderOpened;
                     }
                 }
                 else
@@ -80,17 +81,6 @@ namespace Environment
                     IsPlaceHolderInFocus = false;
                 }
             }
-            
-        }
-        
-        void OpenSwordHandler()
-        {
-            _placeHolderAnimator.SetBool("IsOpened", !IsPlaceHolderOpened); 
-            IsPlaceHolderOpened = !IsPlaceHolderOpened;
-        }
-
-        void PlaceSword()
-        {
             
         }
     }
