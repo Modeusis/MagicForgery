@@ -1,4 +1,6 @@
 using System;
+using Environment;
+using Game.Scripts.Interface;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,14 +11,23 @@ namespace Player
     {
         public static Player instance;
         
+        [Header("UI")]
         [SerializeField] private GameObject cursor;
         [SerializeField] private GameObject background;
         
+        [Header("Mana")]
         [SerializeField] private Image manaBar;
         [SerializeField] private int manaCapacity = 100;
         
-        private int _currentMana;
+        [Header("Keys")]
+        [SerializeField] private KeyCode interactKey = KeyCode.E;
 
+        public KeyCode InteractKey => interactKey;
+
+        private IToggle _lastToggledObject;
+        
+        private int _currentMana;
+        
         public ItemData selectedItem;
         
         public int CurrentMana
@@ -95,6 +106,36 @@ namespace Player
                 Destroy(gameObject);
             }
         }
-        
+
+        private void Update()
+        {
+            if (IsPlayerEnabled)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.transform.GetComponent<IToggle>() != null)
+                {
+                    IToggle toggleObject = hit.transform.GetComponent<IToggle>();
+                    if (toggleObject != null)
+                    {
+                        toggleObject.IsFocused = true;
+                        _lastToggledObject = toggleObject;
+                        if (Input.GetKeyDown(interactKey))
+                        {
+                            
+                            toggleObject.Toggle();
+                        }
+                    }
+                }
+                else
+                {
+                    if (_lastToggledObject != null)
+                    {
+                        _lastToggledObject.IsFocused = false;
+                        _lastToggledObject = null;
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using Game.Scripts.Interface;
 using UnityEngine;
 using Random = System.Random;
 

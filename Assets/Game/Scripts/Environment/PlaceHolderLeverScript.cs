@@ -1,9 +1,10 @@
+using Game.Scripts.Interface;
 using UI;
 using UnityEngine;
 
 namespace Environment
 {
-    public class PlaceHolderLeverScript : MonoBehaviour
+    public class PlaceHolderLeverScript : MonoBehaviour, IToggle
     {
         //передалать эту хуятину в рэйкаст с интерфейсом и еще чето там и вообще на плеера рейкасты на плеера
         [SerializeField] private GameObject lever;
@@ -12,34 +13,35 @@ namespace Environment
             
         private Animator _leverAnimator;
 
-        private bool _isLeverInFocus;
-
-        private bool IsLeverInFocus
+        private bool _isFocused;
+        private bool _isToggled;
+        
+        public bool IsFocused
         {
-            get => _isLeverInFocus;
+            get => _isFocused;
             set
             {
-                if (_isLeverInFocus == value)
+                if (_isFocused == value)
                     return;
-                _isLeverInFocus = value;
+                _isFocused = value;
                 lever.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
                 gameObject.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
-                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(_isLeverToggled ? "close" : "open")} sword handler";
+                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(_isToggled ? "close" : "open")} place holder";
                 TooltipController.Instance.IsTooltipShowed = value;
             }
         }
         
-        private bool _isLeverToggled;
-        public bool IsLeverToggled
+        public bool IsToggled
         {
-            get => _isLeverToggled;
+            get => _isToggled;
             set
             {
-                if (_isLeverToggled == value)
+                if (_isToggled == value)
                     return;
-                _isLeverToggled = value;
-                ToggleLever();
-                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(_isLeverToggled ? "close" : "open")} sword handler";
+                _isToggled = value;
+                _leverAnimator.SetBool("IsLeverToggled", _isToggled);
+                placeHolder.IsPlaceHolderOpened = IsToggled;
+                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(_isToggled ? "close" : "open")} place holder";
             }
         }
         private void Awake()
@@ -47,34 +49,9 @@ namespace Environment
             _leverAnimator = lever.GetComponent<Animator>();
         }
 
-        private void Update()
-        {
-            if (Player.Player.instance.IsPlayerEnabled)
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.gameObject.CompareTag("PlaceHolderLever"))
-                {
-                    IsLeverInFocus = true;
-                    if (Input.GetKeyDown(interactKey))
-                    {
-                        IsLeverToggled = !IsLeverToggled;
-                    }
-                }
-                else
-                {
-                    IsLeverInFocus = false; 
-                }
-            }
-        }
-
-        void ToggleLever()
-        {
-            if (_leverAnimator)
-            {
-                _leverAnimator.SetBool("IsLeverToggled", IsLeverToggled);
-                placeHolder.IsPlaceHolderOpened = IsLeverToggled;
-            }
+        public void Toggle()
+        { 
+            IsToggled = !IsToggled;
         }
     }
 }

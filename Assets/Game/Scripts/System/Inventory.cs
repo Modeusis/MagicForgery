@@ -29,14 +29,17 @@ namespace UI
             slots.Capacity = 4;
         }
         
-        public void AddItem(ItemData item)
+        public bool AddItem(ItemData item)
         {
             InventorySlot slot = slots.Find(x => !x.Item);
             if (slot && items.Count < items.Capacity)
             {
                 items.Add(item);
                 slot.Item = item;
-            }
+                return true;
+            } 
+            TooltipController.Instance.ShowMechanicsDescription("You cannot add more items");
+            return false;
         }
 
         public void RemoveItem()
@@ -47,7 +50,6 @@ namespace UI
                 items.Remove(slot.Item);
                 slot.IsSlotSelected = false;
                 slot.Item = null;
-                // slot.ItemPrefab = null;
             }
         }
     }

@@ -1,10 +1,11 @@
 ﻿using DG.Tweening;
+using Game.Scripts.Interface;
 using UI;
 using UnityEngine;
 
 namespace Environment
 {
-    public class MagicConverterScript : MonoBehaviour
+    public class MagicConverterScript : MonoBehaviour, IToggle
     {
         [Header("Objects")]
         [SerializeField] private GameObject magicConverterHead;
@@ -13,74 +14,15 @@ namespace Environment
         [Header("Keycodes")]
         [SerializeField] private KeyCode interactKey = KeyCode.E;
         
-        private bool _isMagicConverterInFocus;
-
-        private bool IsMagicConverterInFocus
-        {
-            get => _isMagicConverterInFocus;
-            set
-            {
-                if (_isMagicConverterInFocus == value)
-                    return;
-                _isMagicConverterInFocus = value;
-                TooltipController.Instance.TooltipMessage = $"Press {interactKey} to {(IsMagicConverterWorking ? "stop" : "start")} magic converter";
-                TooltipController.Instance.IsTooltipShowed = value;
-                gameObject.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
-                magicConverterHead.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
-                magicCrystal.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
-            }
-        }
-        
-        private bool _isMagicConverterWorking;
-
-        private bool IsMagicConverterWorking
-        {
-            get => _isMagicConverterWorking;
-            set
-            {
-                if (_isMagicConverterWorking == value)
-                    return;
-                _isMagicConverterWorking = value;
-                TooltipController.Instance.TooltipMessage = $"Press {interactKey} to {(IsMagicConverterWorking ? "stop" : "start")} magic converter";
-                AnimateMagicConverter();
-            }
-        }
-
-        void Update()
-        {
-            if (Player.Player.instance.IsPlayerEnabled)
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.CompareTag("MagicConverter"))
-                {
-                    IsMagicConverterInFocus = true;
-                    if (Input.GetKeyDown(interactKey))
-                    {
-                        if (MagicEngineController.Instance.IsEngineWorking)
-                        {
-                            IsMagicConverterWorking = !IsMagicConverterWorking;
-                        }
-                        else
-                        {
-                            //Добавить анимацию не удачного запуска
-                            TooltipController.Instance.ShowMechanicsDescription("Turn engine first");
-                        }
-                    }
-                }
-                else
-                {
-                    IsMagicConverterInFocus = false;
-                }
-            }
-        }
+        private bool _isToggled;
+        private bool _isFocused;
         
         void AnimateMagicConverter()
         {
             magicConverterHead.transform.DOKill();
             magicCrystal.transform.DOKill();
             
-            if (IsMagicConverterWorking)
+            if (IsToggled)
             {
                 magicConverterHead.transform.DOLocalRotate(new Vector3(0, 360f, 0), 3f, RotateMode.FastBeyond360);
                 magicConverterHead.transform.DOLocalMove(new Vector3(0, 1f, 0), 3f);
@@ -99,6 +41,46 @@ namespace Environment
                 magicCrystal.transform.DOLocalMove(new Vector3(0, 0.5f, 0), 3f);
                 
 
+            }
+        }
+
+        public bool IsFocused
+        {
+            get => _isFocused;
+            set
+            {
+                if (_isFocused == value)
+                    return;
+                _isFocused = value;
+                TooltipController.Instance.TooltipMessage = $"Press {interactKey} to {(IsToggled ? "stop" : "start")} magic converter";
+                TooltipController.Instance.IsTooltipShowed = value;
+                gameObject.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
+                magicConverterHead.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
+                magicCrystal.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
+            }
+        }
+
+        public bool IsToggled
+        {
+            get => _isToggled;
+            set
+            {
+                if (_isToggled == value)
+                    return;
+                _isToggled = value;
+                TooltipController.Instance.TooltipMessage = $"Press {interactKey} to {(IsToggled ? "stop" : "start")} magic converter";
+                AnimateMagicConverter();
+            }
+        }
+        public void Toggle()
+        {
+            if (MagicEngineController.Instance.IsEngineWorking)
+            {
+                IsToggled = !IsToggled;
+            }
+            else
+            {
+                TooltipController.Instance.ShowMechanicsDescription("Currently unavailable");
             }
         }
     }

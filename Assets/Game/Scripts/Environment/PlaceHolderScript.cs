@@ -82,11 +82,14 @@ namespace Environment
                             {
                                 if  (Player.Player.instance.selectedItem)
                                 {
-                                    IsSwordPlaced = true;
-                                }
-                                else
-                                {
-                                    TooltipController.Instance.ShowMechanicsDescription("Select sword to place");
+                                    if (Player.Player.instance.selectedItem.itemName == "Sword")
+                                    {
+                                        IsSwordPlaced = true;
+                                    }
+                                    else
+                                    {
+                                        TooltipController.Instance.ShowMechanicsDescription("Select sword to place");
+                                    }
                                 }
                             }
                             else
@@ -96,7 +99,14 @@ namespace Environment
                         }
                         else if (IsSwordPlaced && _item)
                         {
-                            IsSwordPlaced = false;
+                            if (IsPlaceHolderOpened)
+                            {
+                                IsSwordPlaced = false;
+                            }
+                            else
+                            {
+                                TooltipController.Instance.ShowMechanicsDescription("Open it with lever first");
+                            }
                         }
                     }
                 }
@@ -126,7 +136,6 @@ namespace Environment
             }
             else
             {
-                Debug.Log("Taken sword");
                 Inventory.instance.AddItem(_item);
                 Destroy(_itemPrefab);
                 _itemPrefab = null;

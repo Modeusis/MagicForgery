@@ -1,79 +1,54 @@
 using System;
+using Game.Scripts.Interface;
 using UI;
 using UnityEngine;
 
 namespace Environment
 {
-    public class EngineLeverScript : MonoBehaviour
+    public class EngineLeverScript : MonoBehaviour, IToggle
     {
         [SerializeField] private GameObject lever;
         [SerializeField] private KeyCode interactKey = KeyCode.E;
         
         private Animator _leverAnimator;
-
-        private bool _isLeverInFocus;
-
-        private bool IsLeverInFocus
+        private bool _isFocused;
+        private bool _isToggled;
+        
+        public bool IsFocused
         {
-            get => _isLeverInFocus;
+            get => _isFocused;
             set
             {
-                if (_isLeverInFocus == value)
+                if (_isFocused == value)
                     return;
-                _isLeverInFocus = value;
+                _isFocused = value;
                 lever.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
                 gameObject.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
-                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(_isLeverToggled ? "shutdown" : "start")} engine";
+                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(_isToggled ? "shutdown" : "start")} engine";
                 TooltipController.Instance.IsTooltipShowed = value;
             }
         }
         
-        private bool _isLeverToggled;
-        public bool IsLeverToggled
+        public bool IsToggled
         {
-            get => _isLeverToggled;
+            get => _isToggled;
             set
             {
-                if (_isLeverToggled == value)
+                if (_isToggled == value)
                     return;
-                _isLeverToggled = value;
-                ToggleLever();
-                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(_isLeverToggled ? "shutdown" : "start")} engine";
+                _isToggled = value;
+                _leverAnimator.SetBool("IsLeverToggled", _isToggled);
+                MagicEngineController.Instance.IsEngineWorking = _isToggled;
+                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(_isToggled ? "shutdown" : "start")} engine";
             }
         }
         private void Awake()
         {
                 _leverAnimator = lever.GetComponent<Animator>();
         }
-
-        private void Update()
+        public void Toggle()
         {
-            if (Player.Player.instance.IsPlayerEnabled)
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.gameObject.CompareTag("Lever"))
-                {
-                    IsLeverInFocus = true;
-                    if (Input.GetKeyDown(interactKey))
-                    {
-                        IsLeverToggled = !IsLeverToggled;
-                    }
-                }
-                else
-                {
-                    IsLeverInFocus = false; 
-                }
-            }
-        }
-
-        void ToggleLever()
-        {
-            if (_leverAnimator)
-            {
-                _leverAnimator.SetBool("IsLeverToggled", IsLeverToggled);
-                MagicEngineController.Instance.IsEngineWorking = IsLeverToggled;
-            }
+            IsToggled = !IsToggled;
         }
     }
 }
