@@ -11,12 +11,8 @@ namespace UI
         public Sprite itemSprite;
         public string itemDescription;
 
-        [Header("Item type")] 
-        public bool isWeapon;
-        public bool isEnchantable;
-        public bool isEssention;
-        public bool isInstrument;
-
+        public float scaleOnPickUp = 1;
+        public Quaternion rotationOnPickUp = Quaternion.identity;
         public GameObject prefab;
     }
 }

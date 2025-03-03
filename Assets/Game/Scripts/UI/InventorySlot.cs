@@ -61,6 +61,10 @@ namespace UI
             {
                 if (_isSlotSelected == value)
                     return;
+                if (!_item)
+                {
+                    return;
+                }
                 _isSlotSelected = value;
                 SelectItem();
             }
@@ -118,14 +122,19 @@ namespace UI
             {
                 _itemPrefab = Instantiate(_item.prefab, handTransform);
                 _itemPrefab.transform.position = handTransform.position;
-                _itemPrefab.transform.rotation = handTransform.rotation;
+                _itemPrefab.transform.localRotation = _item.rotationOnPickUp;
+                _itemPrefab.transform.localScale = Vector3.one * _item.scaleOnPickUp;
                 handAnimator.SetTrigger("OnSelect");
                 _itemPrefab.SetActive(true);
+                
+                Player.Player.instance.selectedItem = _item;
             }
             else if (_item && !IsSlotSelected)
             {
                 Destroy(_itemPrefab);
                 _itemPrefab = null;
+                
+                Player.Player.instance.selectedItem = null;
             }
         }
 

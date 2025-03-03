@@ -13,11 +13,9 @@ MonoBehaviour:
   m_Name: SwordData
   m_EditorClassIdentifier: 
   id: 2
-  itemName: DefaultSword
+  itemName: Sword
   itemSprite: {fileID: 21300000, guid: e0ebae05c1c340549b253aef9109b111, type: 3}
   itemDescription: Basic sword without any enchantment
-  isWeapon: 1
-  isEnchantable: 1
-  isEssention: 0
-  isInstrument: 0
+  scaleOnPickUp: 0.95
+  rotationOnPickUp: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
   prefab: {fileID: 0}

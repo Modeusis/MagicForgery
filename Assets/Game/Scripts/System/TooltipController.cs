@@ -17,6 +17,7 @@ namespace UI
         
         private string _tooltipMessage;
         private Image _tooltipImage;
+        private Image _mechanicsImage;
         
         public string TooltipMessage
         {
@@ -57,6 +58,7 @@ namespace UI
             {
                 Instance = this;
                 _tooltipImage = tooltipBorder.GetComponent<Image>();
+                _mechanicsImage = mechanicsBorder.GetComponent<Image>();
             }
             else
             {
@@ -85,6 +87,29 @@ namespace UI
             {
                 tooltipText.text = string.Empty;
             });
+        }
+
+        public void ShowMechanicsDescription(string text, float duration = 5f)
+        {
+            _mechanicsImage.DOKill();
+            mechanicsDescription.DOKill();
+            
+            DOTween.Kill("MechanicsBorderDescription");
+            DOTween.Kill("MechanicsDescription");
+            
+            mechanicsDescription.text = text;
+            
+            Sequence textSequence = DOTween.Sequence();
+            Sequence sequence = DOTween.Sequence();
+            
+            sequence.Append(_mechanicsImage.DOFade(1, 1f));
+            sequence.Append(_mechanicsImage.DOFade(0, 1f).SetDelay(duration));
+            
+            textSequence.Append(mechanicsDescription.DOFade(1, 1f));
+            textSequence.Append(mechanicsDescription.DOFade(0, 1f).SetDelay(duration));
+
+            sequence.SetId("MechanicsBorderDescription");
+            textSequence.SetId("MechanicsDescription");
         }
     }
 }

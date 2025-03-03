@@ -5,7 +5,7 @@ namespace Environment
 {
     public class PlaceHolderScript : MonoBehaviour
     {
-
+        //Пофиксить доставание через коробку меча
         [SerializeField] private KeyCode interactKey = KeyCode.E;
         
         [SerializeField] private GameObject swordPlace;
@@ -13,12 +13,14 @@ namespace Environment
         public bool isPlaceHolderBlocked;
         
         private Animator _placeHolderAnimator;
+        private GameObject _itemPrefab;
+        private ItemData _item;
         
         private bool _isSwordPlaced;
         private bool _isPlaceHolderOpened;
         private bool _isPlaceHolderInFocus;
         
-        private bool IsSwordPlaced
+        public bool IsSwordPlaced
         {
             get => _isSwordPlaced;
             set
@@ -26,10 +28,12 @@ namespace Environment
                 if (_isSwordPlaced == value)
                     return;
                 _isSwordPlaced = value;
+                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(_isSwordPlaced ? "take" : "place")} sword";
+                SwordPlaceToggle();
             }
         }
         
-        private bool IsPlaceHolderOpened
+        public bool IsPlaceHolderOpened
         {
             get => _isPlaceHolderOpened;
             set
@@ -38,7 +42,6 @@ namespace Environment
                     return;
                 _isPlaceHolderOpened = value;
                 _placeHolderAnimator.SetBool("IsOpened", IsPlaceHolderOpened); 
-                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(IsPlaceHolderOpened ? "close" : "open")} sword handler";
             }
         }
         
@@ -50,7 +53,7 @@ namespace Environment
                 if (_isPlaceHolderInFocus == value)
                     return;
                 _isPlaceHolderInFocus = value;
-                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(IsPlaceHolderOpened ? "close" : "open")} sword handler";
+                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(_isSwordPlaced ? "take" : "place")} sword";
                 TooltipController.Instance.IsTooltipShowed = value;
                 gameObject.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
                 swordPlace.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
@@ -68,12 +71,33 @@ namespace Environment
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                if (Physics.Raycast(ray, out RaycastHit hit, 2f) && hit.collider.gameObject.CompareTag("PlaceHolder"))
+                if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.gameObject.CompareTag("PlaceHolder"))
                 {
                     IsPlaceHolderInFocus = true;
                     if (Input.GetKeyDown(interactKey))
                     {
-                        IsPlaceHolderOpened = !IsPlaceHolderOpened;
+                        if (!IsSwordPlaced)
+                        {
+                            if (IsPlaceHolderOpened)
+                            {
+                                if  (Player.Player.instance.selectedItem)
+                                {
+                                    IsSwordPlaced = true;
+                                }
+                                else
+                                {
+                                    TooltipController.Instance.ShowMechanicsDescription("Select sword to place");
+                                }
+                            }
+                            else
+                            {
+                                TooltipController.Instance.ShowMechanicsDescription("Open it with lever first");
+                            }
+                        }
+                        else if (IsSwordPlaced && _item)
+                        {
+                            IsSwordPlaced = false;
+                        }
                     }
                 }
                 else
@@ -81,7 +105,33 @@ namespace Environment
                     IsPlaceHolderInFocus = false;
                 }
             }
-            
+        }
+        
+        void SwordPlaceToggle()
+        {
+            if (IsSwordPlaced)
+            {
+                if (Player.Player.instance.selectedItem.itemName != "Sword")
+                    return;
+                _item = Player.Player.instance.selectedItem;
+                Inventory.instance.RemoveItem();
+                _itemPrefab = Instantiate(_item.prefab, swordPlace.transform);
+                Destroy(_itemPrefab.GetComponent<InventoryItemPickUp>());
+                Destroy(_itemPrefab.GetComponent<BoxCollider>());
+                _itemPrefab.transform.localPosition = new Vector3(-0.8f, 0f, 0);
+                _itemPrefab.transform.localRotation = new Quaternion(0.5f,0.5f,-0.5f,0.5f);
+                _itemPrefab.transform.localScale = new Vector3(1.5f, 2f, 1.5f);
+                _itemPrefab.SetActive(true);
+                IsSwordPlaced = true;
+            }
+            else
+            {
+                Debug.Log("Taken sword");
+                Inventory.instance.AddItem(_item);
+                Destroy(_itemPrefab);
+                _itemPrefab = null;
+                _item = null;
+            }
         }
     }
 }

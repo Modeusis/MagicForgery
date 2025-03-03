@@ -11,6 +11,8 @@ TagManager:
   - Lever
   - PlaceHolder
   - MagicSphere
+  - MagicConverter
+  - PlaceHolderLever
   layers:
   - Default
   - TransparentFX

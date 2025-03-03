@@ -1,5 +1,7 @@
 using System;
+using UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Player
 {
@@ -9,6 +11,23 @@ namespace Player
         
         [SerializeField] private GameObject cursor;
         [SerializeField] private GameObject background;
+        
+        [SerializeField] private Image manaBar;
+        [SerializeField] private int manaCapacity = 100;
+        
+        private int _currentMana;
+
+        public ItemData selectedItem;
+        
+        public int CurrentMana
+        {
+            get => _currentMana;
+            set
+            {
+                _currentMana = value;
+                manaBar.fillAmount = _currentMana / manaCapacity;
+            }
+        }
         
         private bool _isPlayerEnabled = true;
         public Animator staffAnimator;
@@ -69,7 +88,7 @@ namespace Player
             if (!instance)
             {
                 instance = this;
-                // DontDestroyOnLoad(gameObject);
+                CurrentMana = 20;
             }
             else
             {
