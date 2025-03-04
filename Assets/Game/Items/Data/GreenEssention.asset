@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 6
   itemName: Nature potion
-  itemSprite: {fileID: 21300000, guid: 75deb5189d3aab44c8a3471e1e37e742, type: 3}
+  itemSprite: {fileID: 21300000, guid: 95a2561203e21ac41b09a2eaa2385d2d, type: 3}
   itemDescription: Essence of nature collected in small glass
   scaleOnPickUp: 0.7
   rotationOnPickUp: {x: 0, y: 0, z: 0, w: 1}
-  prefab: {fileID: 0}
+  prefab: {fileID: 6927137958275165797, guid: f559ffe579c12cb45acde9760acc1bb6, type: 3}
   isPotion: 1

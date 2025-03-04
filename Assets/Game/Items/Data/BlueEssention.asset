@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 5
   itemName: Ice potion
-  itemSprite: {fileID: 21300000, guid: 75deb5189d3aab44c8a3471e1e37e742, type: 3}
+  itemSprite: {fileID: 21300000, guid: 30bfbabf7ee0903449b0b9b10f91b09a, type: 3}
   itemDescription: The potion of pure ice
   scaleOnPickUp: 0.7
   rotationOnPickUp: {x: 0, y: 0, z: 0, w: 1}
-  prefab: {fileID: 0}
+  prefab: {fileID: 8346085102764659615, guid: 998ce59ce266f0a40b6c49b4856f32f0, type: 3}
   isPotion: 1
