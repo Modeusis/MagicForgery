@@ -18,4 +18,5 @@ MonoBehaviour:
   itemDescription: Concentrate of all sharpness, can be harmful even in glass
   scaleOnPickUp: 0.7
   rotationOnPickUp: {x: 0, y: 0, z: 0, w: 1}
-  prefab: {fileID: 0}
+  prefab: {fileID: 5502065740798735631, guid: 7712c44b1a1d2a745b63406dcda430c0, type: 3}
+  isPotion: 1

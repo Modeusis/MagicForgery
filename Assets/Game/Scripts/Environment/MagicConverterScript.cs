@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System.Collections.Generic;
+using DG.Tweening;
 using Game.Scripts.Interface;
 using UI;
 using UnityEngine;
@@ -10,6 +11,12 @@ namespace Environment
         [Header("Objects")]
         [SerializeField] private GameObject magicConverterHead;
         [SerializeField] private GameObject magicCrystal;
+        
+        [SerializeField] private List<PotionPlaceScript> potionPlaces; 
+        [SerializeField] private EnchantmentData enchantmentData;
+        
+        //Вообще имба идея - делай не пожалеешь, устанавливай соответсвия между кол-вом зельев и их типом
+        private Dictionary<MagicEnchanterController.PotionType, int> potions;
         
         [Header("Keycodes")]
         [SerializeField] private KeyCode interactKey = KeyCode.E;

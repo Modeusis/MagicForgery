@@ -19,3 +19,4 @@ MonoBehaviour:
   scaleOnPickUp: 0.7
   rotationOnPickUp: {x: 0, y: 0, z: 0, w: 1}
   prefab: {fileID: 0}
+  isPotion: 1

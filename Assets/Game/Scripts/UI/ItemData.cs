@@ -14,5 +14,7 @@ namespace UI
         public float scaleOnPickUp = 1;
         public Quaternion rotationOnPickUp = Quaternion.identity;
         public GameObject prefab;
+
+        public bool isPotion;
     }
 }

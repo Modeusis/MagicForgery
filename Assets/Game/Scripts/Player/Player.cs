@@ -122,7 +122,6 @@ namespace Player
                         _lastToggledObject = toggleObject;
                         if (Input.GetKeyDown(interactKey))
                         {
-                            
                             toggleObject.Toggle();
                         }
                     }
