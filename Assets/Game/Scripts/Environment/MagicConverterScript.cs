@@ -14,9 +14,10 @@ namespace Environment
         
         [SerializeField] private List<PotionPlaceScript> potionPlaces; 
         [SerializeField] private EnchantmentData enchantmentData;
+        [SerializeField] private PlaceHolderScript placeHolder;
         
         //Вообще имба идея - делай не пожалеешь, устанавливай соответсвия между кол-вом зельев и их типом
-        private Dictionary<MagicEnchanterController.PotionType, int> potions;
+        private Dictionary<MagicEnchanterController.PotionType, int> _potions = new Dictionary<MagicEnchanterController.PotionType, int>();
         
         [Header("Keycodes")]
         [SerializeField] private KeyCode interactKey = KeyCode.E;
@@ -74,21 +75,63 @@ namespace Environment
             {
                 if (_isToggled == value)
                     return;
-                _isToggled = value;
-                TooltipController.Instance.TooltipMessage = $"Press {interactKey} to {(IsToggled ? "stop" : "start")} magic converter";
-                AnimateMagicConverter();
+                if (BeginEnchantment())
+                {
+                    _isToggled = value;
+                    AnimateMagicConverter();
+                    TooltipController.Instance.TooltipMessage = $"Press {interactKey} to {(IsToggled ? "stop" : "start")} magic converter";
+                }
+                else
+                {
+                    _potions.Clear();
+                }
             }
         }
         public void Toggle()
+        { 
+            IsToggled = !IsToggled;
+        }
+
+        bool BeginEnchantment()
         {
-            if (MagicEngineController.Instance.IsEngineWorking)
+            //Добавить описание ошибки?
+            if (!MagicEngineController.Instance.IsEngineWorking)
+                return false;
+            if (!placeHolder.IsSwordPlaced) 
+                return false;
+            if (placeHolder.IsPlaceHolderOpened)
+                return false;
+
+            int potionCount = 0;
+            
+            foreach (PotionPlaceScript potionPlace in potionPlaces)
             {
-                IsToggled = !IsToggled;
+                var potionType = potionPlace.PlacedPotionType;
+                if (potionType == MagicEnchanterController.PotionType.Empty)
+                {
+                    continue;
+                }
+                if (!_potions.TryAdd(potionType, 1))
+                {
+                    _potions[potionType]++;
+                }
             }
-            else
+
+            foreach (var potionType in _potions)
             {
-                TooltipController.Instance.ShowMechanicsDescription("Currently unavailable");
+                potionCount += potionType.Value;
             }
+            
+            if (potionCount < 3)
+                return false;
+            
+            _potions.Clear();
+            return true;
+        }
+
+        Enchantment FindCorresponding()
+        {
+            return new Enchantment();
         }
     }
 }

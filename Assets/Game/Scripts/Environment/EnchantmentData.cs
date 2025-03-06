@@ -15,7 +15,7 @@ namespace Environment
     public class Recipe
     {
         [field:SerializeField] public List<Ingredient> Ingredients { get; private set; }
-        //Тут должно быть само зачарование, которые будет определено в управляющем компоненте
+        [field:SerializeField] public Enchantment Enchantment { get; private set; }
     }
 
     [Serializable]

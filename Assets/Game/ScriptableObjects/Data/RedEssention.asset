@@ -18,5 +18,5 @@ MonoBehaviour:
   itemDescription: Red potion, the symbol of life. required for fire enchantements
   scaleOnPickUp: 0.7
   rotationOnPickUp: {x: 0, y: 0, z: 0, w: 1}
-  prefab: {fileID: 0}
-  isPotion: 0
+  prefab: {fileID: 582148724698443038, guid: 0c2a9d3a4e2ce6648bb7a01080894a3f, type: 3}
+  isPotion: 1

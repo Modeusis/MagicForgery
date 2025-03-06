@@ -17550,8 +17550,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magicConverterHead: {fileID: 1333711287043452218}
   magicCrystal: {fileID: 2666093402614625338}
-  potionPlaces: []
-  enchantmentData: {fileID: 0}
+  potionPlaces:
+  - {fileID: 9200684930908298025}
+  - {fileID: 7834388462716418144}
+  - {fileID: 8475663123957263146}
+  enchantmentData: {fileID: 11400000, guid: 863abfd288efcb24ca84565778c388c8, type: 2}
+  placeHolder: {fileID: 8049470472662457139}
   interactKey: 101
 --- !u!64 &8582936586946629252
 MeshCollider:

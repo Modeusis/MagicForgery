@@ -9,7 +9,7 @@ namespace Environment
         private ItemData _potionData;
         private GameObject _potionMesh;
         
-        public MagicEnchanterController.PotionType? PlacedPotionType { get; set; }
+        public MagicEnchanterController.PotionType PlacedPotionType { get; set; }
 
         [SerializeField] private float potionScale = 1f; 
         [SerializeField] private Vector3 potionPosition = Vector3.zero;
@@ -20,6 +20,8 @@ namespace Environment
             get => _potionData;
             set
             {
+                if (!value)
+                    return;
                 if (_potionData == value) 
                     return;
                 if (!value.isPotion)
@@ -43,7 +45,7 @@ namespace Environment
                         PlacedPotionType = MagicEnchanterController.PotionType.Metal;
                         break;
                     default:
-                        PlacedPotionType = null;
+                        PlacedPotionType = MagicEnchanterController.PotionType.Empty;
                         return;
                 }
             }

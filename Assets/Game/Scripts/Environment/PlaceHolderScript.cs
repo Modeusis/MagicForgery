@@ -5,7 +5,6 @@ namespace Environment
 {
     public class PlaceHolderScript : MonoBehaviour
     {
-        //Пофиксить доставание через коробку меча
         [SerializeField] private KeyCode interactKey = KeyCode.E;
         
         [SerializeField] private GameObject swordPlace;
@@ -132,7 +131,6 @@ namespace Environment
                 _itemPrefab.transform.localRotation = new Quaternion(0.5f,0.5f,-0.5f,0.5f);
                 _itemPrefab.transform.localScale = new Vector3(1.5f, 2f, 1.5f);
                 _itemPrefab.SetActive(true);
-                IsSwordPlaced = true;
             }
             else
             {
