@@ -13,6 +13,7 @@ namespace Player
         
         [Header("UI")]
         [SerializeField] private GameObject cursor;
+        [SerializeField] private GameObject uiCursor;
         [SerializeField] private GameObject background;
         
         [Header("Mana")]
@@ -22,6 +23,7 @@ namespace Player
         [Header("Keys")]
         [SerializeField] private KeyCode interactKey = KeyCode.E;
 
+        private bool _isOverlayShowed;
         public KeyCode InteractKey => interactKey;
 
         private IToggle _lastToggledObject;
@@ -53,6 +55,24 @@ namespace Player
                 cursor.SetActive(_isPlayerEnabled);
                 background.SetActive(!_isPlayerEnabled);
                 if (!_isPlayerEnabled)
+                {
+                    State = PlayerState.Standing;
+                }
+            }
+        }
+
+        public bool IsOverlayShowed
+        {
+            get => _isOverlayShowed;
+            set
+            {
+                if (_isOverlayShowed == value)
+                    return;
+                _isOverlayShowed = value;
+                Cursor.lockState = _isPlayerEnabled ? CursorLockMode.Locked : CursorLockMode.Confined;
+                cursor.SetActive(_isOverlayShowed);
+                background.SetActive(!_isOverlayShowed);
+                if (!_isOverlayShowed)
                 {
                     State = PlayerState.Standing;
                 }
