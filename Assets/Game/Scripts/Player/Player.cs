@@ -13,7 +13,7 @@ namespace Player
         
         [Header("UI")]
         [SerializeField] private GameObject cursor;
-        [SerializeField] private GameObject uiCursor;
+        [SerializeField] private UiCursor uiCursor;
         [SerializeField] private GameObject background;
         
         [Header("Mana")]
@@ -56,6 +56,7 @@ namespace Player
                 background.SetActive(!_isPlayerEnabled);
                 if (!_isPlayerEnabled)
                 {
+                    TooltipController.Instance.IsTooltipShowed = false;
                     State = PlayerState.Standing;
                 }
             }
@@ -69,11 +70,12 @@ namespace Player
                 if (_isOverlayShowed == value)
                     return;
                 _isOverlayShowed = value;
-                Cursor.lockState = _isPlayerEnabled ? CursorLockMode.Locked : CursorLockMode.Confined;
-                cursor.SetActive(_isOverlayShowed);
-                background.SetActive(!_isOverlayShowed);
-                if (!_isOverlayShowed)
+                cursor.SetActive(!_isOverlayShowed);
+                Cursor.lockState = _isOverlayShowed ? CursorLockMode.Confined : CursorLockMode.Locked;
+                uiCursor.IsActive = _isOverlayShowed;
+                if (_isOverlayShowed)
                 {
+                    TooltipController.Instance.IsTooltipShowed = false;
                     State = PlayerState.Standing;
                 }
             }
@@ -129,7 +131,7 @@ namespace Player
 
         private void Update()
         {
-            if (IsPlayerEnabled)
+            if (IsPlayerEnabled && !IsOverlayShowed)
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 

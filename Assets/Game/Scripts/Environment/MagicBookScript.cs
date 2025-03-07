@@ -59,26 +59,33 @@ namespace Environment
             
             if (IsToggled)
             {
-                transform.DOLocalMove(new Vector3(0.05f, 1.9f, 0.407f), 0.5f).SetEase(Ease.OutSine);
-                transform.DOLocalRotate(new Vector3(1.26023912f,90.8825989f,305.009705f), 0.5f).SetEase(Ease.OutSine).OnComplete(
-                    () =>
-                    {
-                        bookAnimator.SetBool("IsBookOpened", IsToggled);
-                    });
+                Player.Player.instance.IsOverlayShowed = true;
+                transform.DOLocalMove(new Vector3(0.05f, 1.4f, 0.407f), 0.6f).SetEase(Ease.OutSine);
+                transform.DOLocalRotate(new Vector3(1.26023912f, 90.8825989f, 305.009705f), 0.6f).SetEase(Ease.OutSine);
+                bookAnimator.SetBool("IsBookOpened", IsToggled);
+                StartCoroutine(AwaitForBookOpenCoroutine(bookAnimator.GetCurrentAnimatorStateInfo(0).length/2));
             }
             else
             {
-                bookAnimator.SetBool("IsBookOpened", IsToggled);
-                transform.DOLocalMove(new Vector3(0.25f, 1.4f, 0.407f), 0.5f).SetEase(Ease.InSine).SetDelay(bookAnimator.GetCurrentAnimatorStateInfo(0).length);
-                transform.DOLocalRotate(new Vector3(305f, 0, 0), 0.5f).SetEase(Ease.InSine).SetDelay(bookAnimator.GetCurrentAnimatorStateInfo(0).length);
+                StartCoroutine(AwaitForBookCloseCoroutine(bookAnimator));
             }
         }
 
-        IEnumerator AnimatorAwaitCoroutine(Animator animator)
+        IEnumerator AwaitForBookOpenCoroutine(float time)
         {
-            animator.SetBool("IsBookOpened", IsToggled);
-            
-            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitForSeconds(time);
+            bookCanvas.gameObject.SetActive(true);
         }
+            
+        IEnumerator AwaitForBookCloseCoroutine(Animator localBookAnimator)
+        {
+            localBookAnimator.SetBool("IsBookOpened", IsToggled);
+            
+            yield return new WaitForSeconds(localBookAnimator.GetCurrentAnimatorStateInfo(0).length);
+            
+            transform.DOLocalMove(new Vector3(0.25f, 1.4f, 0.407f), 0.5f).SetEase(Ease.InSine);
+            transform.DOLocalRotate(new Vector3(305f, 0, 0), 0.5f).SetEase(Ease.InSine);
+        }
+        
     }
 }

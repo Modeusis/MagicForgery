@@ -45,11 +45,11 @@ namespace Environment
 
         private void Update()
         {
-            if (Player.Player.instance.IsPlayerEnabled)
+            if (Player.Player.instance.IsPlayerEnabled && !Player.Player.instance.IsOverlayShowed)
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.gameObject.CompareTag("MagicSphere"))
+                if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.gameObject.CompareTag("MagicSphere") )
                 {
                     IsMagicSphereInFocus = true;
                     if (Input.GetKeyDown(interactKey) && !isMagicSphereBlocked)

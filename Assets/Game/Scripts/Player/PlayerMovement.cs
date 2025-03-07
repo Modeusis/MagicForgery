@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Player.instance.IsPlayerEnabled)
+        if (Player.instance.IsPlayerEnabled && !Player.instance.IsOverlayShowed)
         {
             HandleMovement();
             _charIsGrounded = _controller.isGrounded;

@@ -1,72 +1,183 @@
+using System;
 using System.Collections.Generic;
+using DG.Tweening;
+using Environment;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI
 {
+    [RequireComponent(typeof(CanvasGroup))]
     public class MagicBookOverlayScript : MonoBehaviour
     {
         [SerializeField] private List<GameObject> pageList;
         [SerializeField] private Button nextButton;
         [SerializeField] private Button previousButton;
+        [SerializeField] private MagicBookScript magicBook;
+        [SerializeField] private TMP_Text uiTooltip;
+        [SerializeField] private GameObject tooltipBackground;
+        [SerializeField] private Canvas canvas;
         
         private int _currentPage;
         private int _pageCount;
         
+        private CanvasGroup _canvasGroup;
+        
+        private bool _isTooltipShown;
         private bool _nextEnabled;
         private bool _previousEnabled;
 
+        private bool IsTooltipShown
+        {
+            get => _isTooltipShown;
+            set
+            {
+                if (_isTooltipShown == value)
+                    return;
+                _isTooltipShown = value;
+                
+                tooltipBackground.transform.DOKill();
+                
+                if (!value)
+                {
+                    uiTooltip.text = "";
+                    tooltipBackground.transform.DOScale(Vector3.zero, 0.2f).OnComplete(() =>
+                    {
+                        tooltipBackground.SetActive(false);
+                    });
+                }
+                else
+                {
+                    tooltipBackground.SetActive(true);
+                    tooltipBackground.transform.DOScale(Vector3.one, 0.2f);
+                }
+            }
+        }
         private bool NextEnabled
         {
             get => _nextEnabled;
             set
             {
+                if (_nextEnabled == value)
+                    return;
                 _nextEnabled = value;
+                nextButton.interactable = _nextEnabled;
             }
         }
         
-        public int CurrentPage
+        private bool PreviousEnabled
+        {
+            get => _previousEnabled;
+            set
+            {
+                if (_previousEnabled == value)
+                    return;
+                _previousEnabled = value;
+                previousButton.interactable = _previousEnabled;
+            }
+        }
+        
+        private int CurrentPage
         {
             get => _currentPage;
             set
             {
-                if (_currentPage != value)
+                if (_currentPage == value)
                     return;
                 _currentPage = value;
+                for (int i = 0; i < _pageCount; i++)
+                {
+                    if (i != _currentPage)
+                    {
+                        pageList[i].SetActive(false);
+                        continue;
+                    }
+                    pageList[i].SetActive(true);
+                }
+
+                if (_currentPage == _pageCount - 1)
+                {
+                    NextEnabled = false;
+                    PreviousEnabled = true;
+                }
+                else if (_currentPage == 0)
+                {
+                    NextEnabled = true;
+                    PreviousEnabled = false;
+                }
+                else
+                {
+                    NextEnabled = true;
+                    PreviousEnabled = true;
+                }
             }
         }
         
         void Awake()
         {
             _pageCount = pageList.Count;
+            _canvasGroup = GetComponent<CanvasGroup>();
         }
 
-        void OpenBook()
+        private void OnEnable()
         {
             gameObject.SetActive(true);
+            _canvasGroup.blocksRaycasts = true;
+            CurrentPage = 0;
         }
         
-        void NextPage()
+        public void NextPage()
         {
             CurrentPage++;
-            if (CurrentPage == pageList.Count)
-            {
-                nextButton.interactable = false;
-            }
         }
 
-        void PreviousPage()
+        public void PreviousPage()
         {
             CurrentPage--;
-            if (CurrentPage == pageList.Count)
-            {
-                nextButton.interactable = false;
-            }
         }
 
-        void CloseBook()
+        public void CloseBook()
         {
+            gameObject.SetActive(false);
+            IsTooltipShown = false;
+            Player.Player.instance.IsOverlayShowed = false;
+            _canvasGroup.blocksRaycasts = false;
+            magicBook.Toggle();
+        }
+
+        public void IconFocused(TooltipButton focusedButton)
+        {
+            IsTooltipShown = true;
+            uiTooltip.text = focusedButton.ButtonInfo;
+            focusedButton.IsHovered = true;
             
+        }
+
+        public void IconUnfocused(TooltipButton focusedObject)
+        {
+            IsTooltipShown = false;
+            focusedObject.IsHovered = false;
+        }
+
+        private void Update()
+        {
+            if (IsTooltipShown)
+            {
+                Vector2 mousePosition = Input.mousePosition;
+
+                // Переводим позицию курсора в координаты Canvas
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    canvas.transform as RectTransform,
+                    mousePosition,
+                    canvas.worldCamera,
+                    out Vector2 localPoint
+                );
+                
+                tooltipBackground.transform.localPosition = new Vector2(localPoint.x + 150f, localPoint.y + 70);
+            }
         }
     }
 }

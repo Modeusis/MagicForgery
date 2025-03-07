@@ -66,7 +66,7 @@ namespace Environment
 
         void Update()
         {
-            if (Player.Player.instance.IsPlayerEnabled && !isPlaceHolderBlocked)
+            if (Player.Player.instance.IsPlayerEnabled && !isPlaceHolderBlocked && !Player.Player.instance.IsOverlayShowed)
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 

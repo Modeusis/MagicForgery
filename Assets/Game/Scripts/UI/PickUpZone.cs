@@ -34,28 +34,31 @@ namespace UI
 
         private void Update()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.gameObject == gameObject)
+            if (Player.Player.instance.IsPlayerEnabled && !Player.Player.instance.IsOverlayShowed)
             {
-                IsZoneFocused = true;
-                if (Input.GetKeyDown(interactKey))
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.gameObject == gameObject)
                 {
-                    if (!itemData) return;
-                    itemData.prefab = pickUp;
-                    if (Inventory.instance.AddItem(itemData))
+                    IsZoneFocused = true;
+                    if (Input.GetKeyDown(interactKey))
                     {
-                        Player.Player.instance.staffAnimator.SetTrigger("OnInteract");
-                    }
-                    else
-                    {
-                        TooltipController.Instance.ShowMechanicsDescription("Not enough space");
+                        if (!itemData) return;
+                        itemData.prefab = pickUp;
+                        if (Inventory.instance.AddItem(itemData))
+                        {
+                            Player.Player.instance.staffAnimator.SetTrigger("OnInteract");
+                        }
+                        else
+                        {
+                            TooltipController.Instance.ShowMechanicsDescription("Not enough space");
+                        }
                     }
                 }
-            }
-            else
-            {
-                IsZoneFocused = false;
+                else
+                {
+                    IsZoneFocused = false;
+                }
             }
         }
     }

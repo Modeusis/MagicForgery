@@ -55,10 +55,13 @@ namespace UI
 
         void Update()
         {
-            IsInventoryOpen = Input.GetKey(openInventoryKey);
-            if (IsInventoryOpen)
+            if (!Player.Player.instance.IsOverlayShowed)
             {
-                ItemSelect();
+                IsInventoryOpen = Input.GetKey(openInventoryKey);
+                if (IsInventoryOpen)
+                {
+                    ItemSelect();
+                }
             }
         }
         

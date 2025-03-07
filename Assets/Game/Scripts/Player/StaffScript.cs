@@ -25,7 +25,7 @@ namespace Player
         
         private void Update()
         {
-            if (Player.instance.IsPlayerEnabled)
+            if (Player.instance.IsPlayerEnabled && !Player.instance.IsOverlayShowed)
             {
                 HandleFlashLight();
             }
