@@ -13835,7 +13835,7 @@ Transform:
   m_GameObject: {fileID: 2066946352115226454}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.1, y: 0.633, z: 3}
+  m_LocalPosition: {x: -2.1, y: 0.298, z: 3}
   m_LocalScale: {x: 0.7643017, y: 0.7643017, z: 0.7643017}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16986,6 +16986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21198c0589ae46f986f0f8fe89a97577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  magicConverter: {fileID: 0}
   manaStorageCapacity: 100
   waterStorageCapacity: 100
   water: {fileID: 0}
@@ -16998,6 +16999,13 @@ MonoBehaviour:
   engineLightEffect: {fileID: 2146928512}
   sphereLightEffect: {fileID: 1128376641}
   sphereSecondLightEffect: {fileID: 1502750892}
+  manaController: {fileID: 0}
+  manaControllerMaterial: {fileID: 2100000, guid: 7da62079681a3f945b8317ed7b079f88, type: 2}
+  zeroPercentTexture: {fileID: 2800000, guid: 93168b7ad85b53c44be57c731f7389c9, type: 3}
+  twentyPercentTexture: {fileID: 2800000, guid: c956ae20ceb02434593ef99d79b2b659, type: 3}
+  fortyPercentTexture: {fileID: 2800000, guid: 01fcef98ccaa2e042a807ec694d24097, type: 3}
+  eightyPercentTexture: {fileID: 2800000, guid: 937a5aa88aea78642ac1c7ae04729d97, type: 3}
+  oneHundredPercentTexture: {fileID: 2800000, guid: acbb044803092c04f86377f4f6b8c770, type: 3}
 --- !u!1 &5437402355565891838
 GameObject:
   m_ObjectHideFlags: 0

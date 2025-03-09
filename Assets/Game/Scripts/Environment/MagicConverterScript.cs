@@ -36,7 +36,11 @@ namespace Environment
                 magicConverterHead.transform.DOLocalMove(new Vector3(0, 1f, 0), 3f);
                 
                 magicCrystal.transform.DOLocalMove(new Vector3(0, 0.7f, 0), 3f);
-                magicCrystal.transform.DOLocalRotate(new Vector3(0, 360f, 0), 3f, RotateMode.FastBeyond360);
+                magicCrystal.transform.DOLocalRotate(new Vector3(0, 360f, 0), 3f, RotateMode.FastBeyond360).OnComplete(
+                    () =>
+                    {
+                        magicCrystal.transform.DOLocalRotate(new Vector3(0, 360f, 0), 1f, RotateMode.FastBeyond360);
+                    });
                 
             }
             else
@@ -75,6 +79,11 @@ namespace Environment
             {
                 if (_isToggled == value)
                     return;
+                if (!MagicEngineController.Instance.IsEngineWorking && !value)
+                {
+                    _isToggled = false;
+                    AnimateMagicConverter();
+                }
                 if (BeginEnchantment())
                 {
                     _isToggled = value;
@@ -94,7 +103,6 @@ namespace Environment
 
         bool BeginEnchantment()
         {
-            //Добавить описание ошибки?
             if (!MagicEngineController.Instance.IsEngineWorking)
                 return false;
             if (!placeHolder.IsSwordPlaced) 
