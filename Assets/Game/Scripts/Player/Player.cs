@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Environment;
 using Game.Scripts.Interface;
 using UI;
@@ -22,7 +23,8 @@ namespace Player
         
         [Header("Keys")]
         [SerializeField] private KeyCode interactKey = KeyCode.E;
-
+        
+        public Camera mainCamera;
         private bool _isOverlayShowed;
         public KeyCode InteractKey => interactKey;
 
@@ -38,7 +40,7 @@ namespace Player
             set
             {
                 _currentMana = value;
-                manaBar.fillAmount = _currentMana / manaCapacity;
+                manaBar.DOFillAmount((float)_currentMana/manaCapacity, 0.3f);
             }
         }
         
@@ -61,6 +63,24 @@ namespace Player
                 }
             }
         }
+
+        private bool _isMiniGamePlayed;
+        public bool IsMiniGamePlayed
+        {
+            get => _isMiniGamePlayed;
+            set
+            {
+                _isMiniGamePlayed = value;
+                Cursor.lockState = _isMiniGamePlayed ? CursorLockMode.Locked : CursorLockMode.Confined;
+                cursor.SetActive(!_isMiniGamePlayed);
+                if (!_isMiniGamePlayed)
+                {
+                    TooltipController.Instance.IsTooltipShowed = false;
+                    State = PlayerState.Standing;
+                }
+            }
+        }
+
 
         public bool IsOverlayShowed
         {
@@ -121,7 +141,8 @@ namespace Player
             if (!instance)
             {
                 instance = this;
-                CurrentMana = 20;
+                mainCamera = Camera.main;
+                CurrentMana = 50;
             }
             else
             {
@@ -131,9 +152,9 @@ namespace Player
 
         private void Update()
         {
-            if (IsPlayerEnabled && !IsOverlayShowed)
+            if (IsPlayerEnabled && !IsOverlayShowed && !IsMiniGamePlayed)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
                 if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.transform.GetComponent<IToggle>() != null)
                 {
@@ -145,6 +166,7 @@ namespace Player
                         if (Input.GetKeyDown(interactKey))
                         {
                             toggleObject.Toggle();
+                            staffAnimator.SetTrigger("OnInteract");
                         }
                     }
                 }

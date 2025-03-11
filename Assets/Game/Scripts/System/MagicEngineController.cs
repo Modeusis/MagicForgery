@@ -10,7 +10,6 @@ namespace UI
 {
     public class MagicEngineController : MonoBehaviour
     {
-        //Убрать изменение статуса напрямую, добавить метод который пытается включить и проверяет все состояния
         public static MagicEngineController Instance;
         
         [Header("General")]
@@ -27,7 +26,6 @@ namespace UI
         [SerializeField] private GameObject mainCrystal;
 
         [Header("Materials")] 
-        [SerializeField] private Material waterFluid;
         [SerializeField] private Material manaFluid;
         [SerializeField] private Material magicFluid;
         
@@ -58,7 +56,7 @@ namespace UI
             get => _manaAmount;
             set
             {
-                if (value < 1)
+                if (value <= 0)
                 {
                     IsEngineWorking = false;
                     UpdateManaControllerTexture(0);
@@ -80,7 +78,7 @@ namespace UI
             get => _waterAmount;
             set
             {
-                if (value < 1)
+                if (value <= 0)
                 {
                     IsEngineWorking = false;
                     return;
@@ -88,9 +86,12 @@ namespace UI
                 if (value >= waterStorageCapacity)
                 {
                     _waterAmount = waterStorageCapacity;
+                    UpdateWaterPosition(1);
                     return;
                 }
                 _waterAmount = value;
+                UpdateWaterPosition((float)_waterAmount/waterStorageCapacity);
+                
             }
         }
 
@@ -106,12 +107,13 @@ namespace UI
                     if (ValidateEngineStartUp())
                     {
                         _isEngineWorking = true;
-                        
+                        StartEngineAnimation();
                     }
                 }
                 else
                 {
                     _isEngineWorking = false;
+                    TurnOffEngineAnimation();
                     magicConverter.Toggle();
                 }
                 
@@ -123,6 +125,8 @@ namespace UI
             if (!Instance)
             {
                 Instance = this;
+                ManaAmount = 0;
+                WaterAmount = 0;
             }
             else
             {
@@ -130,29 +134,35 @@ namespace UI
             }
         }
 
-        void AddMana(int amount)
+        public int AddMana(int amount)
         {
             if (amount < 0)
-                return;
+                return 0;
+            if (ManaAmount + amount >= manaStorageCapacity)
+                return manaStorageCapacity - ManaAmount;
             ManaAmount += amount;
+            return amount;
         }
 
-        void AddWater(int amount)
+        public void AddWater(int amount)
         {
             if (amount < 0)
                 return;
             WaterAmount += amount;
         }
 
-        void SpendMana(int amount)
+        public void SpendMana(int amount)
         {
-            
+            if (amount < 0)
+                return;
+            ManaAmount -= amount;
         }
 
-        void SpendWater(int amount)
+        public void SpendWater(int amount)
         {
-            
-            
+            if (amount < 0)
+                return;
+            WaterAmount -= amount;
         }
 
         void StartEngineAnimation()
@@ -254,13 +264,14 @@ namespace UI
             goldenLoopMini.transform.DOLocalRotate(new Vector3(0, 0, -10f), .5f).SetEase(Ease.OutSine);
         }
 
-        public bool ValidateEngineStartUp()
+        bool ValidateEngineStartUp()
         {
             if (ManaAmount > manaStorageCapacity/10 && WaterAmount > waterStorageCapacity/10)
             {
                 StartEngineAnimation();
                 return true;
             } 
+            TooltipController.Instance.ShowMechanicsDescription("Low water or mana level to startup");
             return false;
         }
         private void UpdateManaControllerTexture(float fillPercentage)
@@ -269,21 +280,21 @@ namespace UI
             {
                 SetManaControllerTexture(zeroPercentTexture);
             }
-            else if (fillPercentage > 0f)
+            else if (fillPercentage == 1)
             {
-                SetManaControllerTexture(twentyPercentTexture);
-            }
-            else if (fillPercentage > 0.33f)
-            {
-                SetManaControllerTexture(fortyPercentTexture);
+                SetManaControllerTexture(oneHundredPercentTexture);
             }
             else if (fillPercentage > 0.66f)
             {
                 SetManaControllerTexture(eightyPercentTexture);
             }
-            else if (fillPercentage == 1)
+            else if (fillPercentage > 0.33f)
             {
-                SetManaControllerTexture(oneHundredPercentTexture);
+                SetManaControllerTexture(fortyPercentTexture);
+            }
+            else if (fillPercentage > 0f)
+            {
+                SetManaControllerTexture(twentyPercentTexture);
             }
         }
         void SetManaControllerTexture(Texture texture)
@@ -291,27 +302,11 @@ namespace UI
             manaControllerMaterial.mainTexture = texture;
         }
 
-        private void Update()
+        void UpdateWaterPosition(float fillPercentage)
         {
-            // if (Player.Player.instance.IsPlayerEnabled && !Player.Player.instance.IsOverlayShowed)
-            // {
-            //     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //
-            //     if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.collider.gameObject == manaController)
-            //     {
-            //         
-            //     }
-            // }
+            water.transform.DOKill();
 
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                AddMana(10);
-            }
-
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                AddWater(20);
-            }
+            water.transform.DOLocalMoveY(0.3f + fillPercentage * 1.5f, .5f).SetEase(Ease.InSine);
         }
     }
 }

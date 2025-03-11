@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UI
 {
-    public class Enchantment :ScriptableObject
+    public class Enchantment : ScriptableObject
     {
         [Header("Enchantment General")]
         public string enchantmentName;
