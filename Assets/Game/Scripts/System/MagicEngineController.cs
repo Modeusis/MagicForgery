@@ -35,7 +35,6 @@ namespace UI
         [SerializeField] private Light sphereSecondLightEffect;
         
         [Header("Mana controller")]
-        [SerializeField] private GameObject manaController;
         [SerializeField] private Material manaControllerMaterial;
         [SerializeField] private Texture zeroPercentTexture;
         [SerializeField] private Texture twentyPercentTexture;
@@ -102,6 +101,17 @@ namespace UI
             {
                 if (_isEngineWorking == value)
                     return;
+                
+                goldenLoop.transform.DOKill();
+                goldenLoopMini.transform.DOKill();
+                mainCrystal.transform.DOKill();
+                DOTween.Kill("StartEngineAnimation");
+                DOTween.Kill("StartLightEngineAnimation");
+                DOTween.Kill("TurnOffCrystalEngineAnimation");
+                DOTween.Kill("TurnOffLoopEngineAnimation");
+                DOTween.Kill("TurnOffMiniLoopEngineAnimation");
+                DOTween.Kill("TurnOffLightEngineAnimation");
+                
                 if (value)
                 {
                     if (ValidateEngineStartUp())
@@ -117,6 +127,7 @@ namespace UI
                     magicConverter.Toggle();
                 }
                 
+                engineVolume.weight = _isEngineWorking ? 1f : 0f;
             }
         }
         
@@ -167,16 +178,6 @@ namespace UI
 
         void StartEngineAnimation()
         {
-            goldenLoop.transform.DOKill();
-            goldenLoopMini.transform.DOKill();
-            mainCrystal.transform.DOKill();
-            DOTween.Kill("StartEngineAnimation");
-            DOTween.Kill("StartLightEngineAnimation");
-            DOTween.Kill("TurnOffCrystalEngineAnimation");
-            DOTween.Kill("TurnOffLoopEngineAnimation");
-            DOTween.Kill("TurnOffMiniLoopEngineAnimation");
-            DOTween.Kill("TurnOffLightEngineAnimation");
-            
             Sequence sequence = DOTween.Sequence();
             Sequence lightSequence = DOTween.Sequence();
 
@@ -202,16 +203,6 @@ namespace UI
         
         void TurnOffEngineAnimation()
         {
-            goldenLoop.transform.DOKill();
-            goldenLoopMini.transform.DOKill();
-            mainCrystal.transform.DOKill();
-            DOTween.Kill("StartEngineAnimation");
-            DOTween.Kill("StartLightEngineAnimation");
-            DOTween.Kill("TurnOffCrystalEngineAnimation");
-            DOTween.Kill("TurnOffLoopEngineAnimation");
-            DOTween.Kill("TurnOffMiniLoopEngineAnimation");
-            DOTween.Kill("TurnOffLightEngineAnimation");
-            
             Sequence sequence = DOTween.Sequence();
             Sequence loopSequence = DOTween.Sequence();
             Sequence miniLoopSequence = DOTween.Sequence();

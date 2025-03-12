@@ -55,7 +55,7 @@ namespace UI
 
         void Update()
         {
-            if (!Player.Player.instance.IsOverlayShowed)
+            if (!Player.Player.instance.IsOverlayShowed && !Player.Player.instance.IsMiniGamePlayed)
             {
                 IsInventoryOpen = Input.GetKey(openInventoryKey);
                 if (IsInventoryOpen)

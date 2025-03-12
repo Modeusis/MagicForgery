@@ -18,5 +18,5 @@ MonoBehaviour:
   itemDescription: Bucket that always ready to be filled with water?
   scaleOnPickUp: 0.5
   rotationOnPickUp: {x: 0, y: 0, z: 0, w: 1}
-  prefab: {fileID: 0}
+  prefab: {fileID: 2300136160467143837, guid: 7dc8be50d0090f54d9045ffce6e616ed, type: 3}
   isPotion: 0

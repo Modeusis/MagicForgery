@@ -15,8 +15,9 @@ namespace UI
         [SerializeField] private Animator handAnimator;
         private bool _isSlotSelected;
         
-        [CanBeNull] private ItemData _item; 
-        [CanBeNull] private GameObject _itemPrefab;
+        //временно починено
+        [CanBeNull] public ItemData _item; 
+        [CanBeNull] public  GameObject _itemPrefab;
         
         [CanBeNull]
         public GameObject ItemPrefab
@@ -63,9 +64,14 @@ namespace UI
                     return;
                 if (!_item)
                 {
+                    Player.Player.instance.selectedItem = null;
                     return;
                 }
                 _isSlotSelected = value;
+                if (_isSlotSelected)
+                {
+                    Player.Player.instance.selectedItem = _item;
+                }
                 SelectItem();
             }
         }
@@ -126,15 +132,11 @@ namespace UI
                 _itemPrefab.transform.localScale = Vector3.one * _item.scaleOnPickUp;
                 handAnimator.SetTrigger("OnSelect");
                 _itemPrefab.SetActive(true);
-                
-                Player.Player.instance.selectedItem = _item;
             }
-            else if (_item && !IsSlotSelected)
+            if (_item && !IsSlotSelected)
             {
                 Destroy(_itemPrefab);
                 _itemPrefab = null;
-                
-                Player.Player.instance.selectedItem = null;
             }
         }
 

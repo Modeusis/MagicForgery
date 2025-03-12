@@ -18,5 +18,5 @@ MonoBehaviour:
   itemDescription: Lghtning in the bottle
   scaleOnPickUp: 0.7
   rotationOnPickUp: {x: 0, y: 0, z: 0, w: 1}
-  prefab: {fileID: 0}
+  prefab: {fileID: 5120707118063194831, guid: 573b0841a03380e4fb2dd775aed748fb, type: 3}
   isPotion: 1

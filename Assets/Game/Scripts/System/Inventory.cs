@@ -8,7 +8,6 @@ namespace UI
     public class Inventory : MonoBehaviour
     {
         public static Inventory instance;
-        //Коллекция для дебага
         [SerializeField] private List<ItemData> items;
         [SerializeField] private List<InventorySlot> slots;
         
@@ -36,6 +35,12 @@ namespace UI
             {
                 items.Add(item);
                 slot.Item = item;
+
+                if (!Player.Player.instance.selectedItem)
+                {
+                    slot.IsSlotSelected = true;
+                }
+                
                 return true;
             } 
             TooltipController.Instance.ShowMechanicsDescription("You cannot add more items");
@@ -49,6 +54,7 @@ namespace UI
             {
                 items.Remove(slot.Item);
                 slot.IsSlotSelected = false;
+                Player.Player.instance.selectedItem = null;
                 slot.Item = null;
             }
         }

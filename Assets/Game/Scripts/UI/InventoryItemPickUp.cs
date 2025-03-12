@@ -47,7 +47,6 @@ namespace UI
 
         private void PickUp()
         {
-            itemData.prefab = gameObject;
             var result = Inventory.instance.AddItem(itemData);
             if (result) 
             {

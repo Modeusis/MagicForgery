@@ -18,5 +18,5 @@ MonoBehaviour:
   itemDescription: Already full of water:(
   scaleOnPickUp: 0.5
   rotationOnPickUp: {x: 0, y: 0, z: 0, w: 1}
-  prefab: {fileID: 0}
+  prefab: {fileID: 7308296686829946572, guid: 1e04328846cc4af4485e5a47534b6c9f, type: 3}
   isPotion: 0

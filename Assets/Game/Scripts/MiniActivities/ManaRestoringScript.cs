@@ -43,6 +43,7 @@ namespace Game.Scripts.MiniActivities
                 }
                 
                 player.transform.position = _isToggled ? _toggleTransform.position : _playerTransform.position;
+                player.transform.rotation = _isToggled ? _toggleTransform.rotation : _playerTransform.rotation;
                 Player.Player.instance.IsMiniGamePlayed = _isToggled;
             }
         }
@@ -55,7 +56,7 @@ namespace Game.Scripts.MiniActivities
         {
             if (IsToggled)
             {
-                if (Input.GetKeyDown(KeyCode.Escape))
+                if (Input.GetKeyDown(Player.Player.instance.BreakKey))
                 {
                     Toggle();
                 }

@@ -23,10 +23,12 @@ namespace Player
         
         [Header("Keys")]
         [SerializeField] private KeyCode interactKey = KeyCode.E;
+        [SerializeField] private KeyCode breakKey = KeyCode.Escape;
         
         public Camera mainCamera;
         private bool _isOverlayShowed;
         public KeyCode InteractKey => interactKey;
+        public KeyCode BreakKey => breakKey;
 
         private IToggle _lastToggledObject;
         
@@ -73,14 +75,12 @@ namespace Player
             set
             {
                 _isMiniGamePlayed = value;
-                Cursor.lockState = _isMiniGamePlayed ? CursorLockMode.Locked : CursorLockMode.Confined;
                 cursor.SetActive(!_isMiniGamePlayed);
                 if (!_isMiniGamePlayed)
                 {
                     TooltipController.Instance.IsTooltipShowed = false;
                     State = PlayerState.Standing;
                 }
-                Debug.Log(IsMiniGamePlayed);
             }
         }
 
