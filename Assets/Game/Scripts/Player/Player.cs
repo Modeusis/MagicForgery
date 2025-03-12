@@ -63,7 +63,9 @@ namespace Player
                 }
             }
         }
-
+        
+        
+        //Не понимаю почему при выходе из мини игры перестает нормально работать raycast
         private bool _isMiniGamePlayed;
         public bool IsMiniGamePlayed
         {
@@ -78,6 +80,7 @@ namespace Player
                     TooltipController.Instance.IsTooltipShowed = false;
                     State = PlayerState.Standing;
                 }
+                Debug.Log(IsMiniGamePlayed);
             }
         }
 

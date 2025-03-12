@@ -9,10 +9,11 @@ namespace Game.Scripts.MiniActivities
     {
         [SerializeField] private GameObject player;
         
-        private Transform _toggleTransform;
+        [SerializeField] private Transform _toggleTransform;
         
         private bool _isFocused;
         private bool _isToggled;
+        private Transform _playerTransform;
 
         public bool IsFocused
         {
@@ -35,18 +36,14 @@ namespace Game.Scripts.MiniActivities
                 if (_isToggled == value)
                     return;
                 _isToggled = value;
-                if (_isToggled)
+
+                if (value)
                 {
-                    Player.Player.instance.mainCamera.transform.SetParent(gameObject.transform);
-                    IsFocused = false;
+                    _playerTransform = player.transform;
                 }
-                else
-                {
-                    Player.Player.instance.mainCamera.transform.SetParent(player.transform);
-                }
-                Player.Player.instance.IsMiniGamePlayed = _isToggled;
-                Player.Player.instance.mainCamera.transform.localPosition = value ? new Vector3(0, 1, 0) : new Vector3(0, 1.3f, 0);
                 
+                player.transform.position = _isToggled ? _toggleTransform.position : _playerTransform.position;
+                Player.Player.instance.IsMiniGamePlayed = _isToggled;
             }
         }
         public void Toggle()
