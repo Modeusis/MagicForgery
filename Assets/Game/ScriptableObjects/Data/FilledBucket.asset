@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Filled bucket
   itemSprite: {fileID: 21300000, guid: 9952e50aa8dfaa6448dbd723161f93cc, type: 3}
   itemDescription: Already full of water:(
-  scaleOnPickUp: 0.5
+  scaleOnPickUp: 0.3
   rotationOnPickUp: {x: 0, y: 0, z: 0, w: 1}
   prefab: {fileID: 7308296686829946572, guid: 1e04328846cc4af4485e5a47534b6c9f, type: 3}
   isPotion: 0

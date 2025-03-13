@@ -18,4 +18,5 @@ MonoBehaviour:
   itemDescription: Basic sword without any enchantment
   scaleOnPickUp: 0.95
   rotationOnPickUp: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
-  prefab: {fileID: 0}
+  prefab: {fileID: 7871986814658445796, guid: 0bd50b88789900446b48f4614320dea9, type: 3}
+  isPotion: 0
