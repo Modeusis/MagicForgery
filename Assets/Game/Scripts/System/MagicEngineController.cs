@@ -237,7 +237,7 @@ namespace UI
 
         void InfiniteCrystalRotation()
         {
-            mainCrystal.transform.DOLocalRotate(new Vector3(10f, 30f, -10f), 0.1f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
+            mainCrystal.transform.DOLocalRotate(new Vector3(10f, 30f, -10f), 0.5f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
         }
 
         void InfiniteGoldenLoop()

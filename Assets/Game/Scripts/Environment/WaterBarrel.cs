@@ -6,8 +6,10 @@ namespace Environment
 {
     public class WaterBarrel : MonoBehaviour, IToggle
     {
-        [SerializeField] private int oneBucketAmount;
         [SerializeField] private ParticleSystem fillEffect;
+        [SerializeField] private ItemData emptyBucket; 
+        
+        [SerializeField] private int waterAddValue;
         
         private bool _isFocused;
         public bool IsFocused
@@ -18,6 +20,7 @@ namespace Environment
                 if (_isFocused == value)
                     return;
                 _isFocused = value;
+                gameObject.layer = _isFocused ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
             }
         }
         private bool _isToggled;
@@ -34,7 +37,9 @@ namespace Environment
                 {
                     if (playerItem.itemName == "Filled bucket")
                     {
-                        
+                        MagicEngineController.Instance.AddWater(waterAddValue);
+                        fillEffect.Play();
+                        EmptyBucket();
                     }
                     else
                     {
@@ -45,11 +50,19 @@ namespace Environment
                 {
                     TooltipController.Instance.ShowMechanicsDescription("Select filled bucket");
                 }
+
+                
             }
         }
         public void Toggle()
         {
             IsToggled = !IsToggled;
+        }
+        void EmptyBucket()
+        {
+            Inventory.instance.RemoveItem();
+
+            Inventory.instance.AddItem(emptyBucket);
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Game.Scripts.Interface;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game.Scripts.MiniActivities
 {
@@ -9,7 +12,10 @@ namespace Game.Scripts.MiniActivities
     {
         [SerializeField] private GameObject player;
         
-        [SerializeField] private Transform _toggleTransform;
+        [SerializeField] private Transform toggleTransform;
+        [SerializeField] private WordsData wordsDataBase;
+        
+        [field: SerializeField] private List<WordBlock> WordBlocks { get; set; }
         
         private bool _isFocused;
         private bool _isToggled;
@@ -42,8 +48,8 @@ namespace Game.Scripts.MiniActivities
                     _playerTransform = player.transform;
                 }
                 
-                player.transform.position = _isToggled ? _toggleTransform.position : _playerTransform.position;
-                player.transform.rotation = _isToggled ? _toggleTransform.rotation : _playerTransform.rotation;
+                player.transform.position = _isToggled ? toggleTransform.position : _playerTransform.position;
+                player.transform.rotation = _isToggled ? toggleTransform.rotation : _playerTransform.rotation;
                 Player.Player.instance.IsMiniGamePlayed = _isToggled;
             }
         }
@@ -72,5 +78,12 @@ namespace Game.Scripts.MiniActivities
         {
             Player.Player.instance.CurrentMana += manaToRestore;
         }
+
+        IEnumerator WordGenerator()
+        {
+            yield return new WaitForSeconds(2);
+            GenerateWords();
+        }
+            
     }
 }
