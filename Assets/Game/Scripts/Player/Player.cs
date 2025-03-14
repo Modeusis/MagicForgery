@@ -12,6 +12,9 @@ namespace Player
     {
         public static Player instance;
         
+        [Header("Light")]
+        [SerializeField] private Light staffLight;
+        
         [Header("UI")]
         [SerializeField] private GameObject cursor;
         [SerializeField] private UiCursor uiCursor;
@@ -168,8 +171,18 @@ namespace Player
                         _lastToggledObject = toggleObject;
                         if (Input.GetKeyDown(interactKey))
                         {
+                            staffLight.DOKill();
+                            
                             toggleObject.Toggle();
                             staffAnimator.SetTrigger("OnInteract");
+                            staffLight.enabled = true;
+                            staffLight.DOIntensity(2f, 0.2f).OnComplete(() =>
+                            {
+                                staffLight.DOIntensity(0f, 0.6f).OnComplete(() =>
+                                {
+                                    staffLight.enabled = false;
+                                });
+                            });
                         }
                     }
                 }

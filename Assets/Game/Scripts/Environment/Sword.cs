@@ -15,8 +15,11 @@ namespace Environment
                 if (_swordEnchantment == value)
                     return;
                 _swordEnchantment = value;
+                IsEnchanted = _swordEnchantment;
             }
         }
+        
+        public bool IsEnchanted { get; set; }
 
         public float EnchantmentAccuracy { get; private set; }
         public float PhysicalBonusDamageByAccuracy { get; private set; }

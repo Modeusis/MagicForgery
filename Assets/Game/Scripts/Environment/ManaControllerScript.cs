@@ -24,7 +24,8 @@ namespace Environment
                 _isFocused = value;
                 gameObject.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
                 TooltipController.Instance.IsTooltipShowed = value;
-                TooltipController.Instance.TooltipMessage = $"F to add mana to controller";
+                TooltipController.Instance.TooltipMessage =
+                    $"{Player.Player.instance.InteractKey} to add mana to controller";
             }
         }
 

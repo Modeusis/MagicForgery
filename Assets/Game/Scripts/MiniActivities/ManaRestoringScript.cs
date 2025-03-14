@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Game.Scripts.Interface;
 using TMPro;
 using UnityEngine;
@@ -9,9 +10,10 @@ using UnityEngine.Serialization;
 
 namespace Game.Scripts.MiniActivities
 {
-    //Пофиксить позицию спавна и работу INPUT
     public class ManaRestoringScript : MonoBehaviour, IToggle
     {
+        //Написать отображение маны когда правильно слово написано
+        
         [SerializeField] private GameObject player;
         
         [SerializeField] private Transform toggleTransform;
@@ -21,6 +23,9 @@ namespace Game.Scripts.MiniActivities
         [SerializeField] private CanvasGroup manaRestoringCanvasGroup;
 
         [SerializeField] private float timeGenerationDelay = 4f;
+        [SerializeField] private int manaRestoreValue = 5;
+        
+        [SerializeField] private TMP_Text manaRestoreText;
         
         [field: SerializeField] private List<WordBlock> WordBlocks { get; set; }
         
@@ -58,17 +63,18 @@ namespace Game.Scripts.MiniActivities
                     _playerTransform = player.transform;
                     _wordsCapacity = wordsDataBase.Words.Count;
                     _textBlocksCapacity = WordBlocks.Count;
+                    IsFocused = false;
                 }
                 
                 StopCoroutine(WordGenerator());
                 
-                manaRestoringCanvasGroup.gameObject.SetActive(value);
                 manaRestoringCanvasGroup.alpha = value ? 1f : 0f;
-
+                inputWordField.DeactivateInputField();
+                
                 if (inputWordField && value)
                 {
                     inputWordField.text = "";
-                    inputWordField.ActivateInputField();
+                    inputWordField.Select();
                     if (_wordsCapacity != 0 && _textBlocksCapacity != 0)
                     {
                         StartCoroutine(WordGenerator());
@@ -93,7 +99,7 @@ namespace Game.Scripts.MiniActivities
                 {
                     Toggle();
                 }
-                if (Input.GetKeyDown(KeyCode.Backspace))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
                     inputWordField.text = String.Empty;
                 }
@@ -114,19 +120,38 @@ namespace Game.Scripts.MiniActivities
             
             notShowedWordBlocks.ToList()[randomTextBlockNumber].TextBlockValue = wordsDataBase.Words[randomWordNumber];
             
-            Debug.Log($"{randomTextBlockNumber} : {randomWordNumber}");
         }
 
         void RestoreMana(int manaToRestore)
         {
             Player.Player.instance.CurrentMana += manaToRestore;
+
+            if (manaRestoreText)
+            {
+                manaRestoreText.DOKill();
+
+                manaRestoreText.DOFade(1f, 0.2f).OnComplete(() =>
+                {
+                    manaRestoreText.DOFade(0f, 0.4f);
+                });
+            }
         }
 
         public void InputTextChanged()
         {
             if (string.IsNullOrEmpty(inputWordField.text))
                 return;
-            Debug.Log($"{inputWordField.text}");
+            var showedWordBlocks = WordBlocks.Where(block => block.IsShowed && !string.IsNullOrEmpty(block.TextBlockValue));
+
+            foreach (var block in showedWordBlocks)
+            {
+                if (string.Equals(block.TextBlockValue, inputWordField.text, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    block.IsShowed = false;
+                    inputWordField.text = String.Empty;
+                    RestoreMana(manaRestoreValue);
+                }
+            } 
         }
 
         IEnumerator WordGenerator()
@@ -135,7 +160,6 @@ namespace Game.Scripts.MiniActivities
             {
                 yield return new WaitForSeconds(timeGenerationDelay);
                 GenerateWords();
-                Debug.Log("word generator called");
             }
         }
     }

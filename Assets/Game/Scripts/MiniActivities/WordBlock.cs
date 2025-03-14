@@ -19,19 +19,20 @@ namespace Game.Scripts.MiniActivities
         public bool IsShowed
         {
             get => isShowed;
-            private set
+            set
             {
                 if (isShowed == value)
                     return;
                 isShowed = value;
                 
                 _textBlock.DOKill();
+                StopAllCoroutines();
                 
                 if (isShowed)
                 {
-                    _randomX = UnityEngine.Random.Range(0, Screen.width);
+                    _randomX = UnityEngine.Random.Range(-Screen.height / 2, Screen.height / 2);
                     _textBlock.DOFade(1, 0.5f);
-                    _textBlock.text = textBlockValue;
+                    _textBlock.text = TextBlockValue;
                     StartCoroutine(TextFallingCoroutine(() =>
                     {
                         TextBlockValue = null;
@@ -39,8 +40,10 @@ namespace Game.Scripts.MiniActivities
                 }
                 else
                 {
-                    _textBlock.DOFade(0, 0.5f);
-                    _textBlock.rectTransform.anchoredPosition = new Vector2(_randomX, 0);
+                    _textBlock.DOFade(0, 0.5f).OnComplete(() =>
+                    {
+                        _textBlock.text = TextBlockValue;
+                    });
                 }
             }
         }
@@ -55,12 +58,12 @@ namespace Game.Scripts.MiniActivities
                 if (value != null)
                 {
                     textBlockValue = value;
-                    
                     IsShowed = true;
                 }
                 else
                 {
                     IsShowed = false;
+                    textBlockValue = null;
                 }
                 
             }
@@ -68,8 +71,8 @@ namespace Game.Scripts.MiniActivities
 
         IEnumerator TextFallingCoroutine(Action onComplete, float duration = 5f)
         {
-            var startPos = _textBlock.rectTransform.anchoredPosition;
-            var finalPos = new Vector2(startPos.x, -Screen.height);
+            var startPos = new Vector2(_randomX, Screen.height / 2);
+            var finalPos = new Vector2(startPos.x, -(Screen.height - 20) / 2);
             float timer = 0f;
             
             while (timer < duration)
