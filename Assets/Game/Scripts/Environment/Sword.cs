@@ -28,8 +28,13 @@ namespace Environment
         public float IceBonusDamageByAccuracy { get; private set; }
         public float FireBonusDamageByAccuracy { get; private set; }
 
-        void SetAccuracy(float accuracy)
+        public void SetAccuracy(float accuracy)
         {
+            if (!IsEnchanted)
+            {
+                Debug.Log("Sword isn't enchanted");
+                return;
+            }
             if (accuracy is >= 0 and <= 1)
             {
                 EnchantmentAccuracy = accuracy;

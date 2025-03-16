@@ -17,6 +17,5 @@ namespace UI
 
         [Header("Visuals")] 
         public Material enchantedBladeMaterial;
-        //Мб particle system добавить
     }
 }

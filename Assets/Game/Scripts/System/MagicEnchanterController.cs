@@ -1,38 +1,40 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Environment;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
     public class MagicEnchanterController : MonoBehaviour
     {
+        //Хочу умереть
         public static MagicEnchanterController Instance;
         
         [Header("Animation")]
-        [SerializeField] private Animator swordHandlerAnimator;
-        [SerializeField] private Animator featherAnimator;
-    
-        [Header("Sounds")]
-        [SerializeField] private AudioClip magicConverterSound;
-        [SerializeField] private AudioClip magicCrystalSound;
-        [SerializeField] private AudioClip swordHandlerOpenSound;
-        [SerializeField] private AudioClip magicSphereOpenSound;
-        [SerializeField] private AudioClip featherWritingSound;
-        [SerializeField] private AudioClip featherLevitatingSound;
+        [SerializeField] private Image progressBar;
+        [SerializeField] private GameObject canvasProgressBar;
+        [SerializeField] private Material manaFlowMaterial;
         
-        private Sword swordToEnchant;
+        [Header("Sounds")]
+        [SerializeField] private AudioClip enchantmentSound;
+        
+        
+        
+        private CanvasGroup _canvasGroup;
+        private Sword _swordToEnchant;
         private Enchantment _swordEnchantment;
 
         public Sword SwordToEnchant
         {
-            get => swordToEnchant;
+            get => _swordToEnchant;
             set
             {
-                if (swordToEnchant == value)
+                if (_swordToEnchant == value)
                     return;
-                swordToEnchant = value;
+                _swordToEnchant = value;
             }
         }
 
@@ -61,11 +63,86 @@ namespace UI
         {
             if (!Instance)
             {
-                Instance = this;    
+                Instance = this;
+                if (canvasProgressBar)
+                {
+                    _canvasGroup = canvasProgressBar.GetComponent<CanvasGroup>();
+                }
             }
             else
             {
                 Destroy(gameObject);
+            }
+        }
+
+        public void EnchantSword(float accuracy)
+        {
+            // if (!SwordEnchantment)
+            // {
+            //     TooltipController.Instance.ShowMechanicsDescription("No enchantment found");
+            //     return;
+            // }
+            //
+            // if (!SwordToEnchant)
+            // {
+            //     TooltipController.Instance.ShowMechanicsDescription("No sword found");
+            //     return;
+            // }
+            
+            StartCoroutine(SwordEnchantCoroutine(() =>
+            {
+                SwordToEnchant.SwordEnchantment = _swordEnchantment;
+                SwordToEnchant.SetAccuracy(accuracy);
+                
+                Debug.Log(SwordToEnchant.SwordEnchantment);
+            }));
+        }
+
+        IEnumerator SwordEnchantCoroutine(Action callback, float duration = 4f)
+        {
+            float timer = 0f;
+            float fadeDuration = 0.5f;
+            
+            float flowSpeed = manaFlowMaterial.GetFloat("_FlowPower");
+            
+            while (timer < fadeDuration)
+            {
+                var t = timer / fadeDuration;
+                _canvasGroup.alpha = Mathf.Lerp(0f, 1f, t);
+                timer += Time.deltaTime;
+                yield return null;
+            }
+            bool isDone = false;
+            
+            manaFlowMaterial.DOFloat(1f , "_FlowPower", 1f);
+
+            progressBar.DOFillAmount(1f, duration).OnComplete(() =>
+            {
+                isDone = true;
+            });
+            
+            yield return new WaitUntil(() => isDone);
+            
+            manaFlowMaterial.DOFloat(flowSpeed, "_FlowPower", 1f);
+            
+            timer = 0f;
+            
+            while (timer < fadeDuration)
+            {
+                var t = timer / fadeDuration;
+                _canvasGroup.alpha = Mathf.Lerp(0f, 1f, t);
+                timer += Time.deltaTime;
+                yield return null;
+            }
+            
+            callback?.Invoke();
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                EnchantSword(100f);
             }
         }
     }
