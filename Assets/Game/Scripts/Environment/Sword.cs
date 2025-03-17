@@ -5,6 +5,10 @@ namespace Environment
 {
     public class Sword : MonoBehaviour
     {
+        [field:SerializeField] public string SwordName { get; private set; }
+        [field:SerializeField] public string SwordDescription { get; private set; }
+        
+        
         private Enchantment _swordEnchantment;
 
         public Enchantment SwordEnchantment
@@ -20,13 +24,14 @@ namespace Environment
         }
         
         public bool IsEnchanted { get; set; }
-
-        public float EnchantmentAccuracy { get; private set; }
-        public float PhysicalBonusDamageByAccuracy { get; private set; }
-        public float PoisonBonusDamageByAccuracy { get; private set; }
-        public float LightningBonusDamageByAccuracy { get; private set; }
-        public float IceBonusDamageByAccuracy { get; private set; }
-        public float FireBonusDamageByAccuracy { get; private set; }
+        
+        //Serialize для отладки убрать при билде
+        [field:SerializeField] public float EnchantmentAccuracy { get; private set; }
+        [field:SerializeField] public float PhysicalBonusDamageByAccuracy { get; private set; }
+        [field:SerializeField] public float PoisonBonusDamageByAccuracy { get; private set; }
+        [field:SerializeField] public float LightningBonusDamageByAccuracy { get; private set; }
+        [field:SerializeField] public float IceBonusDamageByAccuracy { get; private set; }
+        [field:SerializeField] public float FireBonusDamageByAccuracy { get; private set; }
 
         public void SetAccuracy(float accuracy)
         {

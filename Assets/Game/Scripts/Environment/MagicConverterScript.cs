@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Game.Scripts.Interface;
 using UI;
@@ -11,6 +12,7 @@ namespace Environment
         [Header("Objects")]
         [SerializeField] private GameObject magicConverterHead;
         [SerializeField] private GameObject magicCrystal;
+        [SerializeField] private Material magicCrystalMaterial;
         
         [SerializeField] private List<PotionPlaceScript> potionPlaces; 
         [SerializeField] private EnchantmentData enchantmentData;
@@ -21,6 +23,49 @@ namespace Environment
         [Header("Keycodes")]
         [SerializeField] private KeyCode interactKey = KeyCode.E;
         
+        [Header("Effects")]
+        [SerializeField] private Color crystalBaseColor;
+        
+        private Enchantment _currentEnchantment;
+
+        public Enchantment CurrentEnchantment
+        {
+            get => _currentEnchantment;
+            set
+            {
+                if (_currentEnchantment == value)
+                    return;
+                _currentEnchantment = value;
+                MagicEnchanterController.Instance.SwordEnchantment = _currentEnchantment;    
+                
+                if (!CurrentEnchantment)
+                    CrystalColor = crystalBaseColor;
+                else
+                {
+                    CrystalColor = CurrentEnchantment.enchantmentColor;
+                }
+            }
+        }
+        
+        private Color _crystalColor;
+
+        private Color CrystalColor
+        {
+            get => _crystalColor;
+            set
+            {
+                if (_crystalColor == value)
+                    return;
+                _crystalColor = value;
+                magicCrystalMaterial.DOKill();
+                
+                if (magicCrystalMaterial)
+                {
+                    magicCrystalMaterial.DOColor(_crystalColor, "_CrystalColor", 1f);
+                }
+            }
+        }
+        
         private bool _isToggled;
         private bool _isFocused;
         
@@ -28,6 +73,8 @@ namespace Environment
         {
             magicConverterHead.transform.DOKill();
             magicCrystal.transform.DOKill();
+            DOTween.Kill("headRotateSeq");
+            DOTween.Kill("headMoveSeq");
             
             if (IsToggled)
             {
@@ -38,9 +85,32 @@ namespace Environment
                 magicCrystal.transform.DOLocalRotate(new Vector3(0, 360f, 0), 3f, RotateMode.FastBeyond360).OnComplete(
                     () =>
                     {
-                        magicCrystal.transform.DOLocalRotate(new Vector3(0, 360f, 0), 1f, RotateMode.FastBeyond360);
+                        magicCrystal.transform.DOLocalRotate(new Vector3(0, 360f, 0), 5f, RotateMode.FastBeyond360)
+                            .SetLoops(-1, LoopType.Incremental)
+                            .SetEase(Ease.Linear);
+                        
+                        var moveSeq = DOTween.Sequence();
+                        var rotateSeq = DOTween.Sequence();
+                        
+                        rotateSeq.Append(magicConverterHead.transform.DOLocalRotate(new Vector3(0, 60f, 0), 1f, RotateMode.FastBeyond360))
+                            .SetEase(Ease.InSine);
+                        rotateSeq.Append(magicConverterHead.transform.DOLocalRotate(new Vector3(0, -60f, 0), 1.5f, RotateMode.FastBeyond360))
+                            .SetEase(Ease.OutSine);
+                        rotateSeq.Append(magicConverterHead.transform.DOLocalRotate(Vector3.zero, 1.5f, RotateMode.FastBeyond360))
+                            .SetEase(Ease.OutSine);
+                        
+                        moveSeq.Append(magicConverterHead.transform.DOLocalMove(new Vector3(0, 1.1f, 0), 8f))
+                            .SetEase(Ease.InSine);
+                        moveSeq.Append(magicConverterHead.transform.DOLocalMove(new Vector3(0, 1f, 0), 6f))
+                            .SetEase(Ease.OutSine);
+                        
+                        rotateSeq.SetLoops(-1, LoopType.Restart);
+                        moveSeq.SetLoops(-1, LoopType.Restart);
+
+                        rotateSeq.SetId("headRotateSeq");
+                        moveSeq.SetId("headMoveSeq");
+
                     });
-                
             }
             else
             {
@@ -78,20 +148,24 @@ namespace Environment
             {
                 if (_isToggled == value)
                     return;
-                if (!MagicEngineController.Instance.IsEngineWorking && !value)
+                
+                _potions.Clear();                
+                
+                if (!IsToggled)
                 {
-                    _isToggled = false;
-                    AnimateMagicConverter();
-                }
-                if (BeginEnchantment())
-                {
-                    _isToggled = value;
-                    AnimateMagicConverter();
-                    TooltipController.Instance.TooltipMessage = $"Press {interactKey} to {(IsToggled ? "stop" : "start")} magic converter";
+                    if (BeginEnchantment())
+                    {
+                        _isToggled = value;
+                        AnimateMagicConverter();
+                        TooltipController.Instance.TooltipMessage =
+                            $"Press {interactKey} to {(IsToggled ? "stop" : "start")} magic converter";
+                    }
                 }
                 else
                 {
-                    _potions.Clear();
+                    _isToggled = value;
+                    AnimateMagicConverter();
+                    CurrentEnchantment = null;
                 }
             }
         }
@@ -103,11 +177,21 @@ namespace Environment
         bool BeginEnchantment()
         {
             if (!MagicEngineController.Instance.IsEngineWorking)
+            {
+                TooltipController.Instance.ShowMechanicsDescription($"Engine not working :(");
                 return false;
-            if (!placeHolder.IsSwordPlaced) 
+            }
+            if (!placeHolder.IsSwordPlaced)
+            {
+                TooltipController.Instance.ShowMechanicsDescription($"Sword case is empty");
                 return false;
+            }
+                
             if (placeHolder.IsPlaceHolderOpened)
+            {
+                TooltipController.Instance.ShowMechanicsDescription($"Sword case is opened");
                 return false;
+            }
 
             int potionCount = 0;
             
@@ -128,42 +212,72 @@ namespace Environment
             {
                 potionCount += potionType.Value;
             }
-            
+
             if (potionCount < 3)
+            {
+                TooltipController.Instance.ShowMechanicsDescription($"Not enough potions");
                 return false;
+            }
+                
             
             Enchantment enchantment = FindCorresponding();
             
             if (enchantment is not null)
             {
+                CurrentEnchantment = enchantment;
                 
+                CrystalColor = CurrentEnchantment.enchantmentColor;
+            }
+            else
+            {
+                CurrentEnchantment = null;
+                TooltipController.Instance.ShowMechanicsDescription($"No matching enchantment found");
+                return false;
             }
             
-            _potions.Clear();
             return true;
         }
 
         Enchantment FindCorresponding()
         {
+            var isMatch = false;
+            
             foreach (var enchantment in enchantmentData.Enchantments)
             {
+                
                 foreach (var ingredient in enchantment.Ingredients)
                 {
-                    var type = ingredient.PotionType;
+                    isMatch = true;
                     
-                    if (!_potions.ContainsKey(type))
-                        break;
+                    var type = ingredient.PotionType;
 
+                    if (!_potions.ContainsKey(type))
+                    {
+                        isMatch = false;
+                        break;
+                    }
+                    
                     var count = ingredient.Count;
 
                     if (_potions[type] != count)
+                    {
+                        isMatch = false;
                         break;
+                    }
                 }
 
-                return enchantment.Enchantment;
-            }    
+                if (isMatch)
+                {
+                    return enchantment.Enchantment;
+                }
+            }
             
             return null;
+        }
+
+        private void Awake()
+        {
+            magicCrystalMaterial.SetColor("_CrystalColor", crystalBaseColor);
         }
     }
 }

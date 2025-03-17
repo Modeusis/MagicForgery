@@ -18,6 +18,11 @@ namespace UI
         [SerializeField] private GameObject canvasProgressBar;
         [SerializeField] private Material manaFlowMaterial;
         
+        [Header("Enchanter components")]
+        [SerializeField] private MagicConverterScript magicConverter;
+        [SerializeField] private PlaceHolderScript swordCase;
+        
+        
         [Header("Sounds")]
         [SerializeField] private AudioClip enchantmentSound;
         
@@ -35,6 +40,8 @@ namespace UI
                 if (_swordToEnchant == value)
                     return;
                 _swordToEnchant = value;
+                
+                Debug.Log($"Enchanting {_swordToEnchant}");
             }
         }
 
@@ -46,6 +53,8 @@ namespace UI
                 if (_swordEnchantment == value)
                     return;
                 _swordEnchantment = value;
+                
+                Debug.Log($"Enchanted by {_swordEnchantment.enchantmentName}");
             }
         }
         
@@ -77,22 +86,23 @@ namespace UI
 
         public void EnchantSword(float accuracy)
         {
-            // if (!SwordEnchantment)
-            // {
-            //     TooltipController.Instance.ShowMechanicsDescription("No enchantment found");
-            //     return;
-            // }
-            //
-            // if (!SwordToEnchant)
-            // {
-            //     TooltipController.Instance.ShowMechanicsDescription("No sword found");
-            //     return;
-            // }
+            
+            if (!SwordEnchantment)
+            {
+                TooltipController.Instance.ShowMechanicsDescription("No enchantment found");
+                return;
+            }
+            
+            if (!SwordToEnchant)
+            {
+                TooltipController.Instance.ShowMechanicsDescription("No sword found");
+                return;
+            }
             
             StartCoroutine(SwordEnchantCoroutine(() =>
             {
-                // SwordToEnchant.SwordEnchantment = _swordEnchantment;
-                // SwordToEnchant.SetAccuracy(accuracy);
+                SwordToEnchant.SwordEnchantment = _swordEnchantment;
+                SwordToEnchant.SetAccuracy(accuracy);
             }));
         }
 
@@ -143,7 +153,7 @@ namespace UI
         {
             if (Input.GetKeyDown(KeyCode.B))
             {
-                EnchantSword(100f);
+                EnchantSword(0.8f);
             }
         }
     }

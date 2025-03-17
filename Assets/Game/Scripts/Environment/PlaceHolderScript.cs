@@ -12,6 +12,20 @@ namespace Environment
 
         public bool isPlaceHolderBlocked;
         
+        private Sword _placedSword;
+
+        public Sword PlacedSword
+        {
+            get => _placedSword;
+            set
+            {
+                if (_placedSword == value)
+                    return;
+                _placedSword = value;
+                MagicEnchanterController.Instance.SwordToEnchant = _placedSword;
+            }
+        }
+        
         private Animator _placeHolderAnimator;
         private GameObject _itemPrefab;
         private ItemData _item;
@@ -27,9 +41,16 @@ namespace Environment
             {
                 if (_isSwordPlaced == value)
                     return;
-                _isSwordPlaced = value;
-                TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(_isSwordPlaced ? "take" : "place")} sword";
-                SwordPlaceToggle();
+                if (SwordPlaceToggle())
+                {
+                    _isSwordPlaced = value;
+                    TooltipController.Instance.TooltipMessage = $"{interactKey.ToString()} to {(_isSwordPlaced ? "take" : "place")} sword";
+                }
+                else
+                {
+                    TooltipController.Instance.ShowMechanicsDescription("Select sword to place");
+                    _item = null;
+                }
             }
         }
         
@@ -121,17 +142,20 @@ namespace Environment
             }
         }
         
-        void SwordPlaceToggle()
+        bool SwordPlaceToggle()
         {
-            if (IsSwordPlaced)
+            if (!IsSwordPlaced)
             {
-                if (Player.Player.instance.selectedItem.itemName != "Sword")
-                    return;
                 _item = Player.Player.instance.selectedItem;
+                if (!_item.prefab.GetComponent<Sword>())
+                {
+                    return false;
+                }
                 Inventory.instance.RemoveItem();
                 _itemPrefab = Instantiate(_item.prefab, swordPlace.transform);
                 Destroy(_itemPrefab.GetComponent<InventoryItemPickUp>());
                 Destroy(_itemPrefab.GetComponent<BoxCollider>());
+                PlacedSword = _itemPrefab.GetComponent<Sword>();
                 _itemPrefab.transform.localPosition = new Vector3(-0.8f, 0f, 0);
                 _itemPrefab.transform.localRotation = new Quaternion(0.5f,0.5f,-0.5f,0.5f);
                 _itemPrefab.transform.localScale = new Vector3(1.5f, 2f, 1.5f);
@@ -143,7 +167,10 @@ namespace Environment
                 Destroy(_itemPrefab);
                 _itemPrefab = null;
                 _item = null;
+                PlacedSword = null;
             }
+            
+            return true;
         }
     }
 }

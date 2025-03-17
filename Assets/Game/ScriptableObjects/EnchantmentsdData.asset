@@ -14,7 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Enchantments>k__BackingField:
   - <Ingredients>k__BackingField:
-    - <PotionType>k__BackingField: 0
+    - <PotionType>k__BackingField: 1
       <Count>k__BackingField: 2
+    - <PotionType>k__BackingField: 3
+      <Count>k__BackingField: 1
+    <Enchantment>k__BackingField: {fileID: 11400000, guid: b1440c858d64cae4eacf931e078a28e7, type: 2}
+  - <Ingredients>k__BackingField:
     - <PotionType>k__BackingField: 2
       <Count>k__BackingField: 1
+    - <PotionType>k__BackingField: 4
+      <Count>k__BackingField: 1
+    - <PotionType>k__BackingField: 3
+      <Count>k__BackingField: 1
+    <Enchantment>k__BackingField: {fileID: 11400000, guid: 60919131a663d6b4caabf4a8e1b1d441, type: 2}
+  - <Ingredients>k__BackingField:
+    - <PotionType>k__BackingField: 1
+      <Count>k__BackingField: 1
+    - <PotionType>k__BackingField: 5
+      <Count>k__BackingField: 2
+    <Enchantment>k__BackingField: {fileID: 11400000, guid: 37a2baaf86ef78e47b5c8c80b60679fa, type: 2}
