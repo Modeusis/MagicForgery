@@ -16,6 +16,17 @@ namespace Environment
     {
         [field:SerializeField] public List<Ingredient> Ingredients { get; private set; }
         [field:SerializeField] public Enchantment Enchantment { get; private set; }
+
+        public string GetID()
+        {
+            var str = string.Empty;
+
+            foreach (var ingredient in Ingredients)
+            {
+                str += $"{ingredient.PotionType}{ingredient.Count}";
+            }
+            return str;
+        }
     }
 
     [Serializable]

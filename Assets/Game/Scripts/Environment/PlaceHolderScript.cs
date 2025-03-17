@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Environment
 {
+    [RequireComponent(typeof(Animator))]
     public class PlaceHolderScript : MonoBehaviour
     {
         [SerializeField] private KeyCode interactKey = KeyCode.E;
@@ -40,7 +41,11 @@ namespace Environment
                 if (_isPlaceHolderOpened == value)
                     return;
                 _isPlaceHolderOpened = value;
-                _placeHolderAnimator.SetBool("IsOpened", IsPlaceHolderOpened); 
+                if (_placeHolderAnimator)
+                {
+                    _placeHolderAnimator.SetBool("IsOpened", IsPlaceHolderOpened); 
+                }
+                
             }
         }
         

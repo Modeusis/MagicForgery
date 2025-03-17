@@ -24300,6 +24300,7 @@ GameObject:
   - component: {fileID: 1388919139845121367}
   - component: {fileID: 8049470472662457137}
   - component: {fileID: 8049470472662457139}
+  - component: {fileID: 8049470472662457140}
   m_Layer: 0
   m_Name: PlaceHolder
   m_TagString: PlaceHolder
@@ -26508,6 +26509,28 @@ MonoBehaviour:
   interactKey: 101
   swordPlace: {fileID: 1094038701183498015}
   isPlaceHolderBlocked: 0
+--- !u!95 &8049470472662457140
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4367060765173622991}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 534e75b30c7205745893464adbdf5c69, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!95 &8062800154026922358
 Animator:
   serializedVersion: 7

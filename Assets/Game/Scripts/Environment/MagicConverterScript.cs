@@ -16,7 +16,6 @@ namespace Environment
         [SerializeField] private EnchantmentData enchantmentData;
         [SerializeField] private PlaceHolderScript placeHolder;
         
-        //Вообще имба идея - делай не пожалеешь, устанавливай соответсвия между кол-вом зельев и их типом
         private Dictionary<MagicEnchanterController.PotionType, int> _potions = new Dictionary<MagicEnchanterController.PotionType, int>();
         
         [Header("Keycodes")]
@@ -133,13 +132,38 @@ namespace Environment
             if (potionCount < 3)
                 return false;
             
+            Enchantment enchantment = FindCorresponding();
+            
+            if (enchantment is not null)
+            {
+                
+            }
+            
             _potions.Clear();
             return true;
         }
 
         Enchantment FindCorresponding()
         {
-            return new Enchantment();
+            foreach (var enchantment in enchantmentData.Enchantments)
+            {
+                foreach (var ingredient in enchantment.Ingredients)
+                {
+                    var type = ingredient.PotionType;
+                    
+                    if (!_potions.ContainsKey(type))
+                        break;
+
+                    var count = ingredient.Count;
+
+                    if (_potions[type] != count)
+                        break;
+                }
+
+                return enchantment.Enchantment;
+            }    
+            
+            return null;
         }
     }
 }

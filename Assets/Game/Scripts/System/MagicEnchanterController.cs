@@ -91,10 +91,8 @@ namespace UI
             
             StartCoroutine(SwordEnchantCoroutine(() =>
             {
-                SwordToEnchant.SwordEnchantment = _swordEnchantment;
-                SwordToEnchant.SetAccuracy(accuracy);
-                
-                Debug.Log(SwordToEnchant.SwordEnchantment);
+                // SwordToEnchant.SwordEnchantment = _swordEnchantment;
+                // SwordToEnchant.SetAccuracy(accuracy);
             }));
         }
 
@@ -130,10 +128,13 @@ namespace UI
             while (timer < fadeDuration)
             {
                 var t = timer / fadeDuration;
-                _canvasGroup.alpha = Mathf.Lerp(0f, 1f, t);
+                _canvasGroup.alpha = Mathf.Lerp(1f, 0f, t);
                 timer += Time.deltaTime;
                 yield return null;
             }
+
+            _canvasGroup.alpha = 0f;
+            progressBar.fillAmount = 0f;
             
             callback?.Invoke();
         }
