@@ -11,6 +11,8 @@ namespace Environment
     {
         [SerializeField] private PlaceHolderScript placeHolder;
         [SerializeField] private CanvasGroup magicSphereCanvasGroup;
+        [SerializeField] private QuestionSpriteScript questionMark;
+        [SerializeField] private GameObject magicSpherePlace;
         
         private bool _isToggled;
         private bool _isFocused;
@@ -50,11 +52,10 @@ namespace Environment
                 if (_isFocused == value)
                     return;
                 _isFocused = value;
-                //Сверху спрайт с вопросиком или что-то вроде такого
                 TooltipController.Instance.TooltipMessage =
                     $"Press {Player.Player.instance.InteractKey} to toggle sphere";
                 TooltipController.Instance.IsTooltipShowed = value;
-                
+                magicSpherePlace.layer = value ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
             }
         }
 
@@ -70,11 +71,9 @@ namespace Environment
                     _isToggled = value;
                     AnimateMagicSphere();
                 }
-
-                if (_isToggled)
-                {
-                    
-                }
+                
+                magicSphereCanvasGroup.alpha = value ? 1f : 0f;
+                Player.Player.instance.IsOverlayShowed = value;
             }
         }
         public void Toggle()
@@ -86,19 +85,7 @@ namespace Environment
         {
             if (!MagicEngineController.Instance.IsEngineWorking)
             {
-                // TooltipController.Instance.ShowMechanicsDescription("No mana power from engine");
-                return false;
-            }
-                
-            if (!placeHolder.IsSwordPlaced)
-            {
-                TooltipController.Instance.ShowMechanicsDescription("No sword to analyze");
-                return false;
-            }
-
-            if (placeHolder.IsPlaceHolderOpened)
-            {
-                TooltipController.Instance.ShowMechanicsDescription("Close sword enchantment case");
+                TooltipController.Instance.ShowMechanicsDescription("No mana power from engine");
                 return false;
             }
                 
@@ -109,6 +96,25 @@ namespace Environment
         {
             magicSphereCanvasGroup.alpha = isOpen ? 1 : 0;
             
+        }
+
+        private void Update()
+        {
+            if (!IsToggled)
+            {
+                if (MagicEnchanterController.Instance.SwordEnchantment && MagicEnchanterController.Instance.SwordToEnchant)
+                {
+                    questionMark.IsVisible = true;
+                }
+                else
+                {
+                    questionMark.IsVisible = false;
+                }
+            }
+            else
+            {
+                questionMark.IsVisible = false;
+            }
         }
     }
 }

@@ -5067,6 +5067,7 @@ GameObject:
   - component: {fileID: 817978610}
   - component: {fileID: 817978609}
   - component: {fileID: 817978608}
+  - component: {fileID: 817978611}
   m_Layer: 5
   m_Name: ClosePanelButton
   m_TagString: Untagged
@@ -5175,6 +5176,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 817978606}
   m_CullTransparentMesh: 1
+--- !u!114 &817978611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817978606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f164b4b51b4e4aedbf89a6e8de1623ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.25
+  scaleTime: 0.3
+  buttonInfo: Close enchantment info
 --- !u!4 &820313340 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3448571446763969898, guid: a1656d45a20cfe040af4cd4a7806690a, type: 3}
@@ -7837,6 +7853,7 @@ GameObject:
   - component: {fileID: 1217564890}
   - component: {fileID: 1217564889}
   - component: {fileID: 1217564888}
+  - component: {fileID: 1217564891}
   m_Layer: 5
   m_Name: ApplyMagic
   m_TagString: Untagged
@@ -7945,6 +7962,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1217564886}
   m_CullTransparentMesh: 1
+--- !u!114 &1217564891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217564886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f164b4b51b4e4aedbf89a6e8de1623ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.25
+  scaleTime: 0.3
+  buttonInfo: Begin enchantment
 --- !u!1001 &1219577525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10080,7 +10112,7 @@ GameObject:
   - component: {fileID: 1442252827}
   - component: {fileID: 1442252830}
   - component: {fileID: 1442252829}
-  - component: {fileID: 1442252828}
+  - component: {fileID: 1442252831}
   m_Layer: 0
   m_Name: QuestionSprite
   m_TagString: Untagged
@@ -10103,28 +10135,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7971405947112712079}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1442252828
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1442252826}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0bf28251b26e8da45a5983834b2254a1, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1442252829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10183,7 +10193,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 8b70a964fe4985140998f8b64a0f2ba6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -10193,6 +10203,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1442252831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442252826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42fec880c9654ec3bb837cd81a722d35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1446157536
 GameObject:
   m_ObjectHideFlags: 0
@@ -11507,6 +11529,7 @@ GameObject:
   - component: {fileID: 1658846779}
   - component: {fileID: 1658846778}
   - component: {fileID: 1658846777}
+  - component: {fileID: 1658846780}
   m_Layer: 5
   m_Name: DismissMagic
   m_TagString: Untagged
@@ -11615,6 +11638,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1658846775}
   m_CullTransparentMesh: 1
+--- !u!114 &1658846780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658846775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f164b4b51b4e4aedbf89a6e8de1623ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.25
+  scaleTime: 0.3
+  buttonInfo: Dissmiss current enchantment
 --- !u!4 &1665758211 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c9ad720b93194564e91fc80a28a39a28, type: 3}
@@ -18344,7 +18382,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1887773821}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -25911,7 +25949,7 @@ GameObject:
   - component: {fileID: 3459350676062979088}
   - component: {fileID: 9212135091331708900}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: MagicSpherePlace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26541,7 +26579,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placeHolder: {fileID: 8049470472662457139}
-  magicSphereCanvasGroup: {fileID: 0}
+  magicSphereCanvasGroup: {fileID: 1887773825}
+  questionMark: {fileID: 1442252831}
+  magicSpherePlace: {fileID: 7010034511750069455}
   isMagicSphereBlocked: 0
 --- !u!23 &7988228992458319324
 MeshRenderer:

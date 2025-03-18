@@ -167,8 +167,7 @@ namespace UI
             if (IsTooltipShown)
             {
                 Vector2 mousePosition = Input.mousePosition;
-
-                // Переводим позицию курсора в координаты Canvas
+                
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(
                     canvas.transform as RectTransform,
                     mousePosition,
