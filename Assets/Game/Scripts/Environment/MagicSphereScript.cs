@@ -10,7 +10,7 @@ namespace Environment
     public class MagicSphereScript : MonoBehaviour, IToggle
     {
         [SerializeField] private PlaceHolderScript placeHolder;
-        [SerializeField] private CanvasGroup magicSphereCanvasGroup;
+        [SerializeField] private GameObject magicSphereCanvasGroup;
         [SerializeField] private QuestionSpriteScript questionMark;
         [SerializeField] private GameObject magicSpherePlace;
         
@@ -66,14 +66,21 @@ namespace Environment
             {
                 if (_isToggled == value)
                     return;
-                if (ValidateMagicSphereToggle())
+                if (ValidateMagicSphereToggle() && value)
                 {
-                    _isToggled = value;
+                    _isToggled = true;
                     AnimateMagicSphere();
+                    magicSphereCanvasGroup.SetActive(true);
+                    Player.Player.instance.IsOverlayShowed = true;
                 }
-                
-                magicSphereCanvasGroup.alpha = value ? 1f : 0f;
-                Player.Player.instance.IsOverlayShowed = value;
+                else
+                {
+                    _isToggled = false;
+                    AnimateMagicSphere();
+                    magicSphereCanvasGroup.SetActive(false);
+                    Player.Player.instance.IsOverlayShowed = false;
+                }
+               
             }
         }
         public void Toggle()
@@ -90,12 +97,6 @@ namespace Environment
             }
                 
             return true;
-        }
-
-        void ToggleMagicSphereWindow(bool isOpen)
-        {
-            magicSphereCanvasGroup.alpha = isOpen ? 1 : 0;
-            
         }
 
         private void Update()

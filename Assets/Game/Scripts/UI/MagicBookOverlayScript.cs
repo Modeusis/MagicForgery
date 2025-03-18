@@ -124,7 +124,6 @@ namespace UI
 
         private void OnEnable()
         {
-            gameObject.SetActive(true);
             _canvasGroup.blocksRaycasts = true;
             CurrentPage = 0;
         }

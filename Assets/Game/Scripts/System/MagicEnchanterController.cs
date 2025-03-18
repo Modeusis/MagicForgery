@@ -10,7 +10,10 @@ namespace UI
 {
     public class MagicEnchanterController : MonoBehaviour
     {
-        //Хочу умереть
+        //Удаление текущего зачарования, при выполнении зачарования либо при dismiss в окне
+        //Перенос скрипта зачарованного меча на меч старый при подъеме его
+        //Постановка спрайта меча не вручную а из объекта
+        //Мини игра для определения качества зачарования
         public static MagicEnchanterController Instance;
         
         [Header("Animation")]
@@ -25,8 +28,6 @@ namespace UI
         
         [Header("Sounds")]
         [SerializeField] private AudioClip enchantmentSound;
-        
-        
         
         private CanvasGroup _canvasGroup;
         private Sword _swordToEnchant;
