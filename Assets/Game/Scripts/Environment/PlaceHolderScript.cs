@@ -1,5 +1,6 @@
 ﻿using UI;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Environment
 {
@@ -10,7 +11,7 @@ namespace Environment
         
         [SerializeField] private GameObject swordPlace;
 
-        public bool isPlaceHolderBlocked;
+        public bool IsBlocked { get; set; }
         
         private Sword _placedSword;
 
@@ -92,7 +93,7 @@ namespace Environment
 
         void Update()
         {
-            if (Player.Player.instance.IsPlayerEnabled && !isPlaceHolderBlocked && !Player.Player.instance.IsOverlayShowed)
+            if (Player.Player.instance.IsPlayerEnabled && !IsBlocked && !Player.Player.instance.IsOverlayShowed)
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 

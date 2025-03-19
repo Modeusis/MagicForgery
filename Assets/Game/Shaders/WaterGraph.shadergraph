@@ -2338,7 +2338,7 @@
     "m_ObjectId": "698e69da366e402e97237fe9bb3f2a88",
     "m_Title": "WaterFoam",
     "m_Position": {
-        "x": -2194.0,
+        "x": -2193.999755859375,
         "y": 834.0
     }
 }
@@ -2401,8 +2401,8 @@
     "m_ObjectId": "6c4b7572aaeb4e669c9e2a9ad4d8cd72",
     "m_Title": "Water refraction",
     "m_Position": {
-        "x": -2086.000244140625,
-        "y": -884.0
+        "x": -2086.0,
+        "y": -883.9998779296875
     }
 }
 

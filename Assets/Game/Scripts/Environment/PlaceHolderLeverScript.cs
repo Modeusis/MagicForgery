@@ -51,6 +51,8 @@ namespace Environment
 
         public void Toggle()
         { 
+            if (placeHolder.IsBlocked)
+                return;
             IsToggled = !IsToggled;
         }
     }

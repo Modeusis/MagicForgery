@@ -11,8 +11,7 @@ namespace UI
     [RequireComponent(typeof(CanvasGroup))]
     public class MagicSphereOverlayScript : MonoBehaviour
     {
-        [SerializeField] private Button dismissEnchantmentButton;
-        [SerializeField] private Button startEnchantmentButton;
+        [Header("Panel labels")]
         [SerializeField] private GameObject swordSpriteBlock;
         [SerializeField] private TMP_Text swordName;
         [SerializeField] private TMP_Text swordInfo;
@@ -20,13 +19,19 @@ namespace UI
         [SerializeField] private TMP_Text enchantmentName;
         [SerializeField] private List<TMP_Text> swordStats;
         
+        [Header("Hover tooltip")]
         [SerializeField] private TMP_Text uiTooltip;
         [SerializeField] private GameObject tooltipBackground;
+        [SerializeField] private Button dismissEnchantmentButton;
+        [SerializeField] private Button startEnchantmentButton;
         
+        [Header("Key elements")]
         [SerializeField] private Canvas canvas;
-        
         [SerializeField] private MagicSphereScript rootSphereScript;
-
+        
+        [Header("Content")]
+        [SerializeField] private Sprite undefinedSprite;
+        
         private Sprite _swordImage;
         private CanvasGroup _canvasGroup;
         private Sword _placedSword;
@@ -41,6 +46,15 @@ namespace UI
                     return;
                 
                 _placedSword = value;
+
+                if (!_placedSword)
+                {
+                    _swordImage = undefinedSprite;
+                }
+                else
+                {
+                    
+                }
             }
         }
 
@@ -190,14 +204,14 @@ namespace UI
 
         public void ConfirmEnchantment()
         {
-            MagicEnchanterController.Instance.EnchantSword(0.8f);
             CloseMenu();
+            MagicEnchanterController.Instance.EnchantSword(0.8f);
         }
 
         public void DismissEnchantment()
         {
-            MagicEnchanterController.Instance.SwordEnchantment = null;
             CloseMenu();
+            MagicEnchanterController.Instance.SwordEnchantment = null;
         }
 
         private void Awake()

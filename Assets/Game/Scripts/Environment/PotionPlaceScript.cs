@@ -1,3 +1,4 @@
+using System.Collections;
 using Game.Scripts.Interface;
 using UI;
 using UnityEngine;
@@ -8,12 +9,13 @@ namespace Environment
     {
         private ItemData _potionData;
         private GameObject _potionMesh;
-        
         public MagicEnchanterController.PotionType PlacedPotionType { get; set; }
 
         [SerializeField] private float potionScale = 1f; 
         [SerializeField] private Vector3 potionPosition = Vector3.zero;
         [SerializeField] private Quaternion potionRotation = Quaternion.identity;
+        [SerializeField] private ParticleSystem destroyEffect;
+        public bool IsBlocked { get; set; }
         
         public ItemData PotionData
         {
@@ -21,9 +23,15 @@ namespace Environment
             set
             {
                 if (!value)
+                {
+                    PlacedPotionType = MagicEnchanterController.PotionType.Empty;
+                    _potionData = value;
                     return;
-                if (_potionData == value) 
+                }
+                if (_potionData == value)
+                {
                     return;
+                }
                 if (!value.isPotion)
                     return;
                 _potionData = value;
@@ -46,6 +54,7 @@ namespace Environment
                         break;
                     default:
                         PlacedPotionType = MagicEnchanterController.PotionType.Empty;
+                        Debug.Log("Test");
                         return;
                 }
             }
@@ -101,7 +110,6 @@ namespace Environment
                     }
                     else
                     {
-                        Debug.Log("First return");
                         return;
                     }
                 }
@@ -130,9 +138,34 @@ namespace Environment
                     $"Press {Player.Player.instance.InteractKey} to {(_isToggled ? "take" : "place")} potion";
             }
         }
+        
+        
         public void Toggle()
         {
+            if (IsBlocked) 
+                return;
             IsToggled = !IsToggled;
+            Debug.Log($"PlacedPotionType: {PlacedPotionType}");
+        }
+
+        public Coroutine DestroyPotion(float delay)
+        {
+            return StartCoroutine(DestroyCoroutine(delay));
+        }
+        
+        IEnumerator DestroyCoroutine(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            if (destroyEffect)
+            {
+                destroyEffect.Play();
+            }
+            
+            Destroy(_potionMesh);
+            _potionMesh = null;
+            PotionData = null;
+            _isToggled = false;
         }
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd4d8f6811064cb9ac2bfc08e5609088, type: 3}
   m_Name: Ice
   m_EditorClassIdentifier: 
-  enchantmentName: Ice enchantment
+  enchantmentName: Ice
   enchantmentDescription: Basic ice enchantment
   physicalBonusDamage: 5
   fireBonusDamage: 0

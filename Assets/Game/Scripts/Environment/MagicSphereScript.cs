@@ -18,10 +18,7 @@ namespace Environment
         private bool _isFocused;
         private Sword _sword;
         
-        public bool isMagicSphereBlocked;
-        
-        
-
+        public bool IsBlocked { get; set; }
         void AnimateMagicSphere()
         {
             transform.DOKill();
@@ -66,25 +63,29 @@ namespace Environment
             {
                 if (_isToggled == value)
                     return;
-                if (ValidateMagicSphereToggle() && value)
+                if (ValidateMagicSphereToggle())
                 {
-                    _isToggled = true;
-                    AnimateMagicSphere();
-                    magicSphereCanvasGroup.SetActive(true);
-                    Player.Player.instance.IsOverlayShowed = true;
+                    if (value)
+                    {
+                        _isToggled = true;
+                        AnimateMagicSphere();
+                        magicSphereCanvasGroup.SetActive(true);
+                        Player.Player.instance.IsOverlayShowed = true; 
+                    }
+                    else
+                    {
+                        _isToggled = false;
+                        AnimateMagicSphere();
+                        magicSphereCanvasGroup.SetActive(false);
+                        Player.Player.instance.IsOverlayShowed = false;
+                    }
                 }
-                else
-                {
-                    _isToggled = false;
-                    AnimateMagicSphere();
-                    magicSphereCanvasGroup.SetActive(false);
-                    Player.Player.instance.IsOverlayShowed = false;
-                }
-               
             }
         }
         public void Toggle()
         {
+            if (IsBlocked)
+                return;
             IsToggled = !IsToggled;
         }
 
@@ -103,7 +104,8 @@ namespace Environment
         {
             if (!IsToggled)
             {
-                if (MagicEnchanterController.Instance.SwordEnchantment && MagicEnchanterController.Instance.SwordToEnchant)
+                if (MagicEnchanterController.Instance.SwordEnchantment && MagicEnchanterController.Instance.SwordToEnchant 
+                                                                       && !MagicEnchanterController.Instance.IsEnchanting)
                 {
                     questionMark.IsVisible = true;
                 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Environment;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,8 @@ namespace UI
         //Удаление текущего зачарования, при выполнении зачарования либо при dismiss в окне
         //Перенос скрипта зачарованного меча на меч старый при подъеме его
         //Постановка спрайта меча не вручную а из объекта
-        //Мини игра для определения качества зачарования
+        //Мини игра для определения качества зачарования (рисовать иконку зачарования чем выше точность тем больше accuracy)
+        //Создать точку входа и G
         public static MagicEnchanterController Instance;
         
         [Header("Animation")]
@@ -23,11 +25,31 @@ namespace UI
         
         [Header("Enchanter components")]
         [SerializeField] private MagicConverterScript magicConverter;
+        [SerializeField] private MagicSphereScript magicSphere;
         [SerializeField] private PlaceHolderScript swordCase;
         
         
         [Header("Sounds")]
         [SerializeField] private AudioClip enchantmentSound;
+        
+        private bool _isEnchanting;
+        public bool IsEnchanting
+        {
+            get => _isEnchanting;
+            set
+            {
+                if (_isEnchanting == value)
+                    return;
+                _isEnchanting = value;
+                
+                if (magicConverter)
+                    magicConverter.IsBlocked = value;
+                if (magicSphere)
+                    magicSphere.IsBlocked = value;
+                if (swordCase)
+                    swordCase.IsBlocked = value;
+            }
+        }
         
         private CanvasGroup _canvasGroup;
         private Sword _swordToEnchant;
@@ -42,7 +64,6 @@ namespace UI
                     return;
                 _swordToEnchant = value;
                 
-                Debug.Log($"Enchanting {_swordToEnchant}");
             }
         }
 
@@ -55,7 +76,6 @@ namespace UI
                     return;
                 _swordEnchantment = value;
                 
-                Debug.Log($"Enchanted by {_swordEnchantment.enchantmentName}");
             }
         }
         
@@ -99,63 +119,84 @@ namespace UI
                 TooltipController.Instance.ShowMechanicsDescription("No sword found");
                 return;
             }
-            
-            StartCoroutine(SwordEnchantCoroutine(() =>
+
+            if (swordCase.IsPlaceHolderOpened)
             {
-                SwordToEnchant.SwordEnchantment = _swordEnchantment;
-                SwordToEnchant.SetAccuracy(accuracy);
-            }));
+                TooltipController.Instance.ShowMechanicsDescription("Close sword case");
+                return;
+            }
+
+            var accuracyCoroutine = StartCoroutine(AccuracyCoroutine());
+            
+            StartCoroutine(SwordEnchantCoroutine(accuracyCoroutine, accuracy));
         }
 
-        IEnumerator SwordEnchantCoroutine(Action callback, float duration = 4f)
+        IEnumerator SwordEnchantCoroutine(YieldInstruction accuracyCoroutine, float enchantmentAccuracy,float duration = 4f)
         {
-            float timer = 0f;
-            float fadeDuration = 0.5f;
+            IsEnchanting = true;
+            
+            yield return accuracyCoroutine;
             
             float flowSpeed = manaFlowMaterial.GetFloat("_FlowPower");
             
-            while (timer < fadeDuration)
-            {
-                var t = timer / fadeDuration;
-                _canvasGroup.alpha = Mathf.Lerp(0f, 1f, t);
-                timer += Time.deltaTime;
-                yield return null;
-            }
-            bool isDone = false;
+            var canvasVisibleCoroutine = StartCoroutine(CanvasGroupFade(0, 1));
+            yield return canvasVisibleCoroutine;
+            
+            SwordToEnchant.SwordEnchantment = _swordEnchantment;
+            SwordToEnchant.SetAccuracy(enchantmentAccuracy);
+            
+            yield return magicConverter.UnsetPotions();
             
             manaFlowMaterial.DOFloat(1f , "_FlowPower", 1f);
-
-            progressBar.DOFillAmount(1f, duration).OnComplete(() =>
+            var progressBarFilling = StartCoroutine(FillProgressBar(0, 1, () =>
             {
-                isDone = true;
-            });
+                manaFlowMaterial.DOFloat(flowSpeed, "_FlowPower", 1f);
+            }));
+            yield return progressBarFilling;
             
-            yield return new WaitUntil(() => isDone);
+            yield return StartCoroutine(CanvasGroupFade(1, 0));
+            progressBar.fillAmount = 0f;
             
-            manaFlowMaterial.DOFloat(flowSpeed, "_FlowPower", 1f);
+            IsEnchanting = false;
             
-            timer = 0f;
+            magicConverter.Toggle();
+        }
+
+        IEnumerator AccuracyCoroutine()
+        {
+            yield return new WaitForSeconds(2f);
+            
+            Debug.Log("Accuracy set");
+        }
+
+        IEnumerator CanvasGroupFade(float start, float end, float fadeDuration = 0.5f)
+        {
+            float timer = 0f;
             
             while (timer < fadeDuration)
             {
                 var t = timer / fadeDuration;
-                _canvasGroup.alpha = Mathf.Lerp(1f, 0f, t);
+                _canvasGroup.alpha = Mathf.Lerp(start, end, t);
                 timer += Time.deltaTime;
                 yield return null;
             }
-
-            _canvasGroup.alpha = 0f;
-            progressBar.fillAmount = 0f;
             
-            callback?.Invoke();
+            _canvasGroup.alpha = end;
         }
 
-        private void Update()
+        IEnumerator FillProgressBar(float start, float end, Action callback, float duration = 4f)
         {
-            if (Input.GetKeyDown(KeyCode.B))
+            float timer = 0f;
+            
+            while (timer < duration)
             {
-                EnchantSword(0.8f);
+                var t = timer / duration;
+                progressBar.fillAmount = Mathf.Lerp(start, end, t);
+                timer += Time.deltaTime;
+                yield return null;
             }
+            progressBar.fillAmount = end;
+            callback?.Invoke();
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Game.Scripts.Interface;
 using UI;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Environment
@@ -25,6 +27,10 @@ namespace Environment
         
         [Header("Effects")]
         [SerializeField] private Color crystalBaseColor;
+        
+        private bool _isToggled;
+        private bool _isFocused;
+        public bool IsBlocked { get; set; }
         
         private Enchantment _currentEnchantment;
 
@@ -65,9 +71,10 @@ namespace Environment
                 }
             }
         }
-        
-        private bool _isToggled;
-        private bool _isFocused;
+        private void Awake()
+        {
+            magicCrystalMaterial.SetColor("_CrystalColor", crystalBaseColor);
+        }
         
         void AnimateMagicConverter()
         {
@@ -120,8 +127,6 @@ namespace Environment
                 
                 magicCrystal.transform.DOLocalRotate(new Vector3(90f, -360f, 0), 3f, RotateMode.FastBeyond360);
                 magicCrystal.transform.DOLocalMove(new Vector3(0, 0.5f, 0), 3f);
-                
-
             }
         }
 
@@ -148,29 +153,46 @@ namespace Environment
             {
                 if (_isToggled == value)
                     return;
-                
-                _potions.Clear();                
-                
-                if (!IsToggled)
-                {
-                    if (BeginEnchantment())
-                    {
-                        _isToggled = value;
-                        AnimateMagicConverter();
-                        TooltipController.Instance.TooltipMessage =
-                            $"Press {interactKey} to {(IsToggled ? "stop" : "start")} magic converter";
-                    }
-                }
-                else
-                {
-                    _isToggled = value;
-                    AnimateMagicConverter();
-                    CurrentEnchantment = null;
-                }
+
+                ToggleMagicConverter();
             }
         }
+
+        private void ToggleMagicConverter()
+        {
+            _potions.Clear();
+
+            if (!IsToggled)
+            {
+                if (BeginEnchantment())
+                {
+                    _isToggled = true;
+                    AnimateMagicConverter();
+                    foreach (var potionPlace in potionPlaces)
+                    {
+                        potionPlace.IsBlocked = true;
+                    }
+                        
+                    TooltipController.Instance.TooltipMessage =
+                        $"Press {interactKey} to {(IsToggled ? "stop" : "start")} magic converter";
+                }
+            }
+            else
+            {
+                _isToggled = false;
+                AnimateMagicConverter();
+                foreach (var potionPlace in potionPlaces)
+                {
+                    potionPlace.IsBlocked = false;
+                }
+                CurrentEnchantment = null;
+            }
+        }
+
         public void Toggle()
-        { 
+        {
+            if (IsBlocked)
+                return;
             IsToggled = !IsToggled;
         }
 
@@ -179,17 +201,6 @@ namespace Environment
             if (!MagicEngineController.Instance.IsEngineWorking)
             {
                 TooltipController.Instance.ShowMechanicsDescription($"Engine not working :(");
-                return false;
-            }
-            if (!placeHolder.IsSwordPlaced)
-            {
-                TooltipController.Instance.ShowMechanicsDescription($"Sword case is empty");
-                return false;
-            }
-                
-            if (placeHolder.IsPlaceHolderOpened)
-            {
-                TooltipController.Instance.ShowMechanicsDescription($"Sword case is opened");
                 return false;
             }
 
@@ -275,9 +286,17 @@ namespace Environment
             return null;
         }
 
-        private void Awake()
+        public Coroutine UnsetPotions(float destroyDelay = 1f)
         {
-            magicCrystalMaterial.SetColor("_CrystalColor", crystalBaseColor);
+            return StartCoroutine(UnsetPotionsCoroutine(destroyDelay));
+        }
+
+        IEnumerator UnsetPotionsCoroutine(float destroyDelay)
+        {
+            foreach (var potionPlace in potionPlaces)
+            {
+                yield return potionPlace.DestroyPotion(destroyDelay);
+            }
         }
     }
 }
