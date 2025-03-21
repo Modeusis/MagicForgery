@@ -16,6 +16,10 @@ namespace UI
         //Постановка спрайта меча не вручную а из объекта
         //Мини игра для определения качества зачарования (рисовать иконку зачарования чем выше точность тем больше accuracy)
         //Создать точку входа и G
+        //Отображения класса зачарования вместо числа (анимированное изображение)
+        
+        //DTO для зачарования (структура копирующая SO)
+        
         public static MagicEnchanterController Instance;
         
         [Header("Animation")]
@@ -134,12 +138,13 @@ namespace UI
         IEnumerator SwordEnchantCoroutine(YieldInstruction accuracyCoroutine, float enchantmentAccuracy,float duration = 4f)
         {
             IsEnchanting = true;
+            progressBar.fillAmount = 0f;
             
             yield return accuracyCoroutine;
             
             float flowSpeed = manaFlowMaterial.GetFloat("_FlowPower");
-            
             var canvasVisibleCoroutine = StartCoroutine(CanvasGroupFade(0, 1));
+            
             yield return canvasVisibleCoroutine;
             
             SwordToEnchant.SwordEnchantment = _swordEnchantment;
@@ -147,18 +152,15 @@ namespace UI
             
             yield return magicConverter.UnsetPotions();
             
-            manaFlowMaterial.DOFloat(1f , "_FlowPower", 1f);
-            var progressBarFilling = StartCoroutine(FillProgressBar(0, 1, () =>
-            {
-                manaFlowMaterial.DOFloat(flowSpeed, "_FlowPower", 1f);
-            }));
-            yield return progressBarFilling;
+            manaFlowMaterial.DOFloat(2f , "_FlowPower", 1f); 
+            progressBar.DOFillAmount(1, duration).SetEase(Ease.OutSine);
             
+            yield return new WaitForSeconds(duration);
             yield return StartCoroutine(CanvasGroupFade(1, 0));
+            
+            manaFlowMaterial.DOFloat(flowSpeed, "_FlowPower", 1f);
             progressBar.fillAmount = 0f;
-            
             IsEnchanting = false;
-            
             magicConverter.Toggle();
         }
 
@@ -182,21 +184,6 @@ namespace UI
             }
             
             _canvasGroup.alpha = end;
-        }
-
-        IEnumerator FillProgressBar(float start, float end, Action callback, float duration = 4f)
-        {
-            float timer = 0f;
-            
-            while (timer < duration)
-            {
-                var t = timer / duration;
-                progressBar.fillAmount = Mathf.Lerp(start, end, t);
-                timer += Time.deltaTime;
-                yield return null;
-            }
-            progressBar.fillAmount = end;
-            callback?.Invoke();
         }
     }
 }

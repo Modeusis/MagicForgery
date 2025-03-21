@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,15 +11,23 @@ namespace Environment
     public class EnchantmentDrawing : MonoBehaviour
     {
         //Optimization
+        [Header("Drawing")]
         [SerializeField] private SpriteRenderer drawingArea;
         [SerializeField] private BoxCollider drawingCollider;
         [SerializeField] private Color brushColor = Color.black;
         [SerializeField] private int textureSize = 256;
         [SerializeField] private int brushSize = 5;
         
+        [Header("Timer")]
+        [SerializeField] private int timerDuration = 5;
+        [SerializeField] private TMP_Text timerValue;
+        
         private Texture2D _generatedTexture;
         private RectTransform _rectTransform;
-
+        private int _raycastTimer = 0;
+        [SerializeField] private int raycastTimerOffset = 2;
+        
+        
         private bool _isDrawing;
 
         public bool IsDrawing
@@ -43,9 +54,38 @@ namespace Environment
             drawingArea.sprite = TextureToSprite(_generatedTexture);
             drawingCollider.size = drawingArea.bounds.size;
             
-            DrawCircle(128,128, brushSize, Color.black);
+            var coroutine = StartCoroutine(StartDrawingTimer(timerDuration, () =>
+            {
+                gameObject.SetActive(false);
+            }));
         }
 
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+            IsDrawing = false;
+        }
+        
+        private void Update()
+        {
+            
+            if (Input.GetMouseButtonDown(0))
+            {
+                _raycastTimer = 0;
+            }
+            
+            if (Input.GetMouseButton(0) && IsDrawing)
+            {
+                _raycastTimer++;
+                
+                if (_raycastTimer == raycastTimerOffset)
+                {
+                    _raycastTimer = 0;
+                    Draw();
+                }
+                
+            }
+        }
         void DrawCircle(float x, float y, int radius, Color color)
         {
             for (int i = -radius; i <= radius; i++)
@@ -72,7 +112,7 @@ namespace Environment
             Color[] clearPixels = new Color[_generatedTexture.width * _generatedTexture.height];
             for (int i = 0; i < clearPixels.Length; i++)
             {
-                clearPixels[i] = Color.white;
+                clearPixels[i] = new Color(255, 255, 255, 60);
             }
             _generatedTexture.SetPixels(clearPixels);
             _generatedTexture.Apply();
@@ -91,15 +131,10 @@ namespace Environment
             {
                 if (hit.collider.gameObject == drawingArea.gameObject)
                 {
-                    Vector2 point = hit.point;
                     Vector2 localPoint = drawingArea.transform.InverseTransformPoint(hit.point);
-                    
-                    Bounds bounds = drawingArea.GetComponent<BoxCollider>().bounds;
                     
                     int x = (int)(localPoint.x * 100 + _generatedTexture.width / 2);
                     int y = (int)(localPoint.y * 100 + _generatedTexture.width / 2);
-                    
-                    Debug.Log($"adjusted point: {x}, {y}");
                     
                     DrawCircle(x, y, brushSize, brushColor);
                     
@@ -107,13 +142,23 @@ namespace Environment
                 }
             }
         }
-
-        private void Update()
+        private IEnumerator StartDrawingTimer(int time, Action callback)
         {
-            if (Input.GetMouseButton(0) && IsDrawing)
+            var timer = time;
+
+            while (timer > 0)
             {
-                Draw();
+                timerValue.text = timer.ToString();
+                timerValue.transform.DOScale(2, .2f).OnComplete(() =>
+                {
+                    timerValue.transform.DOScale(1, .2f);
+                });
+                
+                timer--;
+                yield return new WaitForSeconds(1);
             }
+            
+            callback?.Invoke();
         }
     }
 }

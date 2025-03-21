@@ -133,6 +133,7 @@ namespace UI
         {
             CurrentEnchantment = MagicEnchanterController.Instance.SwordEnchantment ? MagicEnchanterController.Instance.SwordEnchantment : null;
             PlacedSword = MagicEnchanterController.Instance.SwordToEnchant ? MagicEnchanterController.Instance.SwordToEnchant : null;
+
             _canvasGroup.blocksRaycasts = true;
             
             if (!CurrentEnchantment || !PlacedSword)
@@ -144,8 +145,6 @@ namespace UI
             {
                 dismissEnchantmentButton.interactable = true;
                 startEnchantmentButton.interactable = true;
-
-                
             }
             
             if (PlacedSword)
@@ -166,15 +165,15 @@ namespace UI
                         swordStats[3].text = _placedSword.IceBonusDamageByAccuracy.ToString();
                         swordStats[4].text = _placedSword.FireBonusDamageByAccuracy.ToString();
                     }
-                    else
-                    {
-                        enchantmentName.color = Color.red;
-                        enchantmentName.text = "Unset";
+                }
+                else
+                {
+                    enchantmentName.color = Color.red;
+                    enchantmentName.text = "Unset";
                     
-                        foreach (var stat in swordStats)
-                        {
-                            stat.text = "0";
-                        }
+                    foreach (var stat in swordStats)
+                    {
+                        stat.text = "0";
                     }
                 }
             }
@@ -182,7 +181,16 @@ namespace UI
             {
                 swordName.text = "Empty";
                 swordInfo.text = "No sword to analyze";
+                
+                enchantmentName.color = Color.red;
+                enchantmentName.text = "No sword";
+                    
+                foreach (var stat in swordStats)
+                {
+                    stat.text = "-";
+                }
             }
+            
 
             if (CurrentEnchantment)
             {

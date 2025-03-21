@@ -8,6 +8,7 @@ namespace UI
 {
     public class InventoryItemPickUp : MonoBehaviour
     {
+        //Убрать SetActive заменить на дестрой
         [SerializeField] private ItemData itemData;
 
         private bool _inFocus;

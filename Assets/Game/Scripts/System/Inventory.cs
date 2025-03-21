@@ -7,6 +7,7 @@ namespace UI
 {
     public class Inventory : MonoBehaviour
     {
+        //Полностью переделать
         public static Inventory instance;
         [SerializeField] private List<ItemData> items;
         [SerializeField] private List<InventorySlot> slots;
