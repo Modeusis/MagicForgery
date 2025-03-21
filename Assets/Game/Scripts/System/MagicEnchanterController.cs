@@ -11,7 +11,7 @@ namespace UI
 {
     public class MagicEnchanterController : MonoBehaviour
     {
-        //Удаление текущего зачарования, при выполнении зачарования либо при dismiss в окне
+        //Удаление текущего зачарования, при выполнении зачарования либо при dismiss в окне (done)
         //Перенос скрипта зачарованного меча на меч старый при подъеме его
         //Постановка спрайта меча не вручную а из объекта
         //Мини игра для определения качества зачарования (рисовать иконку зачарования чем выше точность тем больше accuracy)
@@ -63,7 +63,7 @@ namespace UI
                 if (_swordToEnchant == value)
                     return;
                 _swordToEnchant = value;
-                
+                Debug.Log($"Sword {value} placed");
             }
         }
 

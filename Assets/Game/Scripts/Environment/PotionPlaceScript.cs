@@ -145,7 +145,6 @@ namespace Environment
             if (IsBlocked) 
                 return;
             IsToggled = !IsToggled;
-            Debug.Log($"PlacedPotionType: {PlacedPotionType}");
         }
 
         public Coroutine DestroyPotion(float delay)
