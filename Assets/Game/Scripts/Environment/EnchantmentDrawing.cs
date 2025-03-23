@@ -52,11 +52,15 @@ namespace Environment
             ClearCanvas();
 
             drawingArea.sprite = TextureToSprite(_generatedTexture);
-            drawingCollider.size = drawingArea.bounds.size;
+            drawingCollider.size = new Vector3((float)textureSize/100, (float)textureSize/100, 0);
             
             var coroutine = StartCoroutine(StartDrawingTimer(timerDuration, () =>
             {
-                gameObject.SetActive(false);
+                transform.DOScale(0, 0.5f)
+                    .OnComplete(() =>
+                    {
+                        gameObject.SetActive(false);
+                    });
             }));
         }
 

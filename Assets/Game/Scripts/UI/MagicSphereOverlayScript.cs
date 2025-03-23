@@ -22,7 +22,6 @@ namespace UI
         [Header("Hover tooltip")]
         [SerializeField] private TMP_Text uiTooltip;
         [SerializeField] private GameObject tooltipBackground;
-        [SerializeField] private Button dismissEnchantmentButton;
         [SerializeField] private Button startEnchantmentButton;
         
         [Header("Key elements")]
@@ -31,6 +30,9 @@ namespace UI
         
         [Header("Content")]
         [SerializeField] private Sprite undefinedSprite;
+        
+        [Header("Drawing")]
+        [SerializeField] private GameObject drawPlace;
         
         private Sprite _swordImage;
         private CanvasGroup _canvasGroup;
@@ -138,12 +140,10 @@ namespace UI
             
             if (!CurrentEnchantment || !PlacedSword)
             {
-                dismissEnchantmentButton.interactable = false;
                 startEnchantmentButton.interactable = false;
             }
             else
             {
-                dismissEnchantmentButton.interactable = true;
                 startEnchantmentButton.interactable = true;
             }
             
@@ -213,13 +213,8 @@ namespace UI
         public void ConfirmEnchantment()
         {
             CloseMenu();
-            MagicEnchanterController.Instance.EnchantSword(0.8f);
-        }
-
-        public void DismissEnchantment()
-        {
-            CloseMenu();
-            MagicEnchanterController.Instance.SwordEnchantment = null;
+            // MagicEnchanterController.Instance.EnchantSword(0.8f);
+            drawPlace.SetActive(true);
         }
 
         private void Awake()
