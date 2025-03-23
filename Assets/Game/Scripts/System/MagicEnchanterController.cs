@@ -19,7 +19,7 @@ namespace UI
         //Отображения класса зачарования вместо числа (анимированное изображение)
         
         //DTO для зачарования (структура копирующая SO)
-        
+        //Полностью переписать систему предметов? или создать temp SO который бы давался в руки
         public static MagicEnchanterController Instance;
         
         [Header("Animation")]
@@ -31,7 +31,7 @@ namespace UI
         [SerializeField] private MagicConverterScript magicConverter;
         [SerializeField] private MagicSphereScript magicSphere;
         [SerializeField] private PlaceHolderScript swordCase;
-        
+        [SerializeField] private EnchantmentDrawing magicEnchantCircle;
         
         [Header("Sounds")]
         [SerializeField] private AudioClip enchantmentSound;
@@ -109,7 +109,7 @@ namespace UI
             }
         }
 
-        public void EnchantSword(float accuracy)
+        public void EnchantSword()
         {
             
             if (!SwordEnchantment)
@@ -129,7 +129,15 @@ namespace UI
                 TooltipController.Instance.ShowMechanicsDescription("Close sword case");
                 return;
             }
-
+            
+            var accuracy = magicEnchantCircle.lastEnchantmentAccuracy;
+            
+            if (accuracy < 0)
+            {
+                TooltipController.Instance.ShowMechanicsDescription("Invalid accuracy");
+                return;
+            }
+            
             var accuracyCoroutine = StartCoroutine(AccuracyCoroutine());
             
             StartCoroutine(SwordEnchantCoroutine(accuracyCoroutine, accuracy));

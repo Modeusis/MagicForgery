@@ -198,7 +198,7 @@ namespace UI
             sequence.OnComplete(() => InfiniteCrystalRotation());
             
             sequence.SetId("StartEngineAnimation");
-            sequence.SetId("StartLightEngineAnimation");
+            lightSequence.SetId("StartLightEngineAnimation");
         }
         
         void TurnOffEngineAnimation()
@@ -230,9 +230,9 @@ namespace UI
             });
             
             sequence.SetId("TurnOffCrystalEngineAnimation");
-            sequence.SetId("TurnOffLoopEngineAnimation");
-            sequence.SetId("TurnOffMiniLoopEngineAnimation");
-            sequence.SetId("TurnOffLightEngineAnimation");
+            loopSequence.SetId("TurnOffLoopEngineAnimation");
+            miniLoopSequence.SetId("TurnOffMiniLoopEngineAnimation");
+            lightLoopSequence.SetId("TurnOffLightEngineAnimation");
         }
 
         void InfiniteCrystalRotation()

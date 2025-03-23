@@ -213,7 +213,6 @@ namespace UI
         public void ConfirmEnchantment()
         {
             CloseMenu();
-            // MagicEnchanterController.Instance.EnchantSword(0.8f);
             drawPlace.SetActive(true);
         }
 

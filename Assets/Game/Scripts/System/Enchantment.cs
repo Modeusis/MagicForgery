@@ -8,6 +8,7 @@ namespace UI
         [Header("Enchantment General")]
         public string enchantmentName;
         public string enchantmentDescription;
+        public Texture2D enchantmentMask;
         
         [Header("Enchantment Damage")]
         public float physicalBonusDamage;

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enchantmentName: Sharpness
   enchantmentDescription: Enchantment that makes your sword sharper than ever
+  enchantmentMask: {fileID: 2800000, guid: 3fba4879fa5f22545be26b92e9e9bdd1, type: 3}
   physicalBonusDamage: 200
   fireBonusDamage: 0
   iceBonusDamage: 0

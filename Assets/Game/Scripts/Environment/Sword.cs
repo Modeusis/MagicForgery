@@ -7,6 +7,7 @@ namespace Environment
     {
         [field:SerializeField] public string SwordName { get; private set; }
         [field:SerializeField] public string SwordDescription { get; private set; }
+        [field:SerializeField] public string SwordIcon { get; private set; }
         
         
         private Enchantment _swordEnchantment;

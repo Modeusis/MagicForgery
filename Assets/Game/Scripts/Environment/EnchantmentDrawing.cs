@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,23 +11,50 @@ namespace Environment
 {
     public class EnchantmentDrawing : MonoBehaviour
     {
-        //Optimization
         [Header("Drawing")]
         [SerializeField] private SpriteRenderer drawingArea;
+        [SerializeField] private SpriteRenderer drawingMaskSpriteRenderer;
+        [SerializeField] private Texture2D defaultTextureMask;
         [SerializeField] private BoxCollider drawingCollider;
         [SerializeField] private Color brushColor = Color.black;
         [SerializeField] private int textureSize = 256;
         [SerializeField] private int brushSize = 5;
+        [SerializeField] private int raycastTimerOffset = 2;
         
         [Header("Timer")]
         [SerializeField] private int timerDuration = 5;
         [SerializeField] private TMP_Text timerValue;
         
+        [Header("Size")]
+        [SerializeField] private float drawingMaxScale = 0.6f;
+        [SerializeField] private Vector3 drawingStartOffset = Vector3.zero;
+        [SerializeField] private Vector3 drawingEndOffset;
+        [SerializeField] private float translateDuration = 0.5f;
+        
+        
         private Texture2D _generatedTexture;
         private RectTransform _rectTransform;
-        private int _raycastTimer = 0;
-        [SerializeField] private int raycastTimerOffset = 2;
+        private Texture2D _drawingMask;
+        private Action _accuracySetAction;
+
+        public float lastEnchantmentAccuracy;
         
+        private Texture2D DrawingMask
+        {
+            get => _drawingMask;
+            set
+            {
+                if (_drawingMask == value)
+                    return;
+                _drawingMask = value;
+                if (_drawingMask)
+                {
+                    SetDrawingMask(_drawingMask);
+                }
+            }
+        }
+        
+        private int _raycastTimer = 0;
         
         private bool _isDrawing;
 
@@ -38,12 +66,28 @@ namespace Environment
                 if (_isDrawing == value)
                     return;
                 _isDrawing = value;
-                Debug.Log(value);
             }
         }
 
         private void OnEnable()
         {
+            _accuracySetAction += MagicEnchanterController.Instance.EnchantSword;
+            
+            var enchantment = MagicEnchanterController.Instance.SwordEnchantment;
+            
+            if (enchantment?.enchantmentMask)
+            {
+                DrawingMask = enchantment.enchantmentMask;
+            }
+            else
+            {
+                DrawingMask = defaultTextureMask;
+            }
+            
+            transform.localScale = Vector3.zero;
+            
+            StartCoroutine(ScaleDrawPlateOnStart(translateDuration));
+            
             IsDrawing = true;
             
             _generatedTexture = new Texture2D(textureSize, textureSize, TextureFormat.ARGB32, false);
@@ -56,7 +100,10 @@ namespace Environment
             
             var coroutine = StartCoroutine(StartDrawingTimer(timerDuration, () =>
             {
-                transform.DOScale(0, 0.5f)
+                lastEnchantmentAccuracy = CompareMask();
+                _accuracySetAction?.Invoke();
+                transform.DOLocalMove(drawingStartOffset, translateDuration);
+                transform.DOScale(0, translateDuration)
                     .OnComplete(() =>
                     {
                         gameObject.SetActive(false);
@@ -66,6 +113,8 @@ namespace Environment
 
         private void OnDisable()
         {
+            _accuracySetAction -= MagicEnchanterController.Instance.EnchantSword;
+            
             StopAllCoroutines();
             IsDrawing = false;
         }
@@ -116,7 +165,7 @@ namespace Environment
             Color[] clearPixels = new Color[_generatedTexture.width * _generatedTexture.height];
             for (int i = 0; i < clearPixels.Length; i++)
             {
-                clearPixels[i] = new Color(255, 255, 255, 60);
+                clearPixels[i] = Color.clear;
             }
             _generatedTexture.SetPixels(clearPixels);
             _generatedTexture.Apply();
@@ -163,6 +212,51 @@ namespace Environment
             }
             
             callback?.Invoke();
+        }
+
+        private IEnumerator ScaleDrawPlateOnStart(float duration)
+        {
+            transform.DOKill();
+            transform.DOLocalMove(drawingEndOffset, duration);
+            transform.DOScale(drawingMaxScale, duration);
+            yield return new WaitForSeconds(duration);
+        }
+
+        private float CompareMask()
+        {
+            if (!DrawingMask)
+                return 0f;
+
+            float paintedPixelsCount = 0;
+            float drawingMaxPixels = 0;
+            
+            Color[] paintedPixels = _generatedTexture.GetPixels();
+            Color[] maskPixels = DrawingMask.GetPixels();
+            
+            for (int i = 0; i < paintedPixels.Length; i++)
+            {
+                if (maskPixels[i] != brushColor)
+                    continue;
+                
+                drawingMaxPixels++;
+                
+                if (paintedPixels[i] == maskPixels[i])
+                {
+                    paintedPixelsCount++;
+                }
+            }
+            
+            return paintedPixelsCount / drawingMaxPixels;
+        }
+        
+        private void SetDrawingMask(Texture2D drawingMaskSprite)
+        {
+            if (!drawingMaskSpriteRenderer)
+                return;
+            
+            var spriteMask = TextureToSprite(drawingMaskSprite);
+            
+            drawingMaskSpriteRenderer.sprite = spriteMask;
         }
     }
 }

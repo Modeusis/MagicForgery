@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enchantmentName: Fire
   enchantmentDescription: Basic fire enchantment
+  enchantmentMask: {fileID: 2800000, guid: 9d334665a009331488be7fe58eb513bb, type: 3}
   physicalBonusDamage: 10
   fireBonusDamage: 100
   iceBonusDamage: 0
