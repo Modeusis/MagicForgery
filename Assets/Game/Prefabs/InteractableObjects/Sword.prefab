@@ -137,3 +137,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c6e6dcb2a6c47a1bb56229f38fb064d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <SwordName>k__BackingField: Gladiator sword
+  <SwordDescription>k__BackingField: Sword that saw a lot of fights and keep those
+    as history in its blade
+  <SwordIcon>k__BackingField: {fileID: 21300000, guid: e0ebae05c1c340549b253aef9109b111, type: 3}
+  <EnchantmentAccuracy>k__BackingField: 0
+  <PhysicalBonusDamageByAccuracy>k__BackingField: 0
+  <PoisonBonusDamageByAccuracy>k__BackingField: 0
+  <LightningBonusDamageByAccuracy>k__BackingField: 0
+  <IceBonusDamageByAccuracy>k__BackingField: 0
+  <FireBonusDamageByAccuracy>k__BackingField: 0

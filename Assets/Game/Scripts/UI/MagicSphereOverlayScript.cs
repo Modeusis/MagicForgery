@@ -34,7 +34,7 @@ namespace UI
         [Header("Drawing")]
         [SerializeField] private GameObject drawPlace;
         
-        private Sprite _swordImage;
+        private Image _swordImage;
         private CanvasGroup _canvasGroup;
         private Sword _placedSword;
         private Enchantment _currentEnchantment;
@@ -48,14 +48,10 @@ namespace UI
                     return;
                 
                 _placedSword = value;
-
-                if (!_placedSword)
+                
+                if (_placedSword && _swordImage)
                 {
-                    _swordImage = undefinedSprite;
-                }
-                else
-                {
-                    
+                    _swordImage.sprite = _placedSword.SwordIcon;
                 }
             }
         }
@@ -130,7 +126,13 @@ namespace UI
                 tooltipBackground.transform.localPosition = new Vector2(localPoint.x + 150f, localPoint.y + 70);
             }
         }
+        private void Awake()
+        {
+            _canvasGroup = GetComponent<CanvasGroup>();
+            swordSpriteBlock.TryGetComponent<Image>(out _swordImage);
+        }
 
+        
         private void OnEnable()
         {
             CurrentEnchantment = MagicEnchanterController.Instance.SwordEnchantment ? MagicEnchanterController.Instance.SwordEnchantment : null;
@@ -151,7 +153,7 @@ namespace UI
             {
                 swordName.text = PlacedSword.SwordName;
                 swordInfo.text = PlacedSword.SwordDescription;
-                
+
                 if (PlacedSword.IsEnchanted)
                 {
                     enchantmentName.color = Color.green;
@@ -181,6 +183,7 @@ namespace UI
             {
                 swordName.text = "Empty";
                 swordInfo.text = "No sword to analyze";
+                _swordImage.sprite = undefinedSprite;
                 
                 enchantmentName.color = Color.red;
                 enchantmentName.text = "No sword";
@@ -210,16 +213,14 @@ namespace UI
             IsTooltipShown = false;
         }
 
+        
+        
         public void ConfirmEnchantment()
         {
             CloseMenu();
             drawPlace.SetActive(true);
         }
 
-        private void Awake()
-        {
-            _canvasGroup = GetComponent<CanvasGroup>();
-        }
         
     }
 }

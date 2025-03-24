@@ -5660,8 +5660,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 00
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e61ee3ac077d57a438b5026387f474c4, type: 2}
-  m_sharedMaterial: {fileID: -7431849136410706909, guid: e61ee3ac077d57a438b5026387f474c4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e81e89dd6947d3242b258791c359a719, type: 2}
+  m_sharedMaterial: {fileID: -7431849136410706909, guid: e81e89dd6947d3242b258791c359a719, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -21165,7 +21165,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1887773822
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21273,7 +21273,7 @@ MonoBehaviour:
   startEnchantmentButton: {fileID: 1217564888}
   canvas: {fileID: 2046603728}
   rootSphereScript: {fileID: 7971405947112712080}
-  undefinedSprite: {fileID: 0}
+  undefinedSprite: {fileID: 21300000, guid: d8e39a3114c416c458a333dbab01f38c, type: 3}
   drawPlace: {fileID: 1665591620}
 --- !u!1 &1890105903
 GameObject:
@@ -21891,7 +21891,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1915817493}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.6}
+  m_LocalPosition: {x: 0, y: 0, z: -0.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21900,7 +21900,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -1.28, y: 1.28}
+  m_AnchoredPosition: {x: -0.95, y: 1.2}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1915817495

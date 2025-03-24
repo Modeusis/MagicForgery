@@ -20,6 +20,10 @@ namespace UI
         
         //DTO для зачарования (структура копирующая SO)
         //Полностью переписать систему предметов? или создать temp SO который бы давался в руки
+        
+        //Написать шейдер изменения цвета зачарования
+        //Дописать передачу цвета из зачарования в круг и кисть
+        
         public static MagicEnchanterController Instance;
         
         [Header("Animation")]
@@ -124,9 +128,22 @@ namespace UI
                 return;
             }
 
+            if (SwordToEnchant.IsEnchanted)
+            {
+                TooltipController.Instance.ShowMechanicsDescription("Sword is already enchanted");
+                return;
+            }
+            
             if (swordCase.IsPlaceHolderOpened)
             {
                 TooltipController.Instance.ShowMechanicsDescription("Close sword case");
+                return;
+            }
+
+            if (MagicEngineController.Instance.ManaAmount < SwordEnchantment.manaCost ||
+                MagicEngineController.Instance.WaterAmount > SwordEnchantment.waterCost)
+            {
+                TooltipController.Instance.ShowMechanicsDescription("Not enough fuel in engine");
                 return;
             }
             
@@ -138,17 +155,16 @@ namespace UI
                 return;
             }
             
-            var accuracyCoroutine = StartCoroutine(AccuracyCoroutine());
-            
-            StartCoroutine(SwordEnchantCoroutine(accuracyCoroutine, accuracy));
+            StartCoroutine(SwordEnchantCoroutine(accuracy));
         }
 
-        IEnumerator SwordEnchantCoroutine(YieldInstruction accuracyCoroutine, float enchantmentAccuracy,float duration = 4f)
+        IEnumerator SwordEnchantCoroutine(float enchantmentAccuracy,float duration = 4f)
         {
             IsEnchanting = true;
             progressBar.fillAmount = 0f;
             
-            yield return accuracyCoroutine;
+            MagicEngineController.Instance.SpendMana(SwordEnchantment.manaCost);
+            MagicEngineController.Instance.SpendWater(SwordEnchantment.waterCost);
             
             float flowSpeed = manaFlowMaterial.GetFloat("_FlowPower");
             var canvasVisibleCoroutine = StartCoroutine(CanvasGroupFade(0, 1));
@@ -170,13 +186,6 @@ namespace UI
             progressBar.fillAmount = 0f;
             IsEnchanting = false;
             magicConverter.Toggle();
-        }
-
-        IEnumerator AccuracyCoroutine()
-        {
-            yield return new WaitForSeconds(2f);
-            
-            Debug.Log("Accuracy set");
         }
 
         IEnumerator CanvasGroupFade(float start, float end, float fadeDuration = 0.5f)

@@ -50,10 +50,10 @@ namespace UI
         private int _waterAmount;
         private bool _isEngineWorking;
 
-        private int ManaAmount
+        public  int ManaAmount
         {
             get => _manaAmount;
-            set
+            private set
             {
                 if (value <= 0)
                 {
@@ -72,10 +72,10 @@ namespace UI
             }
         }
 
-        private int WaterAmount
+        public int WaterAmount
         {
             get => _waterAmount;
-            set
+            private set
             {
                 if (value <= 0)
                 {
