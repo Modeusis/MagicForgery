@@ -14222,9 +14222,9 @@ MonoBehaviour:
   drawingMaskSpriteRenderer: {fileID: 942270820}
   defaultTextureMask: {fileID: 2800000, guid: 9d334665a009331488be7fe58eb513bb, type: 3}
   drawingCollider: {fileID: 539087162}
-  brushColor: {r: 0, g: 0, b: 0, a: 1}
+  brushColor: {r: 0.3962264, g: 0.3962264, b: 1, a: 1}
   textureSize: 256
-  brushSize: 10
+  brushSize: 8
   raycastTimerOffset: 2
   timerDuration: 15
   timerValue: {fileID: 751858479}
@@ -21964,7 +21964,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!1001 &1935263647
 PrefabInstance:
@@ -28544,6 +28544,8 @@ MonoBehaviour:
   eightyPercentTexture: {fileID: 2800000, guid: 937a5aa88aea78642ac1c7ae04729d97, type: 3}
   oneHundredPercentTexture: {fileID: 2800000, guid: acbb044803092c04f86377f4f6b8c770, type: 3}
   engineVolume: {fileID: 230430607}
+  _manaAmount: 0
+  _waterAmount: 0
 --- !u!1 &5437402355565891838
 GameObject:
   m_ObjectHideFlags: 0

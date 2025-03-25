@@ -141,7 +141,7 @@ namespace UI
             }
 
             if (MagicEngineController.Instance.ManaAmount < SwordEnchantment.manaCost ||
-                MagicEngineController.Instance.WaterAmount > SwordEnchantment.waterCost)
+                MagicEngineController.Instance.WaterAmount < SwordEnchantment.waterCost)
             {
                 TooltipController.Instance.ShowMechanicsDescription("Not enough fuel in engine");
                 return;

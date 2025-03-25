@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using UI;
 using UnityEngine;
 
 namespace Environment
@@ -23,8 +24,18 @@ namespace Environment
         private Tween _symbolRotateTween;
         private Tween _normalRotateTween;
         
+        private Color _circleColor;
+        
         private void OnEnable()
         {
+            _circleColor = MagicEnchanterController.Instance.SwordEnchantment ?
+                MagicEnchanterController.Instance.SwordEnchantment.enchantmentColor
+                : Color.white;
+            
+            smallMagicCircle.gameObject.GetComponent<SpriteRenderer>().color = _circleColor;
+            normalMagicCircle.gameObject.GetComponent<SpriteRenderer>().color = _circleColor;
+            symbolsCircle.gameObject.GetComponent<SpriteRenderer>().color = _circleColor;
+            
             smallMagicCircle.localRotation = Quaternion.Euler(0,0,0);
             normalMagicCircle.localRotation = Quaternion.Euler(0,0,0);
             symbolsCircle.localRotation = Quaternion.Euler(0,0,0);

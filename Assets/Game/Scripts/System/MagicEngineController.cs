@@ -46,8 +46,8 @@ namespace UI
         [SerializeField] private Volume engineVolume;
         
         
-        private int _manaAmount;
-        private int _waterAmount;
+        [SerializeField] private int _manaAmount;
+        [SerializeField] private int _waterAmount;
         private bool _isEngineWorking;
 
         public  int ManaAmount
@@ -58,10 +58,11 @@ namespace UI
                 if (value <= 0)
                 {
                     IsEngineWorking = false;
+                    _manaAmount = 0;
                     UpdateManaControllerTexture(0);
                     return;
                 }
-                if (value > manaStorageCapacity)
+                if (value >= manaStorageCapacity)
                 {
                     _manaAmount = manaStorageCapacity;
                     UpdateManaControllerTexture(1);
@@ -80,6 +81,7 @@ namespace UI
                 if (value <= 0)
                 {
                     IsEngineWorking = false;
+                    _waterAmount = 0;
                     return;
                 }
                 if (value >= waterStorageCapacity)
@@ -150,7 +152,10 @@ namespace UI
             if (amount < 0)
                 return 0;
             if (ManaAmount + amount >= manaStorageCapacity)
-                return manaStorageCapacity - ManaAmount;
+            {
+                ManaAmount += amount;
+                return manaStorageCapacity - ManaAmount;   
+            }
             ManaAmount += amount;
             return amount;
         }
@@ -257,7 +262,7 @@ namespace UI
 
         bool ValidateEngineStartUp()
         {
-            if (ManaAmount > manaStorageCapacity/10 && WaterAmount > waterStorageCapacity/10)
+            if (ManaAmount >= manaStorageCapacity/10 && WaterAmount >= waterStorageCapacity/10)
             {
                 StartEngineAnimation();
                 return true;

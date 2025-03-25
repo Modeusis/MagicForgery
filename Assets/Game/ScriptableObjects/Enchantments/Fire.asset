@@ -21,6 +21,6 @@ MonoBehaviour:
   lightningBonusDamage: 10
   poisonBonusDamage: 0
   enchantedBladeMaterial: {fileID: 0}
-  enchantmentColor: {r: 0.8301887, g: 0.45083746, b: 0.13705944, a: 0}
+  enchantmentColor: {r: 0.8301887, g: 0.45083746, b: 0.13705944, a: 1}
   manaCost: 20
   waterCost: 10
