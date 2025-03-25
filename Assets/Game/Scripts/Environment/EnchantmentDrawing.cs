@@ -33,6 +33,7 @@ namespace Environment
         
         
         private Texture2D _generatedTexture;
+        private Enchantment _currentEnchantment;
         private RectTransform _rectTransform;
         private Texture2D _drawingMask;
         private Action _accuracySetAction;
@@ -49,7 +50,7 @@ namespace Environment
                 _drawingMask = value;
                 if (_drawingMask)
                 {
-                    SetDrawingMask(_drawingMask);
+                    SetDrawingMask(_drawingMask, _currentEnchantment ? _currentEnchantment.enchantmentColor : Color.black);
                 }
             }
         }
@@ -77,10 +78,12 @@ namespace Environment
             
             if (enchantment?.enchantmentMask)
             {
+                _currentEnchantment = enchantment;
                 DrawingMask = enchantment.enchantmentMask;
             }
             else
             {
+                _currentEnchantment = null;
                 DrawingMask = defaultTextureMask;
             }
             
@@ -101,6 +104,7 @@ namespace Environment
             var coroutine = StartCoroutine(StartDrawingTimer(timerDuration, () =>
             {
                 lastEnchantmentAccuracy = CompareMask();
+                Debug.Log(lastEnchantmentAccuracy);
                 _accuracySetAction?.Invoke();
                 transform.DOLocalMove(drawingStartOffset, translateDuration);
                 transform.DOScale(0, translateDuration)
@@ -235,7 +239,7 @@ namespace Environment
             
             for (int i = 0; i < paintedPixels.Length; i++)
             {
-                if (maskPixels[i] != brushColor)
+                if (maskPixels[i] == Color.clear)
                     continue;
                 
                 drawingMaxPixels++;
@@ -249,10 +253,28 @@ namespace Environment
             return paintedPixelsCount / drawingMaxPixels;
         }
         
-        private void SetDrawingMask(Texture2D drawingMaskSprite)
+        private void SetDrawingMask(Texture2D drawingMaskSprite, Color drawingColor)
         {
             if (!drawingMaskSpriteRenderer)
                 return;
+            
+            brushColor = drawingColor;
+            
+            if (brushColor != Color.black)
+            {
+                Color[] maskPixels = drawingMaskSprite.GetPixels();
+
+                for (int i = 0; i < maskPixels.Length; i++)
+                {
+                    if (maskPixels[i] == Color.clear)
+                        continue;
+                
+                    maskPixels[i] = drawingColor;
+                }
+            
+                drawingMaskSprite.SetPixels(maskPixels);
+                drawingMaskSprite.Apply();
+            }
             
             var spriteMask = TextureToSprite(drawingMaskSprite);
             
