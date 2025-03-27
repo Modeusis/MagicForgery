@@ -1,4 +1,5 @@
-﻿using UI;
+﻿using System;
+using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -7,10 +8,19 @@ namespace Environment
     [RequireComponent(typeof(Animator))]
     public class PlaceHolderScript : MonoBehaviour
     {
+        [Header("Sword placing")]
         [SerializeField] private KeyCode interactKey = KeyCode.E;
-        
         [SerializeField] private GameObject swordPlace;
 
+        [Header("Enchanted sword replacer")]
+        [SerializeField] private GameObject swordPackagePrefab;
+        [SerializeField] private Sprite swordPackageSprite;
+        [SerializeField] private Material packageMaterial;
+        
+        private ItemGenerator _itemGenerator = new ItemGenerator();
+        private Sword _tempEnchantedSword;
+        private string _swordPackageName = "Enchanted sword";
+        
         public bool IsBlocked { get; set; }
         
         private Sword _placedSword;
@@ -86,12 +96,12 @@ namespace Environment
             }
         }
         
-        void Awake()
+        private void Awake()
         {
             _placeHolderAnimator = GetComponent<Animator>();
         }
 
-        void Update()
+        private void Update()
         {
             if (Player.Player.instance.IsPlayerEnabled && !IsBlocked && !Player.Player.instance.IsOverlayShowed)
             {
@@ -108,7 +118,7 @@ namespace Environment
                             {
                                 if  (Player.Player.instance.selectedItem)
                                 {
-                                    if (Player.Player.instance.selectedItem.itemName == "Sword")
+                                    if (Player.Player.instance.selectedItem.prefab.GetComponent<Sword>())
                                     {
                                         IsSwordPlaced = true;
                                     }
@@ -143,7 +153,7 @@ namespace Environment
             }
         }
         
-        bool SwordPlaceToggle()
+        private bool SwordPlaceToggle()
         {
             if (!IsSwordPlaced)
             {
@@ -157,9 +167,18 @@ namespace Environment
                 Destroy(_itemPrefab.GetComponent<InventoryItemPickUp>());
                 Destroy(_itemPrefab.GetComponent<BoxCollider>());
                 PlacedSword = _itemPrefab.GetComponent<Sword>();
-                _itemPrefab.transform.localPosition = new Vector3(-0.8f, 0f, 0);
-                _itemPrefab.transform.localRotation = new Quaternion(0.5f,0.5f,-0.5f,0.5f);
-                _itemPrefab.transform.localScale = new Vector3(1.5f, 2f, 1.5f);
+                if (_item.itemName == _swordPackageName)
+                {
+                    _itemPrefab.transform.localPosition = new Vector3(-0.6f, 0.1f, 0);
+                    _itemPrefab.transform.localRotation = Quaternion.Euler(-90, 0f, -90);
+                    _itemPrefab.transform.localScale = new Vector3(0.7f, 0.77f, 1f);
+                }
+                else
+                {
+                    _itemPrefab.transform.localPosition = new Vector3(-0.8f, 0f, 0);
+                    _itemPrefab.transform.localRotation = new Quaternion(0.5f,0.5f,-0.5f,0.5f);
+                    _itemPrefab.transform.localScale = new Vector3(1.5f, 2f, 1.5f);
+                }
                 _itemPrefab.SetActive(true);
             }
             else
@@ -172,6 +191,29 @@ namespace Environment
             }
             
             return true;
+        }
+
+        public void OnSwordEnchanted(Sword enchantedSword)
+        {
+            Destroy(_itemPrefab);
+            _itemPrefab = null;
+            _item = null;
+            
+            var tempPrefab = swordPackagePrefab;
+            var component = tempPrefab.GetComponent<Sword>();
+            
+            component.CopyFrom(enchantedSword);
+            
+            _itemGenerator.SetItemData(0, _swordPackageName, swordPackageSprite, "Enchanted sword", tempPrefab, 0.4f, Quaternion.Euler(0f, 270f, 0f));
+            var itemInfo = _itemGenerator.GenerateItem();
+
+            _item = itemInfo;
+            _itemPrefab = Instantiate(_item.prefab, swordPlace.transform);
+            PlacedSword = _itemPrefab.GetComponent<Sword>();
+            _itemPrefab.transform.localPosition = new Vector3(-0.6f, 0.1f, 0);
+            _itemPrefab.transform.localRotation = Quaternion.Euler(-90, 0f, -90);
+            _itemPrefab.transform.localScale = new Vector3(0.7f, 0.77f, 1f);
+            _itemPrefab.SetActive(true);
         }
     }
 }

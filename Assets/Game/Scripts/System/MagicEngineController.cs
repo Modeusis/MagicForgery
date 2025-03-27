@@ -138,8 +138,8 @@ namespace UI
             if (!Instance)
             {
                 Instance = this;
-                ManaAmount = 20;
-                WaterAmount = 20;
+                ManaAmount = 80;
+                WaterAmount = 80;
             }
             else
             {

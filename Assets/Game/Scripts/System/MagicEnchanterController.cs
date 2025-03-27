@@ -180,8 +180,10 @@ namespace UI
             
             manaFlowMaterial.DOFloat(flowSpeed, "_FlowPower", 1f);
             progressBar.fillAmount = 0f;
+            swordCase.OnSwordEnchanted(SwordToEnchant);
             IsEnchanting = false;
             magicConverter.Toggle();
+            
         }
 
         IEnumerator CanvasGroupFade(float start, float end, float fadeDuration = 0.5f)

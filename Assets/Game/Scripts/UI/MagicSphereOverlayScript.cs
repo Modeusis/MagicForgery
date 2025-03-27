@@ -137,7 +137,7 @@ namespace UI
         {
             CurrentEnchantment = MagicEnchanterController.Instance.SwordEnchantment ? MagicEnchanterController.Instance.SwordEnchantment : null;
             PlacedSword = MagicEnchanterController.Instance.SwordToEnchant ? MagicEnchanterController.Instance.SwordToEnchant : null;
-
+            
             _canvasGroup.blocksRaycasts = true;
             
             if (!CurrentEnchantment || !PlacedSword)
