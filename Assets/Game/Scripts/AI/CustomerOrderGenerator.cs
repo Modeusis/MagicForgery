@@ -1,57 +1,69 @@
 ﻿using System;
+using System.Collections;
 using Environment;
 using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Game.Scripts.AI
 {
-    [RequireComponent(typeof(Canvas))]
+    [RequireComponent(typeof(CanvasGroup))]
     public class CustomerOrderGenerator : MonoBehaviour
     {
         [Header("Order UI")]
         [SerializeField] private TMP_Text enchantmentName;
         [SerializeField] private TMP_Text enchantmentRequiredAccuracy;
         [SerializeField] private Image enchantmentProgressBar;
-        
-        [Header("Customer")]
-        [SerializeField] private CustomerMovement customerMovement;
 
         [Header("Order generation")] 
         [SerializeField] private EnchantmentData availableEnchantments;
         [SerializeField] private Vector2 timeRange;
         [SerializeField] private Vector2 accuracyRange;
         
+        [Header("Sword spawn")]
+        [SerializeField] private GameObject swordPrefab;
+        [SerializeField] private Transform swordParent;
+        [SerializeField] private float swordScaleOnPlace;
+        [SerializeField] private Vector3 positionOnPlace;
+        [SerializeField] private Vector3 rotationOnPlace;
+        
+        private CanvasGroup _orderCanvasGroup;
         private Enchantment _orderEnchantment;
         private float _accuracyMinimum;
         private float _timerValue;
+        private Coroutine _timerCoroutine;
 
-        public float TimerValue
+        public bool isFinished;
+        
+        public void StartOrder()
         {
-            get => _timerValue;
-            set
+            if (GenerateOrder())
             {
-                if (_timerValue == value)
-                    return;
-                _timerValue = value;
+                _timerCoroutine = StartCoroutine(TimerCoroutine(_timerValue, ExpireOrder));
             }
         }
-        public event Action OnCustomerOrderFinished;
 
-        private void OnEnable()
+        private bool GenerateOrder()
         {
-            customerMovement.OnCustomerDestinationReached += StartOrder;
-        }
-        private void OnDisable()
-        {
-            customerMovement.OnCustomerDestinationReached -= StartOrder;
-        }
-        
-        private void StartOrder()
-        {
+            var enchantmentList = availableEnchantments.Enchantments;
+            int enchantmentCount = enchantmentList.Count;
             
+            if (enchantmentCount <= 0)
+            {
+                Debug.LogWarning("No Enchantment available");
+                return false;
+            }
+            
+            var enchantmentId = Random.Range(0, enchantmentCount);
+            
+            _orderEnchantment = enchantmentList[enchantmentId].Enchantment;
+            _accuracyMinimum = Random.Range(accuracyRange.x, accuracyRange.y);
+            _timerValue = Random.Range(timeRange.x, timeRange.y);
+
+            return true;
         }
 
         private bool ValidateOrder(Sword enchantedSword)
@@ -73,6 +85,54 @@ namespace Game.Scripts.AI
                 return false;
             }
             return true;
+        }
+
+        private void ResetOrderGUI()
+        {
+            
+            _orderEnchantment = null;
+            _accuracyMinimum = 0;
+            _timerValue = 0;
+        }
+
+        public void FinishOrder()
+        {
+            var selectedItem = Player.Player.instance.selectedItem;
+            if (!selectedItem)
+                return;
+            
+            selectedItem.prefab.TryGetComponent(out Sword selectedSword);
+            
+            if (ValidateOrder(selectedSword))
+            {
+                Inventory.instance.RemoveItem();
+                isFinished = true;
+                if (_timerCoroutine != null)
+                {
+                    StopCoroutine(_timerCoroutine);
+                }
+                ResetOrderGUI();
+            }
+        }
+        
+        private void ExpireOrder()
+        {
+            isFinished = true;
+            ResetOrderGUI();
+        }
+
+        private IEnumerator TimerCoroutine(float time, Action callback = null)
+        {
+            var timer = 0f;
+            while (timer < time)
+            {
+                var t = timer / time;
+                enchantmentProgressBar.fillAmount = 1 - t;
+                timer += Time.deltaTime;
+                yield return null;
+            }
+            
+            callback?.Invoke();
         }
     }
 }
