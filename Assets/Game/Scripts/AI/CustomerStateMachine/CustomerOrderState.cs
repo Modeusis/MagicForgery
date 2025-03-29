@@ -8,6 +8,7 @@ namespace Game.Scripts.AI.CustomerStateMachine
         {
             Debug.Log("Enter Customer Order State");
             customer.OrderGenerator.StartOrder();
+            customer.tag = "Customer";
         }
 
         public override void UpdateState(CustomerStateManager customer)
@@ -23,6 +24,7 @@ namespace Game.Scripts.AI.CustomerStateMachine
         public override void ExitState(CustomerStateManager customer)
         {
             customer.currentDestinationPoint = customer.customerFinalDestinationPoint;
+            customer.tag = "Untagged";
         }
     }
 }

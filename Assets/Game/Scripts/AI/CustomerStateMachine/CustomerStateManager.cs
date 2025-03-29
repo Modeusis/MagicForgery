@@ -43,8 +43,7 @@ namespace Game.Scripts.AI.CustomerStateMachine
         public void CustomerRaycaster(Action onRaycastHitCustomer)
         {
             Ray ray = Player.Player.instance.mainCamera.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, 4f) && hit.collider.CompareTag("Customer"))
+            if (Physics.Raycast(ray, out RaycastHit hit, 4f, LayerMask.GetMask("Customer")) && hit.collider.CompareTag("Customer"))
             {
                 if (Input.GetKeyDown(Player.Player.instance.InteractKey))
                 {

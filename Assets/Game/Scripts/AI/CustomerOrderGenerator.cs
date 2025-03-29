@@ -37,12 +37,25 @@ namespace Game.Scripts.AI
         private Coroutine _timerCoroutine;
 
         public bool isFinished;
+
+        private void Start()
+        {
+            _orderCanvasGroup = GetComponent<CanvasGroup>();
+        }
         
         public void StartOrder()
         {
             if (GenerateOrder())
             {
-                _timerCoroutine = StartCoroutine(TimerCoroutine(_timerValue, ExpireOrder));
+                enchantmentName.text = _orderEnchantment.name;
+                enchantmentRequiredAccuracy.text = _accuracyMinimum.ToString();
+                
+                StartCoroutine(SetCanvasAlpha(1f));
+                
+                if (GenerateSword())
+                {
+                    _timerCoroutine = StartCoroutine(TimerCoroutine(_timerValue, ExpireOrder));
+                }
             }
         }
 
@@ -60,7 +73,7 @@ namespace Game.Scripts.AI
             var enchantmentId = Random.Range(0, enchantmentCount);
             
             _orderEnchantment = enchantmentList[enchantmentId].Enchantment;
-            _accuracyMinimum = Random.Range(accuracyRange.x, accuracyRange.y);
+            _accuracyMinimum = Mathf.Round(Random.Range(accuracyRange.x, accuracyRange.y));
             _timerValue = Random.Range(timeRange.x, timeRange.y);
 
             return true;
@@ -79,7 +92,7 @@ namespace Game.Scripts.AI
                 return false;
             }
 
-            if (enchantedSword.EnchantmentAccuracy < _accuracyMinimum)
+            if (enchantedSword.EnchantmentAccuracy < _accuracyMinimum / 100)
             {
                 TooltipController.Instance.ShowMechanicsDescription("Bad enchantment");
                 return false;
@@ -89,10 +102,14 @@ namespace Game.Scripts.AI
 
         private void ResetOrderGUI()
         {
-            
             _orderEnchantment = null;
             _accuracyMinimum = 0;
             _timerValue = 0;
+            
+            enchantmentName.text = "";
+            enchantmentRequiredAccuracy.text = "";
+            
+            StartCoroutine(SetCanvasAlpha(1f, false));
         }
 
         public void FinishOrder()
@@ -121,6 +138,21 @@ namespace Game.Scripts.AI
             ResetOrderGUI();
         }
 
+        private bool GenerateSword()
+        {
+            if (!swordPrefab || !swordParent)
+            {
+                return false;
+            }
+            
+            var sword = Instantiate(swordPrefab, swordParent);
+            sword.transform.localScale *= swordScaleOnPlace;
+            sword.transform.localPosition = positionOnPlace;
+            sword.transform.localRotation = Quaternion.Euler(rotationOnPlace);
+
+            return true;
+        }
+        
         private IEnumerator TimerCoroutine(float time, Action callback = null)
         {
             var timer = 0f;
@@ -131,8 +163,22 @@ namespace Game.Scripts.AI
                 timer += Time.deltaTime;
                 yield return null;
             }
+
+            enchantmentProgressBar.fillAmount = 0f;
             
             callback?.Invoke();
+        }
+
+        private IEnumerator SetCanvasAlpha(float duration, bool visible = true)
+        {
+            var timer = 0f;
+            while (timer < duration)
+            {
+                var t = timer / duration;
+                _orderCanvasGroup.alpha = visible ? t : 1 - t;
+                timer += Time.deltaTime;
+                yield return null;
+            }
         }
     }
 }
