@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: bb6c3650b0548ed4782ffe077a210429, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 0dfb4e671f55d794daf7f8a3ed3afec5, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -2193,6 +2193,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1664832125}
     m_Modifications:
+    - target: {fileID: 5272799183148441099, guid: e5a0e7ce9c5793c478f7b80951ded5d0, type: 3}
+      propertyPath: 'm_Materials.Array.data[5]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7d380563de671194182f8f791c3bf47e, type: 2}
     - target: {fileID: 6106151202296819706, guid: e5a0e7ce9c5793c478f7b80951ded5d0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -41.42
@@ -3871,6 +3875,7 @@ MonoBehaviour:
   - {fileID: 627288738}
   - {fileID: 283910128}
   customerPrefab: {fileID: 523944764051775561, guid: 9c5b3d9a49424fc46be1b816a44dc1a8, type: 3}
+  customerHeadMaterial: {fileID: 2100000, guid: 0610a74112fa0a547a6a51f46645a472, type: 2}
   customerOrderDestinationPoint: {fileID: 1733184649}
   customerFinalDestinationPoint: {fileID: 23623504}
   <OrderGenerator>k__BackingField: {fileID: 753226840}
@@ -29004,6 +29009,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1664832125}
     m_Modifications:
+    - target: {fileID: 5272799183148441099, guid: e5a0e7ce9c5793c478f7b80951ded5d0, type: 3}
+      propertyPath: 'm_Materials.Array.data[5]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 6074827057e334a4fb0ae491be3352b9, type: 2}
     - target: {fileID: 6106151202296819706, guid: e5a0e7ce9c5793c478f7b80951ded5d0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.260002

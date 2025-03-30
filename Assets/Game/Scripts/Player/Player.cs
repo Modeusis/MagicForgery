@@ -163,9 +163,17 @@ namespace Player
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
                 var isRaycastHit = Physics.Raycast(ray, out RaycastHit hit, 3f);
-                
+
                 if (!isRaycastHit)
+                {
+                    if (_lastToggledObject != null)
+                    {
+                        _lastToggledObject.IsFocused = false;
+                        _lastToggledObject = null;
+                    }
                     return;
+                }
+                    
                 
                 if (hit.transform.TryGetComponent(out IToggle toggleObject))
                 {
