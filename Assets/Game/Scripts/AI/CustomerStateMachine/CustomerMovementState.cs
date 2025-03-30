@@ -6,7 +6,7 @@ namespace Game.Scripts.AI.CustomerStateMachine
     {
         public override void EnterState(CustomerStateManager customer)
         {
-            Debug.Log("Enter Customer Movement State");
+            customer.customerAnimator.SetFloat("Speed", 1f);
             customer.customerAgent.SetDestination(customer.currentDestinationPoint.position);
         }
 
@@ -17,6 +17,11 @@ namespace Game.Scripts.AI.CustomerStateMachine
                 if (customer.currentDestinationPoint == customer.customerOrderDestinationPoint)
                 {
                     customer.SwitchState(customer.customerOrderState);
+                    customer.transform.LookAt(customer.orderGenerator.transform);
+                }
+                else
+                {
+                    customer.DestroyCustomerAndOpenGenerator();
                 }
             }
         }

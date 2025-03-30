@@ -6,16 +6,16 @@ namespace Game.Scripts.AI.CustomerStateMachine
     {
         public override void EnterState(CustomerStateManager customer)
         {
-            Debug.Log("Enter Customer Order State");
-            customer.OrderGenerator.StartOrder();
+            customer.customerAnimator.SetFloat("Speed", 0f);
+            customer.orderGenerator.StartOrder();
             customer.tag = "Customer";
         }
 
         public override void UpdateState(CustomerStateManager customer)
         {
-            customer.CustomerRaycaster(customer.OrderGenerator.FinishOrder);
+            customer.CustomerRaycaster(customer.orderGenerator.FinishOrder);
             
-            if (customer.OrderGenerator.isFinished)
+            if (customer.orderGenerator.isFinished)
             {
                 customer.SwitchState(customer.customerMovementState);
             }
@@ -24,6 +24,7 @@ namespace Game.Scripts.AI.CustomerStateMachine
         public override void ExitState(CustomerStateManager customer)
         {
             customer.currentDestinationPoint = customer.customerFinalDestinationPoint;
+            customer.orderGenerator.isFinished = false;
             customer.tag = "Untagged";
         }
     }

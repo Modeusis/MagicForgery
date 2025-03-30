@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Environment;
+using Game.Scripts.AI.CustomerStateMachine;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -36,6 +37,7 @@ namespace Game.Scripts.AI
         private float _timerValue;
         private Coroutine _timerCoroutine;
 
+        public CustomerFaceChanger faceChanger;
         public bool isFinished;
 
         private void Start()
@@ -84,6 +86,7 @@ namespace Game.Scripts.AI
             if (!enchantedSword.IsEnchanted)
             {
                 TooltipController.Instance.ShowMechanicsDescription("Sword is not enchanted");
+                
                 return false;   
             }
             if (enchantedSword.SwordEnchantment != _orderEnchantment)
@@ -122,6 +125,7 @@ namespace Game.Scripts.AI
             
             if (ValidateOrder(selectedSword))
             {
+                faceChanger?.SetHappyFace();
                 Inventory.instance.RemoveItem();
                 isFinished = true;
                 if (_timerCoroutine != null)
@@ -129,6 +133,10 @@ namespace Game.Scripts.AI
                     StopCoroutine(_timerCoroutine);
                 }
                 ResetOrderGUI();
+            }
+            else
+            {
+                faceChanger?.SetAngryFace();
             }
         }
         

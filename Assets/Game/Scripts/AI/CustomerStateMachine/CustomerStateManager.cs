@@ -2,26 +2,31 @@ using System;
 using Game.Scripts.AI.CustomerStateMachine;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Game.Scripts.AI.CustomerStateMachine
 {
     [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(CustomerFaceChanger))]
     public class CustomerStateManager : MonoBehaviour
     {
-        [Header("Destination points")]
+        public Transform spawnPoint;
         public Transform customerOrderDestinationPoint;
         public Transform customerFinalDestinationPoint;
-        
-        [Header("Customer order")]
-        [field:SerializeField] public CustomerOrderGenerator OrderGenerator { get; private set; }
+        public CustomerOrderGenerator orderGenerator;
         
         CustomerBaseState _customerCurrentState;
         public CustomerMovementState customerMovementState = new();
         public CustomerOrderState customerOrderState = new();
         
         public NavMeshAgent customerAgent;
-        public Transform currentDestinationPoint;
+        public Animator customerAnimator;
         
+        public Transform currentDestinationPoint;
+
+        public UnityEvent onCustomerExit;
         public void SwitchState(CustomerBaseState state)
         {
             _customerCurrentState?.ExitState(this);
@@ -30,7 +35,9 @@ namespace Game.Scripts.AI.CustomerStateMachine
         }
         private void Start()
         {
+            transform.position = spawnPoint.position;
             customerAgent = GetComponent<NavMeshAgent>();
+            customerAnimator = GetComponent<Animator>();
             currentDestinationPoint = customerOrderDestinationPoint;
             SwitchState(customerMovementState);
         }
@@ -50,6 +57,12 @@ namespace Game.Scripts.AI.CustomerStateMachine
                     onRaycastHitCustomer?.Invoke();
                 }
             }
+        }
+
+        public void DestroyCustomerAndOpenGenerator()
+        {
+            onCustomerExit?.Invoke();
+            Destroy(gameObject);
         }
     }
 }
