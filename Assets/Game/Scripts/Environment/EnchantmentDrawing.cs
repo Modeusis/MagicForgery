@@ -160,14 +160,12 @@ namespace Environment
         
         public void Draw(RaycastHit hit)
         {
-            Debug.Log(hit);
             if (hit.collider == drawingCollider)
             {
                 Vector2 localPoint = drawingArea.transform.InverseTransformPoint(hit.point);
                 
                 int x = (int)(localPoint.x * 100 + _generatedTexture.width / 2);
                 int y = (int)(localPoint.y * 100 + _generatedTexture.width / 2);
-                Debug.Log($"{x}, {y}");
                 
                 DrawCircle(x, y, brushSize, brushColor);
                 

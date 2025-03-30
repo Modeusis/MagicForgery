@@ -9,6 +9,7 @@ namespace Game.Scripts.AI
         [Header("General Settings")]
         [SerializeField] private List<Transform> spawnPoints;
         [SerializeField] private GameObject customerPrefab;
+        [SerializeField] private Material customerHeadMaterial;
         
         [Header("Destination points")]
         [SerializeField] private Transform customerOrderDestinationPoint;
@@ -38,6 +39,8 @@ namespace Game.Scripts.AI
                 customer.orderGenerator.faceChanger = customerFace;
                 customer.orderGenerator.faceChanger.SetIdleFace();
             }
+
+            
             
             if (spawnPoints.Count > 0)
             {
@@ -49,6 +52,9 @@ namespace Game.Scripts.AI
             if (customerInstance.TryGetComponent(out CustomerStateManager instancedCustomer))
             {
                 instancedCustomer.onCustomerExit.AddListener(ActiveCustomerGenerator);
+                if (!customerHeadMaterial)
+                    return;
+                customerHeadMaterial.color = Random.ColorHSV();
             }
         }
 
