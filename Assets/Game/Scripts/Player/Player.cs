@@ -28,6 +28,8 @@ namespace Player
         [SerializeField] private KeyCode interactKey = KeyCode.E;
         [SerializeField] private KeyCode breakKey = KeyCode.Escape;
         
+        private int _raycastTimer;
+        
         public Camera mainCamera;
         private bool _isOverlayShowed;
         public KeyCode InteractKey => interactKey;
@@ -160,9 +162,13 @@ namespace Player
             {
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
-                if (Physics.Raycast(ray, out RaycastHit hit, 3f) && hit.transform.GetComponent<IToggle>() != null)
+                var isRaycastHit = Physics.Raycast(ray, out RaycastHit hit, 3f);
+                
+                if (!isRaycastHit)
+                    return;
+                
+                if (hit.transform.TryGetComponent(out IToggle toggleObject))
                 {
-                    IToggle toggleObject = hit.transform.GetComponent<IToggle>();
                     if (toggleObject != null)
                     {
                         toggleObject.IsFocused = true;
@@ -190,6 +196,35 @@ namespace Player
                     {
                         _lastToggledObject.IsFocused = false;
                         _lastToggledObject = null;
+                    }
+                }
+
+                if (hit.transform.TryGetComponent(out IPressable pressableObject))
+                {
+                    if (Input.GetKeyDown(interactKey))
+                    {
+                        staffAnimator.SetTrigger("OnInteract");
+                        pressableObject.Press();
+                    }
+                }
+
+                if (hit.transform.TryGetComponent(out IDrawable drawableObject))
+                {
+                    
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        _raycastTimer = 0;
+                    }
+                    
+                    if (Input.GetMouseButton(0) && drawableObject.IsDrawing)
+                    {
+                        _raycastTimer++;
+                        
+                        if (_raycastTimer == 2)
+                        {
+                            _raycastTimer = 0;
+                            drawableObject.Draw(hit);
+                        }
                     }
                 }
             }

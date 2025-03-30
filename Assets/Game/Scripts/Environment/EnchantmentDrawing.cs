@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using DG.Tweening;
+using Game.Scripts.Interface;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 
 namespace Environment
 {
-    public class EnchantmentDrawing : MonoBehaviour
+    public class EnchantmentDrawing : MonoBehaviour, IDrawable
     {
         [Header("Drawing")]
         [SerializeField] private SpriteRenderer drawingArea;
@@ -19,7 +20,6 @@ namespace Environment
         [SerializeField] private Color brushColor = Color.black;
         [SerializeField] private int textureSize = 256;
         [SerializeField] private int brushSize = 5;
-        [SerializeField] private int raycastTimerOffset = 2;
         
         [Header("Timer")]
         [SerializeField] private int timerDuration = 5;
@@ -54,8 +54,6 @@ namespace Environment
                 }
             }
         }
-        
-        private int _raycastTimer = 0;
         
         private bool _isDrawing;
 
@@ -123,26 +121,6 @@ namespace Environment
             IsDrawing = false;
         }
         
-        private void Update()
-        {
-            
-            if (Input.GetMouseButtonDown(0))
-            {
-                _raycastTimer = 0;
-            }
-            
-            if (Input.GetMouseButton(0) && IsDrawing)
-            {
-                _raycastTimer++;
-                
-                if (_raycastTimer == raycastTimerOffset)
-                {
-                    _raycastTimer = 0;
-                    Draw();
-                }
-                
-            }
-        }
         void DrawCircle(float x, float y, int radius, Color color)
         {
             for (int i = -radius; i <= radius; i++)
@@ -179,26 +157,24 @@ namespace Environment
         {
             return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
         }
-
-        private void Draw()
+        
+        public void Draw(RaycastHit hit)
         {
-            Ray ray = Player.Player.instance.mainCamera.ScreenPointToRay(Input.mousePosition);
-            
-            if (Physics.Raycast(ray, out RaycastHit hit, 4f))
+            Debug.Log(hit);
+            if (hit.collider == drawingCollider)
             {
-                if (hit.collider.gameObject == drawingArea.gameObject)
-                {
-                    Vector2 localPoint = drawingArea.transform.InverseTransformPoint(hit.point);
-                    
-                    int x = (int)(localPoint.x * 100 + _generatedTexture.width / 2);
-                    int y = (int)(localPoint.y * 100 + _generatedTexture.width / 2);
-                    
-                    DrawCircle(x, y, brushSize, brushColor);
-                    
-                    drawingArea.sprite = TextureToSprite(_generatedTexture);
-                }
+                Vector2 localPoint = drawingArea.transform.InverseTransformPoint(hit.point);
+                
+                int x = (int)(localPoint.x * 100 + _generatedTexture.width / 2);
+                int y = (int)(localPoint.y * 100 + _generatedTexture.width / 2);
+                Debug.Log($"{x}, {y}");
+                
+                DrawCircle(x, y, brushSize, brushColor);
+                
+                drawingArea.sprite = TextureToSprite(_generatedTexture);
             }
         }
+        
         private IEnumerator StartDrawingTimer(int time, Action callback)
         {
             var timer = time;

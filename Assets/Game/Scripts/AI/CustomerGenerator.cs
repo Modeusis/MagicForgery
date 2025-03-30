@@ -19,7 +19,7 @@ namespace Game.Scripts.AI
 
         private bool _isCustomerSpawned;
         
-        private void GenerateCustomer()
+        public void GenerateCustomer()
         {
             if (_isCustomerSpawned)
                 return;
