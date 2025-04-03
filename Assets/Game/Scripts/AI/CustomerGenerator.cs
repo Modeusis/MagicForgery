@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Game.Scripts.AI.CustomerStateMachine;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace Game.Scripts.AI
 {
@@ -18,14 +21,25 @@ namespace Game.Scripts.AI
         [Header("Customer order")]
         [field:SerializeField] public CustomerOrderGenerator OrderGenerator { get; private set; }
 
+        public event Action<bool> OnCustomerSpawnChanged;
+
         private bool _isCustomerSpawned;
+        private bool IsCustomerSpawned
+        {
+            get => _isCustomerSpawned;
+            set
+            {
+                _isCustomerSpawned = value;
+                OnCustomerSpawnChanged?.Invoke(!_isCustomerSpawned);
+            }
+        }
         
         public void GenerateCustomer()
         {
-            if (_isCustomerSpawned)
+            if (IsCustomerSpawned)
                 return;
             
-            _isCustomerSpawned = true;
+            IsCustomerSpawned = true;
             
             if (!customerPrefab.TryGetComponent(out CustomerStateManager customer))
                 return;
@@ -60,7 +74,7 @@ namespace Game.Scripts.AI
 
         private void ActiveCustomerGenerator()
         {
-            _isCustomerSpawned = false;
+            IsCustomerSpawned = false;
         }
     }
 }

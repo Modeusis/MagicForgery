@@ -28,14 +28,13 @@ namespace Player
         [SerializeField] private KeyCode interactKey = KeyCode.E;
         [SerializeField] private KeyCode breakKey = KeyCode.Escape;
         
-        private int _raycastTimer;
-        
         public Camera mainCamera;
         private bool _isOverlayShowed;
         public KeyCode InteractKey => interactKey;
         public KeyCode BreakKey => breakKey;
 
         private IToggle _lastToggledObject;
+        private IDrawable _drawableObject = null;
         
         private int _currentMana;
         
@@ -215,26 +214,23 @@ namespace Player
                         pressableObject.Press();
                     }
                 }
-
-                if (hit.transform.TryGetComponent(out IDrawable drawableObject))
+                
+                if (Input.GetMouseButtonDown(0))
                 {
-                    
-                    if (Input.GetMouseButtonDown(0))
+                    hit.transform.TryGetComponent(out _drawableObject);
+                }
+                if (Input.GetMouseButtonUp(0))
+                {
+                    _drawableObject = null;
+                }
+                if (_drawableObject != null)
+                {
+                    if (Input.GetMouseButton(0) && _drawableObject.IsDrawing)
                     {
-                        _raycastTimer = 0;
-                    }
-                    
-                    if (Input.GetMouseButton(0) && drawableObject.IsDrawing)
-                    {
-                        _raycastTimer++;
-                        
-                        if (_raycastTimer == 2)
-                        {
-                            _raycastTimer = 0;
-                            drawableObject.Draw(hit);
-                        }
+                        _drawableObject.Draw(hit);
                     }
                 }
+                
             }
         }
     }

@@ -31,6 +31,7 @@ namespace Environment
         [SerializeField] private Vector3 drawingEndOffset;
         [SerializeField] private float translateDuration = 0.5f;
         
+        private int _drawingCounter;
         
         private Texture2D _generatedTexture;
         private Enchantment _currentEnchantment;
@@ -65,6 +66,7 @@ namespace Environment
                 if (_isDrawing == value)
                     return;
                 _isDrawing = value;
+                _drawingCounter = 0;
             }
         }
 
@@ -160,16 +162,23 @@ namespace Environment
         
         public void Draw(RaycastHit hit)
         {
-            if (hit.collider == drawingCollider)
+            _drawingCounter++;
+            
+            if (_drawingCounter == 3)
             {
-                Vector2 localPoint = drawingArea.transform.InverseTransformPoint(hit.point);
+                _drawingCounter = 0;
                 
-                int x = (int)(localPoint.x * 100 + _generatedTexture.width / 2);
-                int y = (int)(localPoint.y * 100 + _generatedTexture.width / 2);
+                if (hit.collider == drawingCollider)
+                {
+                    Vector2 localPoint = drawingArea.transform.InverseTransformPoint(hit.point);
                 
-                DrawCircle(x, y, brushSize, brushColor);
+                    int x = (int)(localPoint.x * 100 + _generatedTexture.width / 2);
+                    int y = (int)(localPoint.y * 100 + _generatedTexture.width / 2);
                 
-                drawingArea.sprite = TextureToSprite(_generatedTexture);
+                    DrawCircle(x, y, brushSize, brushColor);
+                
+                    drawingArea.sprite = TextureToSprite(_generatedTexture);
+                }
             }
         }
         
