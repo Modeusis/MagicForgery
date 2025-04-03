@@ -104,7 +104,6 @@ namespace Environment
             var coroutine = StartCoroutine(StartDrawingTimer(timerDuration, () =>
             {
                 lastEnchantmentAccuracy = CompareMask();
-                Debug.Log(lastEnchantmentAccuracy);
                 _accuracySetAction?.Invoke();
                 transform.DOLocalMove(drawingStartOffset, translateDuration);
                 transform.DOScale(0, translateDuration)

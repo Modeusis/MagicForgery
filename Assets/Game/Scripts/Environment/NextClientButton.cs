@@ -2,6 +2,7 @@
 using DG.Tweening;
 using Game.Scripts.AI;
 using Game.Scripts.Interface;
+using UI;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -22,6 +23,8 @@ namespace Environment
         [SerializeField] private Color buttonInactiveColor;
         [SerializeField] private Color buttonGlowInactiveColor;
         
+        [Header("Sound")]
+        [SerializeField] private AudioClip buttonSound;
         private event Action OnPressed;        
         
         private Sequence _buttonTween;
@@ -45,6 +48,10 @@ namespace Environment
         {
             OnPressed?.Invoke();
             ButtonClickAnimation();
+            if (buttonSound != null)
+            {
+                SoundManager.instance.PlaySFXAtPoint(buttonSound, transform);
+            }
         }
 
         private void ButtonClickAnimation()

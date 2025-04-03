@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using UI;
+using UnityEngine;
 
 namespace Game.Scripts.AI.CustomerStateMachine
 {
     public class CustomerMovementState : CustomerBaseState
     {
+        private AudioSource _movementAudioSource;
+        
         public override void EnterState(CustomerStateManager customer)
         {
             customer.customerAnimator.SetFloat("Speed", 1f);

@@ -12,6 +12,8 @@ namespace Game.Scripts.AI.CustomerStateMachine
     [RequireComponent(typeof(CustomerFaceChanger))]
     public class CustomerStateManager : MonoBehaviour
     {
+        public AudioClip moveSound;
+        
         public Transform spawnPoint;
         public Transform customerOrderDestinationPoint;
         public Transform customerFinalDestinationPoint;

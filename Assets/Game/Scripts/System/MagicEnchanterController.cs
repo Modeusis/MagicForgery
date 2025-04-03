@@ -67,7 +67,6 @@ namespace UI
                 if (_swordToEnchant == value)
                     return;
                 _swordToEnchant = value;
-                Debug.Log($"Sword {value} placed");
             }
         }
 

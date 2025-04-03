@@ -43,7 +43,7 @@ namespace Environment
                 _isToggled = value;
                 _door.SetBool("IsDoorOpened", _isToggled);
                 TooltipController.Instance.TooltipMessage = $"{Player.Player.instance.InteractKey.ToString()} to {(_isToggled ? "close" : "open")}";
-                SoundManager.instance.PlaySfx(_isToggled ? doorOpenSound : doorCloseSound);
+                SoundManager.instance.PlaySFXAtPoint(_isToggled ? doorOpenSound : doorCloseSound, transform);
             }
         }
         public void Toggle()

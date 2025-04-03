@@ -45,6 +45,13 @@ namespace Player
             get => _currentMana;
             set
             {
+                if (value > manaCapacity)
+                {
+                    _currentMana = manaCapacity;
+                    manaBar.DOFillAmount((float)_currentMana/manaCapacity, 0.3f);
+                    return;
+                }
+                
                 _currentMana = value;
                 manaBar.DOFillAmount((float)_currentMana/manaCapacity, 0.3f);
             }

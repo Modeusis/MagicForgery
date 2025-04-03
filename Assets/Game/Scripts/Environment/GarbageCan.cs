@@ -46,7 +46,7 @@ namespace Environment
         void MoveToTrash()
         {
             Inventory.instance.RemoveItem();
-            SoundManager.instance.PlaySfx(toTrashSound);
+            SoundManager.instance.PlaySfxDirectly(toTrashSound);
         }
     }
 }

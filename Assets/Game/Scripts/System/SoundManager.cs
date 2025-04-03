@@ -10,14 +10,19 @@ namespace UI
     public class SoundManager : MonoBehaviour
     {
         public static SoundManager instance;
+        
+        [Header("Sound Settings")]
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private AudioSource musicAudioSource;
         [SerializeField] private AudioMixer mainMixer;
         [SerializeField] private AudioClip starterBgMusic;
         [SerializeField] private List<AudioClip> stepsSfx;
         [SerializeField] private float fadeDuration = .5f;
+        
+        [Header("Sound player")]
+        [SerializeField] private AudioSource soundPlayerPrefab;
+        
         public AudioMixerGroup musicGroup;
-
         public AudioClip currentStepSfx;
         
         public enum StepSfx
@@ -63,6 +68,10 @@ namespace UI
         {
             if (musicAudioSource.clip == clip)
                 return;
+            if (clip == null)
+            {
+                StartCoroutine(CrossFadeMusic(clip));
+            }
 
             StartCoroutine(CrossFadeMusic(clip));
         }
@@ -89,9 +98,42 @@ namespace UI
             musicAudioSource.volume = startVolume;
         }
 
-        public void PlaySfx(AudioClip clip)
+        public void PlaySfxDirectly(AudioClip clip)
         {
             audioSource.PlayOneShot(clip);
+        }
+
+        public AudioSource PlaySFXAtPoint(AudioClip clip, Transform soundPlayerTransform, bool isLooped = false,float volume = 1f)
+        {
+            var audioPlayer = Instantiate(soundPlayerPrefab, soundPlayerTransform);
+            audioPlayer.transform.localPosition = Vector3.zero;
+            
+            var clipLength = clip.length;
+
+            if (!isLooped)
+            {
+                audioPlayer.PlayOneShot(clip, volume);
+            
+                Destroy(audioPlayer.gameObject, clipLength);
+            }
+            else
+            {
+                audioPlayer.clip = clip;
+                audioPlayer.loop = true;
+                
+                audioPlayer.Play();
+
+                StartCoroutine(PlayLoopSfx(audioPlayer));
+            }
+            
+            return audioPlayer;
+        }
+
+        private IEnumerator PlayLoopSfx(AudioSource source)
+        {
+            yield return new WaitUntil(() => !source.isPlaying);
+            
+            Destroy(source.gameObject);
         }
     }
 }
