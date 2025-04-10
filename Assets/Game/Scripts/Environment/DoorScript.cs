@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using Game.Scripts.Interface;
+using Sounds;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -9,10 +10,8 @@ namespace Environment
 {
     public class DoorScript : MonoBehaviour, IToggle
     {
-        [Header("Sounds")]
-        [SerializeField] private AudioClip doorOpenSound;
-        [SerializeField] private AudioClip doorCloseSound;
-    
+        [SerializeField] private float ToggleVolume = 0.5f;
+        
         private Animator _animator;
         private bool _isTriggered;
         private Animator _door;
@@ -43,7 +42,7 @@ namespace Environment
                 _isToggled = value;
                 _door.SetBool("IsDoorOpened", _isToggled);
                 TooltipController.Instance.TooltipMessage = $"{Player.Player.instance.InteractKey.ToString()} to {(_isToggled ? "close" : "open")}";
-                SoundManager.instance.PlaySFXAtPoint(_isToggled ? doorOpenSound : doorCloseSound, transform);
+                SoundService.Instance.Play3DSfx(_isToggled ? SoundType.OpenDoor : SoundType.CloseDoor, transform, 6f, ToggleVolume);
             }
         }
         public void Toggle()

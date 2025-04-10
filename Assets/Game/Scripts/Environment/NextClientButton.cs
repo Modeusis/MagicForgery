@@ -2,6 +2,7 @@
 using DG.Tweening;
 using Game.Scripts.AI;
 using Game.Scripts.Interface;
+using Sounds;
 using UI;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,6 +12,8 @@ namespace Environment
     [RequireComponent(typeof(BoxCollider))]
     public class NextClientButton : MonoBehaviour, IPressable
     {
+        [SerializeField] private float ToggleVolume = 2f;
+        
         [SerializeField] private Transform buttonTransform;
         [SerializeField] private Material buttonMaterial;
         [SerializeField] private CustomerGenerator customerSpawner;
@@ -23,8 +26,6 @@ namespace Environment
         [SerializeField] private Color buttonInactiveColor;
         [SerializeField] private Color buttonGlowInactiveColor;
         
-        [Header("Sound")]
-        [SerializeField] private AudioClip buttonSound;
         private event Action OnPressed;        
         
         private Sequence _buttonTween;
@@ -48,10 +49,7 @@ namespace Environment
         {
             OnPressed?.Invoke();
             ButtonClickAnimation();
-            if (buttonSound != null)
-            {
-                SoundManager.instance.PlaySFXAtPoint(buttonSound, transform);
-            }
+            SoundService.Instance.Play3DSfx(SoundType.ActionButtonClick, transform, 3f, ToggleVolume);
         }
 
         private void ButtonClickAnimation()

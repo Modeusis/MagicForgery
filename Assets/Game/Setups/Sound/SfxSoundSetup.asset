@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43c950ae83a8443f81a2d6917c5ad823, type: 3}
+  m_Name: SfxSoundSetup
+  m_EditorClassIdentifier: 
+  <SoundDataList>k__BackingField:
+  - <Type>k__BackingField: 1
+    <Sounds>k__BackingField:
+    - {fileID: 8300000, guid: fbdf82b92809e8444ac91497a905eb43, type: 3}
+  - <Type>k__BackingField: 2
+    <Sounds>k__BackingField:
+    - {fileID: 8300000, guid: 4a39c71e974a68a4cb3392681ad59bc3, type: 3}
+  - <Type>k__BackingField: 4
+    <Sounds>k__BackingField:
+    - {fileID: 8300000, guid: d3508862879da0b4098f399640412565, type: 3}
+  - <Type>k__BackingField: 3
+    <Sounds>k__BackingField:
+    - {fileID: 8300000, guid: 40b4da9aec9f6ea4cbc3c9f4d8a10213, type: 3}
+  - <Type>k__BackingField: 7
+    <Sounds>k__BackingField:
+    - {fileID: 8300000, guid: be688161912516645bf443f811e09dd4, type: 3}
+    - {fileID: 8300000, guid: 19a52234a7a2bba4c9f525d9b0ba28c2, type: 3}
+    - {fileID: 8300000, guid: af57b0f316b84b04b985e7d428945ded, type: 3}
+  - <Type>k__BackingField: 6
+    <Sounds>k__BackingField:
+    - {fileID: 8300000, guid: aba9de94315a65041baa9009198569ea, type: 3}
+    - {fileID: 8300000, guid: 2b1f9bea6b69331469919c6047bb8e76, type: 3}
+    - {fileID: 8300000, guid: 4e3cf99d92797e64382ee8c94fcebccb, type: 3}
+    - {fileID: 8300000, guid: 599e9fb92c7ea2b4587a737eb91e72ac, type: 3}
+    - {fileID: 8300000, guid: 2c2e5d19288393c409787d3403148c8c, type: 3}
+    - {fileID: 8300000, guid: ae1a0808bce819041b7d9f7b77c38d79, type: 3}
+    - {fileID: 8300000, guid: 417632cfcbddb1e439f470d0c1a8d1d0, type: 3}
+    - {fileID: 8300000, guid: 806c3e88a26633d4db119d21f3ba7fb3, type: 3}
+    - {fileID: 8300000, guid: 675a1d9672cd4c24f9d1cf69270150db, type: 3}
+    - {fileID: 8300000, guid: 65c7ad4427f63154292a53aa34c7405e, type: 3}
+    - {fileID: 8300000, guid: a36a32d661546bb488bf34e604df2942, type: 3}
+  - <Type>k__BackingField: 5
+    <Sounds>k__BackingField:
+    - {fileID: 8300000, guid: 0ab41f839832f8a4880c1199f731b912, type: 3}
+    - {fileID: 8300000, guid: ab8432aee7358ac4492031921f3eb276, type: 3}
+    - {fileID: 8300000, guid: a68231626be124f40a006f5e6451d2f2, type: 3}
+    - {fileID: 8300000, guid: 95894d9dac52ff846b331b78ec909ac0, type: 3}
+    - {fileID: 8300000, guid: 1c6095de313fa6e4780052cea2be0487, type: 3}
+    - {fileID: 8300000, guid: eb305dbeaea191d43b5e028b6f96885b, type: 3}
+    - {fileID: 8300000, guid: c8d24bf37d1bae342927ab53754e1057, type: 3}
+    - {fileID: 8300000, guid: 88cb383136412e048921541c910f6a14, type: 3}
+    - {fileID: 8300000, guid: 79252345f2c6e464799faf784668ce69, type: 3}
+    - {fileID: 8300000, guid: d2c3647ebe83eed4787dee40231087f7, type: 3}
+    - {fileID: 8300000, guid: 2e4c55e92d5409344aef86ebceeaf33e, type: 3}
+    - {fileID: 8300000, guid: 34e4c765371bb7f48aa690fae6156de3, type: 3}
+  - <Type>k__BackingField: 8
+    <Sounds>k__BackingField:
+    - {fileID: 8300000, guid: 80d7584c939d78b479ea17b35f9af0c0, type: 3}

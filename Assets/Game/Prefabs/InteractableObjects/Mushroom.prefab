@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7443448687788866709}
   - component: {fileID: 6310852132935686428}
   - component: {fileID: 1829674063606201712}
+  - component: {fileID: 4668682243745487372}
   m_Layer: 10
   m_Name: Mushroom
   m_TagString: Untagged
@@ -144,6 +145,19 @@ MonoBehaviour:
   onCustomerExit:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4668682243745487372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 523944764051775561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98d2d3803743f76478d442c9f152b019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: 1
 --- !u!1 &1525742935188095389
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +190,7 @@ Transform:
   - {fileID: 929873352823190427}
   - {fileID: 6327224620790132903}
   m_Father: {fileID: 7338098580648194889}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: 0, z: 0}
 --- !u!1 &2809596207271555460
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +253,7 @@ Transform:
   m_Children:
   - {fileID: 8777805043147524283}
   m_Father: {fileID: 2115391276745022030}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: -0.0000026373868, z: 0}
 --- !u!1 &6235388577860774093
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,7 +285,7 @@ Transform:
   m_Children:
   - {fileID: 5947548159963897636}
   m_Father: {fileID: 929873352823190427}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.000005119577, y: -0.000016545471, z: -1.2889657e-13}
 --- !u!1 &6575511851122379597
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,4 +442,4 @@ Transform:
   m_Children:
   - {fileID: 3723230979659350876}
   m_Father: {fileID: 2115391276745022030}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 89.98021, y: 0, z: 0}

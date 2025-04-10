@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System;
+using Sounds;
 using UI;
 
 namespace Environment
 {
     public class GarbageCan : MonoBehaviour
     {
-        [SerializeField] private AudioClip toTrashSound;
-
+        [SerializeField] private float ToggleVolume = 0.3f;
+        
         private bool _inFocus;
 
         private bool InFocus
@@ -46,7 +47,7 @@ namespace Environment
         void MoveToTrash()
         {
             Inventory.instance.RemoveItem();
-            SoundManager.instance.PlaySfxDirectly(toTrashSound);
+            SoundService.Instance.Play3DSfx(SoundType.GarbageThrow, transform, 3f, ToggleVolume);
         }
     }
 }
