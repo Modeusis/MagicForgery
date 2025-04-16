@@ -22,6 +22,7 @@ namespace Game.Scripts.AI
         [field:SerializeField] public CustomerOrderGenerator OrderGenerator { get; private set; }
 
         public event Action<bool> OnCustomerSpawnChanged;
+        public event Action<bool> OnCustomerSpawned;
 
         private bool _isCustomerSpawned;
         private bool IsCustomerSpawned
@@ -31,6 +32,7 @@ namespace Game.Scripts.AI
             {
                 _isCustomerSpawned = value;
                 OnCustomerSpawnChanged?.Invoke(!_isCustomerSpawned);
+                OnCustomerSpawned?.Invoke(_isCustomerSpawned);
             }
         }
         

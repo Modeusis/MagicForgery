@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Game.Scripts.Utilities;
+using UnityEngine;
 
 namespace Game.Scripts.AI.CustomerStateMachine
 {
@@ -6,6 +7,8 @@ namespace Game.Scripts.AI.CustomerStateMachine
     {
         public override void EnterState(CustomerStateManager customer)
         {
+            EventBus.Instance.Publish(true);
+            
             customer.customerAnimator.SetFloat("Speed", 0f);
             customer.orderGenerator.StartOrder();
             customer.tag = "Customer";
@@ -23,6 +26,8 @@ namespace Game.Scripts.AI.CustomerStateMachine
 
         public override void ExitState(CustomerStateManager customer)
         {
+            EventBus.Instance.Publish(false);
+            
             customer.currentDestinationPoint = customer.customerFinalDestinationPoint;
             customer.orderGenerator.isFinished = false;
             customer.tag = "Untagged";

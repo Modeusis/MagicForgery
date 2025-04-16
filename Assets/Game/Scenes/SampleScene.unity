@@ -7558,11 +7558,13 @@ MonoBehaviour:
   availableEnchantments: {fileID: 11400000, guid: 863abfd288efcb24ca84565778c388c8, type: 2}
   timeRange: {x: 60, y: 120}
   accuracyRange: {x: 50, y: 90}
+  swordScaleOnPlace: 1
   swordPrefab: {fileID: 7871986814658445796, guid: 0bd50b88789900446b48f4614320dea9, type: 3}
   swordParent: {fileID: 543450653136628238}
-  swordScaleOnPlace: 1
   positionOnPlace: {x: -14.517405, y: 1.8470001, z: 2.7951665}
   rotationOnPlace: {x: 90, y: 0, z: 0}
+  playersToWin: 2
+  clientCounter: {fileID: 1227020021}
   faceChanger: {fileID: 0}
   isFinished: 0
 --- !u!225 &753226841
@@ -11296,7 +11298,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 001a67f19fe92ca4c81b0d102da82e80, type: 2}
+  - {fileID: 2100000, guid: e222a13e708fca14fa9e40f5abce7061, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12049,11 +12051,11 @@ MonoBehaviour:
   ToggleVolume: 2
   buttonTransform: {fileID: 7899099928888238942}
   buttonMaterial: {fileID: 2100000, guid: 001a67f19fe92ca4c81b0d102da82e80, type: 2}
-  customerSpawner: {fileID: 435150321}
   buttonActiveColor: {r: 0, g: 1, b: 0, a: 0}
   buttonGlowActiveColor: {r: 0, g: 1, b: 0.3529412, a: 0}
   buttonInactiveColor: {r: 1, g: 0, b: 0, a: 0}
   buttonGlowInactiveColor: {r: 1, g: 0, b: 0.1764706, a: 0}
+  customerSpawner: {fileID: 435150321}
 --- !u!1 &1227020019
 GameObject:
   m_ObjectHideFlags: 0
@@ -14779,7 +14781,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1429234319}
   - component: {fileID: 1429234321}
-  - component: {fileID: 1429234320}
+  - component: {fileID: 1429234322}
   m_Layer: 0
   m_Name: SkipClient
   m_TagString: Untagged
@@ -14804,26 +14806,6 @@ Transform:
   - {fileID: 242426813}
   m_Father: {fileID: 543450653136628238}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 990}
---- !u!114 &1429234320
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1429234318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a52925deebf4980a1d7a82740488402, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ToggleVolume: 2
-  buttonTransform: {fileID: 1151007237}
-  buttonMaterial: {fileID: 2100000, guid: 001a67f19fe92ca4c81b0d102da82e80, type: 2}
-  customerSpawner: {fileID: 435150321}
-  buttonActiveColor: {r: 0, g: 1, b: 0, a: 0}
-  buttonGlowActiveColor: {r: 0, g: 1, b: 0.3529412, a: 0}
-  buttonInactiveColor: {r: 1, g: 0, b: 0, a: 0}
-  buttonGlowInactiveColor: {r: 1, g: 0, b: 0.1764706, a: 0}
 --- !u!65 &1429234321
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14845,6 +14827,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.25, y: 0.15, z: 0.25}
   m_Center: {x: 0, y: 0.04, z: 0}
+--- !u!114 &1429234322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429234318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1557b60e416e4464af5f672ddc7756d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ToggleVolume: 2
+  buttonTransform: {fileID: 1151007237}
+  buttonMaterial: {fileID: 2100000, guid: e222a13e708fca14fa9e40f5abce7061, type: 2}
+  buttonActiveColor: {r: 0, g: 1, b: 0, a: 1}
+  buttonGlowActiveColor: {r: 0, g: 1, b: 0.3529412, a: 0}
+  buttonInactiveColor: {r: 1, g: 0, b: 0, a: 1}
+  buttonGlowInactiveColor: {r: 1, g: 0, b: 0.1764706, a: 0}
+  customerOrderGenerator: {fileID: 753226840}
 --- !u!1001 &1436392244
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23794,6 +23796,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AimArrow
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c0455b6dc63c8ec46a0c54b06992b660, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -28795,7 +28801,7 @@ GameObject:
   - component: {fileID: 1226223129}
   - component: {fileID: 1226223130}
   m_Layer: 0
-  m_Name: ActionButton
+  m_Name: CallClientButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

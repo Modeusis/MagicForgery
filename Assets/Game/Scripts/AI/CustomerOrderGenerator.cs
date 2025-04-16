@@ -18,30 +18,39 @@ namespace Game.Scripts.AI
         [SerializeField] private TMP_Text enchantmentName;
         [SerializeField] private TMP_Text enchantmentRequiredAccuracy;
         [SerializeField] private Image enchantmentProgressBar;
-
+        
         [Header("Order generation")] 
         [SerializeField] private EnchantmentData availableEnchantments;
         [SerializeField] private Vector2 timeRange;
         [SerializeField] private Vector2 accuracyRange;
         
         [Header("Sword spawn")]
+        [SerializeField] private float swordScaleOnPlace;
         [SerializeField] private GameObject swordPrefab;
         [SerializeField] private Transform swordParent;
-        [SerializeField] private float swordScaleOnPlace;
         [SerializeField] private Vector3 positionOnPlace;
         [SerializeField] private Vector3 rotationOnPlace;
+
+        [Header("GameFinish setup")] 
+        [SerializeField] private int playersToWin = 5;
+        [SerializeField] private TMP_Text clientCounter;
+        
+        private float _accuracyMinimum;
+        private float _timerValue;
         
         private CanvasGroup _orderCanvasGroup;
         private Enchantment _orderEnchantment;
-        private float _accuracyMinimum;
-        private float _timerValue;
+        private GameFinishCounter _gameFinishCounter;
         private Coroutine _timerCoroutine;
 
         public CustomerFaceChanger faceChanger;
+        
         public bool isFinished;
 
         private void Start()
         {
+            _gameFinishCounter = new GameFinishCounter(playersToWin, clientCounter);
+            
             _orderCanvasGroup = GetComponent<CanvasGroup>();
         }
         
@@ -56,7 +65,7 @@ namespace Game.Scripts.AI
                 
                 if (GenerateSword())
                 {
-                    _timerCoroutine = StartCoroutine(TimerCoroutine(_timerValue, ExpireOrder));
+                    _timerCoroutine = StartCoroutine(TimerCoroutine(_timerValue, CompleteOrder));
                 }
             }
         }
@@ -69,6 +78,7 @@ namespace Game.Scripts.AI
             if (enchantmentCount <= 0)
             {
                 Debug.LogWarning("No Enchantment available");
+                
                 return false;
             }
             
@@ -115,6 +125,12 @@ namespace Game.Scripts.AI
             StartCoroutine(SetCanvasAlpha(1f, false));
         }
 
+        public void SkipOrder()
+        {
+            CompleteOrder(false);
+            ResetOrderGUI();
+        }
+
         public void FinishOrder()
         {
             var selectedItem = Player.Player.instance.selectedItem;
@@ -125,14 +141,8 @@ namespace Game.Scripts.AI
             
             if (ValidateOrder(selectedSword))
             {
-                faceChanger?.SetHappyFace();
                 Inventory.instance.RemoveItem();
-                isFinished = true;
-                if (_timerCoroutine != null)
-                {
-                    StopCoroutine(_timerCoroutine);
-                }
-                ResetOrderGUI();
+                CompleteOrder(true);
             }
             else
             {
@@ -140,9 +150,28 @@ namespace Game.Scripts.AI
             }
         }
         
-        private void ExpireOrder()
+        private void CompleteOrder(bool orderStatus)
         {
+            if (orderStatus)
+            {
+                faceChanger?.SetHappyFace();
+                _gameFinishCounter.ClientSuccess();
+            }
+            else
+            {
+                faceChanger?.SetAngryFace();
+                _gameFinishCounter.ClientExpired();
+            }
+            
             isFinished = true;
+            
+            if (_timerCoroutine != null)
+            {
+                StopCoroutine(_timerCoroutine);
+                
+                _timerCoroutine = null;
+            }
+            
             ResetOrderGUI();
         }
 
@@ -161,7 +190,7 @@ namespace Game.Scripts.AI
             return true;
         }
         
-        private IEnumerator TimerCoroutine(float time, Action callback = null)
+        private IEnumerator TimerCoroutine(float time, Action<bool> callback = null)
         {
             var timer = 0f;
             while (timer < time)
@@ -174,7 +203,7 @@ namespace Game.Scripts.AI
 
             enchantmentProgressBar.fillAmount = 0f;
             
-            callback?.Invoke();
+            callback?.Invoke(false);
         }
 
         private IEnumerator SetCanvasAlpha(float duration, bool visible = true)

@@ -42,9 +42,9 @@ namespace Sounds
             _audioSource.minDistance = radius / 2;
             _audioSource.maxDistance = radius;
             
-            _audioSource.Play();
+            _audioSource?.Play();
             
-            if (!isLooped)
+            if (!isLooped && _audioSource)
             {
                 _waitCoroutine = StartCoroutine(WaitingCoroutine(clip.length));
             }
@@ -59,9 +59,9 @@ namespace Sounds
             _audioSource.volume = volume;
             _audioSource.loop = isLooped;
             
-            _audioSource.Play();
+            _audioSource?.Play();
             
-            if (!isLooped)
+            if (!isLooped && _audioSource)
             {
                _waitCoroutine = StartCoroutine(WaitingCoroutine(clip.length));
             }
