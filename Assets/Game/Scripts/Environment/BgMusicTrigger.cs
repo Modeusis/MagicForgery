@@ -1,6 +1,4 @@
-﻿using System;
-using Sounds;
-using UI;
+﻿using Sounds;
 using UnityEngine;
 
 namespace Environment
