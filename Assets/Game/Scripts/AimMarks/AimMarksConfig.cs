@@ -1,10 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Scripts.AimMarks
 {
     public class AimMarksConfig : ScriptableObject
     {
+        [field: SerializeField] public List<AimMarks> AimMarks { get; private set; }
+    }
+
+    [Serializable]
+    public class AimMarks
+    {
+        [field: SerializeField] public float TimeToShowMessage { get; private set; }
         [field: SerializeField] public MarkType Aim {get; private set;}
         
         [field: SerializeField] public Transform AimTransform {get; private set;}
