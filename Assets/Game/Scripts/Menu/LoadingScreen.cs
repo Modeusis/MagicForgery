@@ -40,8 +40,6 @@ namespace Game.Scripts.MainMenu
 
         public void HideLoadingScreen()
         {
-            Debug.Log("Hiding loading screen");
-            
             StartCoroutine(FadeLoadingScreen(_canvasGroup, .5f));
         }
         

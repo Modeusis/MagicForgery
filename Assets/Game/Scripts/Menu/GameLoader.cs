@@ -10,8 +10,8 @@ namespace Game.Scripts.MainMenu
         [SerializeField] private LoadingScreen loadingScreen;
 
         private const string SceneToLoad = "Game";
-
-        private Scene _sceneToLoad;
+        private const string MainMenuScene = "MainMenu";
+        
         private void OnEnable()
         {
             DontDestroyOnLoad(gameObject);
@@ -21,8 +21,11 @@ namespace Game.Scripts.MainMenu
         public void StartGame()
         {
             loadingScreen.ShowLoadingScreen(SceneToLoad);
-            
-            _sceneToLoad = SceneManager.GetSceneByName(SceneToLoad);
+        }
+
+        public void ToMainMenu()
+        {
+            loadingScreen.ShowLoadingScreen(MainMenuScene);
         }
         
         public void QuitGame()
