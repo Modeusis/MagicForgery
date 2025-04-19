@@ -127,6 +127,11 @@ namespace Game.Scripts.AI
 
         public void SkipOrder()
         {
+            if (_timerCoroutine == null)
+            {
+                return;
+            }
+            
             CompleteOrder(false);
             ResetOrderGUI();
         }
