@@ -1,4 +1,4 @@
-﻿namespace Game.Scripts.AimMarks
+﻿namespace Game.Scripts.TargetMarks
 {
     public enum MarkType
     {

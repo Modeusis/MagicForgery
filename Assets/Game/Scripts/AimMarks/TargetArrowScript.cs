@@ -4,29 +4,29 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-namespace Game.Scripts.AimMarks
+namespace Game.Scripts.TargetMarks
 {
-    public class AimArrowScript : MonoBehaviour
+    public class TargetArrowScript : MonoBehaviour
     {
-        [SerializeField] private AimMarksConfig aimMarksConfig;
+        [SerializeField] private TargetMarksConfig TargetMarksConfig;
         
         [SerializeField] private TMP_Text stepText;
 
-        private List<string> messages;
+        private List<string> _messages;
         
         private Transform _currentTargetTransform;
         
         private Coroutine _messageShowingCoroutine;
         
-        public void SwitchAim(MarkType aimType)
+        public void SwitchTarget(MarkType targetType)
         {
-            var aimMark = aimMarksConfig.AimMarks.Find(mark => mark.Aim == aimType);
+            var targetMark = TargetMarksConfig.TargetMarks.Find(mark => mark.Target == targetType);
             
-            _currentTargetTransform = aimMark.AimTransform;
+            _currentTargetTransform = targetMark.TargetTransform;
 
-            messages = aimMark.MessagesForStep;
+            _messages = targetMark.MessagesForStep;
             
-            ShowMessage(messages[0], aimMark.TimeToShowMessage);
+            ShowMessage(_messages[0], targetMark.TimeToShowMessage);
         }
 
         private void ShowMessage(string message, float duration = 1f)

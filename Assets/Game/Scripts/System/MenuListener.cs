@@ -9,7 +9,7 @@ namespace Game.Scripts.System
         
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.I))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 menu.ToggleMenu();
             }
