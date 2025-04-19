@@ -1,17 +1,40 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Game.Scripts.Utilities
 {
-    public class EventBus : IDisposable
+    public class EventBus : MonoBehaviour
     {
-        public static EventBus Instance = new EventBus();
+        public static EventBus Instance;
         
         private Dictionary<Type, List<Delegate>> _events;
 
-        private EventBus()
+        private Dictionary<Type, int> _thisFrameEvents;
+
+        private void Awake()
         {
-            _events = new Dictionary<Type, List<Delegate>>();
+            if (Instance == null)
+            {
+                Instance = this;
+                
+                _events = new Dictionary<Type, List<Delegate>>();
+            
+                _thisFrameEvents = new Dictionary<Type, int>();
+                
+                DontDestroyOnLoad(gameObject);
+                
+                return;
+            }
+            
+            Destroy(gameObject);
+        }
+        
+        private void OnDestroy()
+        {
+            _events.Clear();
+            
+            _thisFrameEvents.Clear();
         }
 
         public void Subscribe<T>(Action<T> action)
@@ -42,6 +65,8 @@ namespace Game.Scripts.Utilities
         {
             if (_events.TryGetValue(typeof(T), out var list))
             {
+                _thisFrameEvents[typeof(T)] = Time.frameCount + 1;
+                
                 var listeners = new List<Delegate>(list);
                 
                 foreach (var listener in listeners)
@@ -58,9 +83,27 @@ namespace Game.Scripts.Utilities
             }
         }
 
-        public void Dispose()
+        public bool WasInvokedThisFrame<T>()
         {
-            _events.Clear();
+            _thisFrameEvents.TryGetValue(typeof(T), out var frameCount);
+            
+            if (frameCount == Time.frameCount)
+            {
+                return true;
+            }
+            
+            return false;
         }
+
+        // Необходимая реализация для оптимизации нужно посоветоваться
+        // private void ClearThisFrameEvents()
+        // {
+        //     if (_thisFrameEvents.Count == 0)
+        //     {
+        //         return;
+        //     }
+        //
+        //     _thisFrameEvents.Clear();
+        // }
     }
 }

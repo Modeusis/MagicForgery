@@ -1,9 +1,8 @@
 using System;
-using Game.Scripts.AI.CustomerStateMachine;
+using Game.Scripts.Utilities;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace Game.Scripts.AI.CustomerStateMachine
 {
@@ -12,8 +11,6 @@ namespace Game.Scripts.AI.CustomerStateMachine
     [RequireComponent(typeof(CustomerFaceChanger))]
     public class CustomerStateManager : MonoBehaviour
     {
-        public AudioClip moveSound;
-        
         public Transform spawnPoint;
         public Transform customerOrderDestinationPoint;
         public Transform customerFinalDestinationPoint;
@@ -46,6 +43,11 @@ namespace Game.Scripts.AI.CustomerStateMachine
 
         private void Update()
         {
+            if (EventBus.Instance.WasInvokedThisFrame<bool>())
+            {
+                Debug.Log("Bool was performed this frame");
+            }
+            
             _customerCurrentState?.UpdateState(this);
         }
 
