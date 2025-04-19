@@ -1,8 +1,7 @@
 using System;
-using Game.Scripts.SaveSystems;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Game.Scripts.MainMenu
@@ -21,19 +20,14 @@ namespace Game.Scripts.MainMenu
         
         private string _actionDescription = "";
         
-        private GameLoader _gameLoader;
-        
         private Action _currentAction;
+        
+        public UnityEvent OnPopUpConfirmed;
         
         private void OnEnable()
         {
             dismissActionButton.onClick.AddListener(Dismiss);
             confirmActionButton.onClick.AddListener(Confirm);
-            
-            if (_gameLoader == null)
-            {
-                _gameLoader = GameObject.Find("GameLoader").GetComponent<GameLoader>();
-            }
         }
 
         private void OnDisable()
@@ -45,6 +39,8 @@ namespace Game.Scripts.MainMenu
             
             _actionDescription = "";
             popUpText.text = _actionDescription;
+            
+            OnPopUpConfirmed.RemoveAllListeners();
         }
 
         public void ShowConfirmationPopUp(MenuAction menuAction)
@@ -62,6 +58,11 @@ namespace Game.Scripts.MainMenu
         public void Confirm()
         {
             _currentAction?.Invoke();
+            
+            if (_currentAction != null)
+            {
+                OnPopUpConfirmed?.Invoke();
+            }
         }
 
         public Action GetAction(MenuAction action)
@@ -72,7 +73,6 @@ namespace Game.Scripts.MainMenu
                 
                 return null;
             }
-                
             
             var definedAction = definedActionsSetup.Actions.Find(defAction => defAction.Type == action);
             
@@ -104,14 +104,10 @@ namespace Game.Scripts.MainMenu
 
         private void QuitToMenuAction()
         {
-            if (_gameLoader == null)
-            {
-                Debug.Log("GameLoader is not found");
-                
-                return;
-            }
+            GameLoader.Instance.ToMainMenu();
             
-            _gameLoader.ToMainMenu();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
     }
 }

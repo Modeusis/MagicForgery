@@ -8,18 +8,14 @@ namespace Game.Scripts.MainMenu
         [SerializeField] private ConfirmationPopUp confirmationPopUp;
 
         private bool _menuCurrentState = false;
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                ToggleMenu();
-            }
-        }
         
-        private void ToggleMenu()
+        public void ToggleMenu()
         {
             _menuCurrentState = !_menuCurrentState;
+            
+            Player.Player.instance.IsOverlayShowed = _menuCurrentState;
+            
+            confirmationPopUp.Dismiss();
             
             gameObject.SetActive(_menuCurrentState);
             
@@ -30,15 +26,19 @@ namespace Game.Scripts.MainMenu
         {
             ToggleMenu();
         }
-
+        
         public void QuitGame()
         {
             confirmationPopUp.ShowConfirmationPopUp(MenuAction.Quit);
+            
+            confirmationPopUp.OnPopUpConfirmed.AddListener(ToggleMenu);
         }
 
         public void QuitToMenu()
         {
             confirmationPopUp.ShowConfirmationPopUp(MenuAction.QuitToMenu);
+            
+            confirmationPopUp.OnPopUpConfirmed.AddListener(ToggleMenu);
         }
 
         public void OpenSettingsScreen()

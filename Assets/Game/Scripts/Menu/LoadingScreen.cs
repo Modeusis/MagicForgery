@@ -8,19 +8,35 @@ namespace Game.Scripts.MainMenu
     [RequireComponent(typeof(CanvasGroup))]
     public class LoadingScreen : MonoBehaviour
     {
+        public static LoadingScreen Instance { get; private set; }
+        
         private CanvasGroup _canvasGroup;
         
         private AsyncOperation _sceneLoadOperation;
         
-        private void Awake()
+        public void Awake()
         {
-            _canvasGroup = GetComponent<CanvasGroup>();
+            if (Instance == null)
+            {
+                _canvasGroup = GetComponent<CanvasGroup>();
+                
+                Instance = this;
+                
+                DontDestroyOnLoad(Instance);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
         private void Update()
         {
             if (_sceneLoadOperation == null)
+            {
                 return;
+            }
+                
 
             if (_sceneLoadOperation.isDone)
             {
@@ -30,11 +46,13 @@ namespace Game.Scripts.MainMenu
             }
         }
         
-        public void ShowLoadingScreen(string sceneName)
+        public void ShowLoadingScreen(int sceneId)
         {
+            Debug.Log($"Loading Scene: {sceneId}");
+            
             StartCoroutine(FadeLoadingScreen(_canvasGroup, .5f, () =>
             {
-                _sceneLoadOperation = SceneManager.LoadSceneAsync(sceneName);
+                _sceneLoadOperation = SceneManager.LoadSceneAsync(sceneId);
             }));
         }
 
@@ -46,8 +64,9 @@ namespace Game.Scripts.MainMenu
         private IEnumerator FadeLoadingScreen(CanvasGroup loadScreen, float duration, Action onFinish = null)
         {
             var startAlpha = loadScreen.alpha;
+            
             var loadTarget = startAlpha == 1f ? 0f : 1f;
-
+            
             loadScreen.interactable = loadTarget == 1f;
             
             float timer = 0f;

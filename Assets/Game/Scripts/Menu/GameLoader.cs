@@ -7,25 +7,33 @@ namespace Game.Scripts.MainMenu
 {
     public class GameLoader : MonoBehaviour
     {
-        [SerializeField] private LoadingScreen loadingScreen;
+        public static GameLoader Instance { get; private set; }
 
-        private const string SceneToLoad = "Game";
-        private const string MainMenuScene = "MainMenu";
-        
-        private void OnEnable()
+        private const int GameSceneId = 0;
+        private const int MainMenuSceneId = 1;
+
+        public void Awake()
         {
-            DontDestroyOnLoad(gameObject);
-            DontDestroyOnLoad(loadingScreen.gameObject);
+            if (Instance == null)
+            {
+                Instance = this;
+                
+                DontDestroyOnLoad(Instance);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
         
         public void StartGame()
         {
-            loadingScreen.ShowLoadingScreen(SceneToLoad);
+            LoadingScreen.Instance.ShowLoadingScreen(GameSceneId);
         }
 
         public void ToMainMenu()
         {
-            loadingScreen.ShowLoadingScreen(MainMenuScene);
+            LoadingScreen.Instance.ShowLoadingScreen(MainMenuSceneId);
         }
         
         public void QuitGame()
