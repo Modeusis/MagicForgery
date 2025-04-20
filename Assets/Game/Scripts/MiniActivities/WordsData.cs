@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Game.Scripts.MiniActivities
 {
-    [CreateAssetMenu(menuName = "Game/Words")]
+    [CreateAssetMenu(menuName = "Setups/Words Data Config")]
     public class WordsData : ScriptableObject
     {
         [field:SerializeField] public List<string> Words { get; private set; }

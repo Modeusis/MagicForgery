@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Environment
 {
-    [CreateAssetMenu(menuName = "Game/EnchantmentData")]
+    [CreateAssetMenu(menuName = "Setups/Enchantment List Config")]
     public class EnchantmentData : ScriptableObject
     {
         [field:SerializeField] public List<Recipe> Enchantments { get; private set; }

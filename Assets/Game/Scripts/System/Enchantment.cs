@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UI
 {
-    [CreateAssetMenu(menuName = "Game/Enchantment")]    
+    [CreateAssetMenu(menuName = "Setups/Enchantment Config")]   
     public class Enchantment : ScriptableObject
     {
         [Header("Enchantment General")]

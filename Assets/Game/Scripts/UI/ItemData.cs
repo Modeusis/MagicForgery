@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UI
 {
-    [CreateAssetMenu(fileName = "New Item", menuName = "Game/ItemData")]
+    [CreateAssetMenu(menuName = "Setups/Item Data Config")]
     public class ItemData : ScriptableObject
     {
         [Header("Basic stats")]

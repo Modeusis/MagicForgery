@@ -4,14 +4,18 @@ namespace Game.Scripts.TargetMarks.ArrowStates
 {
     public class ArrowIdleState : State
     {
-        public ArrowIdleState(StateType type)
+        private readonly Arrow _arrow;
+        
+        public ArrowIdleState(StateType type, Arrow arrow)
         {
             StateType = type;
+            
+            _arrow = arrow;
         }
         
         public override void Enter()
         {
-            
+            _arrow.HideArrow();
         }
 
         public override void Update()

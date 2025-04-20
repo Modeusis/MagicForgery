@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Scripts.MainMenu
 {
-    [CreateAssetMenu(fileName = "Menu Actions", menuName = "SO/SettingMenuDefiner")]
+    [CreateAssetMenu(menuName = "Setups/Setting menu definer")]
     public class DefinedActionsSetup : ScriptableObject
     {
         [field: SerializeField] public List<DefinedAction> Actions { get; private set; }

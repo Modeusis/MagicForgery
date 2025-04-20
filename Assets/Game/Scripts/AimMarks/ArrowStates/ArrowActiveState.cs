@@ -12,7 +12,7 @@ namespace Game.Scripts.TargetMarks.ArrowStates
     {
         private readonly TargetMarksConfig _targetsConfig;
         
-        private Transform _arrowTransform;
+        private Arrow _arrow;
         
         private TMP_Text _textField;
         
@@ -20,11 +20,11 @@ namespace Game.Scripts.TargetMarks.ArrowStates
 
         private TargetMark _target;
         
-        public ArrowActiveState(StateType stateType, TargetMarksConfig targets, Transform targetArrow, TMP_Text textField)
+        public ArrowActiveState(StateType stateType, TargetMarksConfig targets, Arrow arrow, TMP_Text textField)
         {
             StateType = stateType;
             
-            _arrowTransform = targetArrow;
+            _arrow = arrow;
             
             _textField = textField;
             
@@ -35,16 +35,20 @@ namespace Game.Scripts.TargetMarks.ArrowStates
         
         public override void Enter()
         {
+            _arrow.ShowArrow();
             
+            _arrow.RotateArrowToTarget(_target.TargetPosition);
         }
 
         public override void Update()
         {
-            
+            _arrow.LookAtTarget(_target.TargetPosition);
         }
 
         public override void Exit()
         {
+            
+            
             _target = null;
             
             _messageShowingCoroutine = null;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Sounds
 {
-    [CreateAssetMenu(fileName = "New SoundConfig", menuName = "Sounds/SoundConfig")]
+    [CreateAssetMenu(menuName = "Setups/Sound Config")]
     public class SoundDataSetup : ScriptableObject
     {
         [field:SerializeField] public List<SoundData> SoundDataList { get; set; }
