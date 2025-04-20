@@ -134,14 +134,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 306e083a2b9acc44e8c000441e058008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSound: {fileID: 8300000, guid: 19a52234a7a2bba4c9f525d9b0ba28c2, type: 3}
-  spawnPoint: {fileID: 0}
-  customerOrderDestinationPoint: {fileID: 0}
-  customerFinalDestinationPoint: {fileID: 0}
-  orderGenerator: {fileID: 0}
-  customerAgent: {fileID: 0}
-  customerAnimator: {fileID: 0}
-  currentDestinationPoint: {fileID: 0}
+  destinations:
+  - <DestinationPosition>k__BackingField: {x: 124.371475, y: 3.1331768, z: 28.162848}
+    <CurrentDestination>k__BackingField: 1
+    <NextDestinationType>k__BackingField: 2
+  - <DestinationPosition>k__BackingField: {x: 175.31548, y: 2.5781765, z: 45.01085}
+    <CurrentDestination>k__BackingField: 2
+    <NextDestinationType>k__BackingField: 0
   onCustomerExit:
     m_PersistentCalls:
       m_Calls: []
@@ -158,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume: 1
+  soundRadius: 1
 --- !u!1 &1525742935188095389
 GameObject:
   m_ObjectHideFlags: 0

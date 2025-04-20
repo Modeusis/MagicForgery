@@ -3,6 +3,8 @@
     public enum StateType
     {
         Idle,
-        Active
+        Active,
+        Movement,
+        Order
     }
 }

@@ -10,6 +10,8 @@ namespace Game.Scripts.TargetMarks.ArrowStates
 {
     public class ArrowActiveState : State
     {
+        private readonly EventBus _eventBus;
+        
         private readonly TargetMarksConfig _targetsConfig;
         
         private Arrow _arrow;
@@ -20,7 +22,7 @@ namespace Game.Scripts.TargetMarks.ArrowStates
 
         private TargetMark _target;
         
-        public ArrowActiveState(StateType stateType, TargetMarksConfig targets, Arrow arrow, TMP_Text textField)
+        public ArrowActiveState(StateType stateType, TargetMarksConfig targets, Arrow arrow, TMP_Text textField, EventBus eventBus)
         {
             StateType = stateType;
             
@@ -30,7 +32,9 @@ namespace Game.Scripts.TargetMarks.ArrowStates
             
             _targetsConfig = targets;
             
-            EventBus.Instance.Subscribe<MarkType>(TargetChangeHandler);
+            _eventBus = eventBus;
+            
+            _eventBus?.Subscribe<MarkType>(TargetChangeHandler);
         }
         
         public override void Enter()

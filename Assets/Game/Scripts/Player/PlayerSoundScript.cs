@@ -1,10 +1,13 @@
 ﻿using Sounds;
 using UnityEngine;
+using Zenject;
 
 namespace Player
 {
     public class PlayerSoundScript : MonoBehaviour
     {
+        [Inject] private SoundService _soundService; 
+        
         [SerializeField] private float stepVolume = 0.6f;
         [SerializeField] private float interactVolume = 0.2f;
         
@@ -28,12 +31,12 @@ namespace Player
         
         public void OnStep()
         {
-            SoundService.Instance.Play2DSfx(CurrentStepSound, stepVolume);
+            _soundService.Play2DSfx(CurrentStepSound, stepVolume);
         }
 
         public void OnInteract()
         {
-            SoundService.Instance.Play2DSfx(SoundType.InteractSound, interactVolume);
+            _soundService.Play2DSfx(SoundType.InteractSound, interactVolume);
         }
     }
 }

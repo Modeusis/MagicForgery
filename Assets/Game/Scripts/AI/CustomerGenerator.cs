@@ -1,28 +1,32 @@
 using System;
 using System.Collections.Generic;
 using Game.Scripts.AI.CustomerStateMachine;
+using Game.Scripts.Utilities;
+using Sounds;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace Game.Scripts.AI
 {
     public class CustomerGenerator : MonoBehaviour
     {
+        private EventBus _eventBus;
+        
+        private OrderGenerator _orderGenerator;
+        
+        private SoundService _soundService;
+        
         [Header("General Settings")]
         [SerializeField] private List<Transform> spawnPoints;
         [SerializeField] private GameObject customerPrefab;
         [SerializeField] private Material customerHeadMaterial;
         
         [Header("Destination points")]
-        [SerializeField] private Transform customerOrderDestinationPoint;
-        [SerializeField] private Transform customerFinalDestinationPoint;
-        
-        [Header("Customer order")]
-        [field:SerializeField] public CustomerOrderGenerator OrderGenerator { get; private set; }
+        [SerializeField] private DestinationType startDestination;
 
         public event Action<bool> OnCustomerSpawnChanged;
-        public event Action<bool> OnCustomerSpawned;
 
         private bool _isCustomerSpawned;
         private bool IsCustomerSpawned
@@ -32,46 +36,63 @@ namespace Game.Scripts.AI
             {
                 _isCustomerSpawned = value;
                 OnCustomerSpawnChanged?.Invoke(!_isCustomerSpawned);
-                OnCustomerSpawned?.Invoke(_isCustomerSpawned);
             }
+        }
+        
+        [Inject]
+        private void Initialize(EventBus eventBus, SoundService soundService,OrderGenerator orderGenerator)
+        {
+            _eventBus = eventBus;
+            
+            _soundService = soundService;
+            
+            _orderGenerator = orderGenerator;
         }
         
         public void GenerateCustomer()
         {
             if (IsCustomerSpawned)
                 return;
+
+            if (spawnPoints.Count == 0)
+            {
+                Debug.LogError("No spawn points for customer.");
+                
+                return;
+            }
             
             IsCustomerSpawned = true;
+
+            var customerInstance = Instantiate(customerPrefab);
+            // customerInstance.SetActive(false);
+            customerInstance.SetActive(true);
             
-            if (!customerPrefab.TryGetComponent(out CustomerStateManager customer))
+            if (!customerInstance.TryGetComponent(out StepSoundScript stepSoundScript))
+                return;
+
+            stepSoundScript.Initialize(_soundService);
+            
+            if (!customerInstance.TryGetComponent(out Customer customer))
                 return;
             
-            customer.customerOrderDestinationPoint = customerOrderDestinationPoint;
-            customer.customerFinalDestinationPoint = customerFinalDestinationPoint;
-            customer.orderGenerator = OrderGenerator;
+            customer.Initialize(_eventBus, _orderGenerator, spawnPoints[Random.Range(0, spawnPoints.Count)], startDestination);
+            customer.onCustomerExit.AddListener(ActiveCustomerGenerator);
             
-            if (customerPrefab.TryGetComponent(out CustomerFaceChanger customerFace))
+            if (customerInstance.TryGetComponent(out CustomerFaceChanger customerFace))
             {
-                customer.orderGenerator.faceChanger = customerFace;
-                customer.orderGenerator.faceChanger.SetIdleFace();
+                _orderGenerator.faceChanger = customerFace;
+                _orderGenerator.faceChanger.SetIdleFace();
             }
+            
+            customerInstance.SetActive(true);
 
-            
-            
-            if (spawnPoints.Count > 0)
-            {
-                customer.spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
-            }
-            
-            var customerInstance = Instantiate(customerPrefab);
-
-            if (customerInstance.TryGetComponent(out CustomerStateManager instancedCustomer))
-            {
-                instancedCustomer.onCustomerExit.AddListener(ActiveCustomerGenerator);
-                if (!customerHeadMaterial)
-                    return;
-                customerHeadMaterial.color = Random.ColorHSV();
-            }
+            // if (customerInstance.TryGetComponent(out Customer instancedCustomer))
+            // {
+            //     instancedCustomer.onCustomerExit.AddListener(ActiveCustomerGenerator);
+            //     if (!customerHeadMaterial)
+            //         return;
+            //     customerHeadMaterial.color = Random.ColorHSV();
+            // }
         }
 
         private void ActiveCustomerGenerator()

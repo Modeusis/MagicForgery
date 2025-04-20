@@ -2,11 +2,14 @@
 using System;
 using Sounds;
 using UI;
+using Zenject;
 
 namespace Environment
 {
     public class GarbageCan : MonoBehaviour
     {
+        [Inject] private SoundService _soundService;
+        
         [SerializeField] private float ToggleVolume = 0.3f;
         
         private bool _inFocus;
@@ -47,7 +50,7 @@ namespace Environment
         void MoveToTrash()
         {
             Inventory.instance.RemoveItem();
-            SoundService.Instance.Play3DSfx(SoundType.GarbageThrow, transform, 3f, ToggleVolume);
+            _soundService.Play3DSfx(SoundType.GarbageThrow, transform, 3f, ToggleVolume);
         }
     }
 }

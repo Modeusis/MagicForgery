@@ -23,14 +23,12 @@ namespace Game.Scripts.Utilities.FSM
         public void Update()
         {
             _currentState.Update();
-
+            
             for (int i = 0; i < _transitions.Count; i++)
             {
                 if (_transitions[i].From == _currentState.StateType && _transitions[i].Condition())
                 {
                     ChangeState(_transitions[i].To);
-                        
-                    return;
                 }
             }
         }
@@ -44,11 +42,11 @@ namespace Game.Scripts.Utilities.FSM
                 return;
             }
             
-            _currentState.Exit();
+            _currentState?.Exit();
             
             _currentState = state;
             
-            _currentState.Enter();
+            _currentState?.Enter();
         }
     }
 }

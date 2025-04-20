@@ -5,11 +5,14 @@ using Sounds;
 using TMPro;
 using UI;
 using UnityEngine;
+using Zenject;
 
 namespace Environment
 {
     public class DoorScript : MonoBehaviour, IToggle
     {
+        [Inject] private SoundService _soundService;
+        
         [SerializeField] private float ToggleVolume = 0.5f;
         
         private Animator _animator;
@@ -42,7 +45,7 @@ namespace Environment
                 _isToggled = value;
                 _door.SetBool("IsDoorOpened", _isToggled);
                 TooltipController.Instance.TooltipMessage = $"{Player.Player.instance.InteractKey.ToString()} to {(_isToggled ? "close" : "open")}";
-                SoundService.Instance.Play3DSfx(_isToggled ? SoundType.OpenDoor : SoundType.CloseDoor, transform, 6f, ToggleVolume);
+                _soundService.Play3DSfx(_isToggled ? SoundType.OpenDoor : SoundType.CloseDoor, transform, 6f, ToggleVolume);
             }
         }
         public void Toggle()

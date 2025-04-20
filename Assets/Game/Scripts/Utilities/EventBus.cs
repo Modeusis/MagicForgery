@@ -4,37 +4,17 @@ using UnityEngine;
 
 namespace Game.Scripts.Utilities
 {
-    public class EventBus : MonoBehaviour
+    public class EventBus : IDisposable
     {
-        public static EventBus Instance;
-        
         private Dictionary<Type, List<Delegate>> _events;
 
         private Dictionary<Type, int> _thisFrameEvents;
 
-        private void Awake()
+        public EventBus()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                
-                _events = new Dictionary<Type, List<Delegate>>();
+            _events = new Dictionary<Type, List<Delegate>>();
             
-                _thisFrameEvents = new Dictionary<Type, int>();
-                
-                DontDestroyOnLoad(gameObject);
-                
-                return;
-            }
-            
-            Destroy(gameObject);
-        }
-        
-        private void OnDestroy()
-        {
-            _events.Clear();
-            
-            _thisFrameEvents.Clear();
+            _thisFrameEvents = new Dictionary<Type, int>();
         }
 
         public void Subscribe<T>(Action<T> action)
@@ -65,7 +45,7 @@ namespace Game.Scripts.Utilities
         {
             if (_events.TryGetValue(typeof(T), out var list))
             {
-                _thisFrameEvents[typeof(T)] = Time.frameCount + 1;
+                _thisFrameEvents[typeof(T)] = Time.frameCount;
                 
                 var listeners = new List<Delegate>(list);
                 
@@ -93,6 +73,13 @@ namespace Game.Scripts.Utilities
             }
             
             return false;
+        }
+        
+        public void Dispose()
+        {
+            _events.Clear();
+            
+            _thisFrameEvents.Clear();
         }
 
         // Необходимая реализация для оптимизации нужно посоветоваться

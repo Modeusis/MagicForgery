@@ -7,72 +7,125 @@ using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace Game.Scripts.AI
 {
-    [RequireComponent(typeof(CanvasGroup))]
-    public class CustomerOrderGenerator : MonoBehaviour
+    public class OrderGenerator : IDisposable
     {
-        [Header("Order UI")]
-        [SerializeField] private TMP_Text enchantmentName;
-        [SerializeField] private TMP_Text enchantmentRequiredAccuracy;
-        [SerializeField] private Image enchantmentProgressBar;
+        private TMP_Text _enchantmentName;
+        private TMP_Text _enchantmentRequiredAccuracy;
+        private Image _enchantmentProgressBar;
+        private CanvasGroup _orderCanvasGroup;
         
-        [Header("Order generation")] 
-        [SerializeField] private EnchantmentData availableEnchantments;
-        [SerializeField] private Vector2 timeRange;
-        [SerializeField] private Vector2 accuracyRange;
+        private EnchantmentData _availableEnchantments;
+        private Vector2 _timeRange;
+        private Vector2 _accuracyRange;
         
-        [Header("Sword spawn")]
-        [SerializeField] private float swordScaleOnPlace;
-        [SerializeField] private GameObject swordPrefab;
-        [SerializeField] private Transform swordParent;
-        [SerializeField] private Vector3 positionOnPlace;
-        [SerializeField] private Vector3 rotationOnPlace;
-
-        [Header("GameFinish setup")] 
-        [SerializeField] private int playersToWin = 5;
-        [SerializeField] private TMP_Text clientCounter;
+        private float _swordScaleOnPlace;
+        private GameObject _swordPrefab;
+        private Transform _swordParent;
+        private Vector3 _positionOnPlace;
+        private Vector3 _rotationOnPlace;
+        
+        private int _playersToWin = 5;
+        private TMP_Text _clientCounter;
         
         private float _accuracyMinimum;
         private float _timerValue;
         
-        private CanvasGroup _orderCanvasGroup;
         private Enchantment _orderEnchantment;
         private GameFinishCounter _gameFinishCounter;
         private Coroutine _timerCoroutine;
 
         public CustomerFaceChanger faceChanger;
         
-        public bool isFinished;
+        private MonoBehaviour _coroutineRunner;
+        
+        private bool _isFinished;
 
-        private void Start()
-        {
-            _gameFinishCounter = new GameFinishCounter(playersToWin, clientCounter);
+        public OrderGenerator(
+            MonoBehaviour coroutineRunner,
             
-            _orderCanvasGroup = GetComponent<CanvasGroup>();
+            TMP_Text enchantmentName,
+            TMP_Text enchantmentRequiredAccuracy,
+            Image enchantmentProgressBar,
+            CanvasGroup orderCanvasGroup,
+            TMP_Text clientCounter,
+
+            EnchantmentData availableEnchantments,
+
+            GameObject swordPrefab,
+            Transform swordParent,
+            float swordScaleOnPlace,
+            Vector3 positionOnPlace,
+            Vector3 rotationOnPlace,
+
+            Vector2 timeRange,
+            Vector2 accuracyRange,
+            int playersToWin)
+        {
+            _coroutineRunner = coroutineRunner;
+            
+            _enchantmentName = enchantmentName;
+            _enchantmentRequiredAccuracy = enchantmentRequiredAccuracy;
+            _enchantmentProgressBar = enchantmentProgressBar;
+            _orderCanvasGroup = orderCanvasGroup;
+            _clientCounter = clientCounter;
+
+            _availableEnchantments = availableEnchantments;
+
+            _swordPrefab = swordPrefab;
+            _swordParent = swordParent;
+            _swordScaleOnPlace = swordScaleOnPlace;
+            _positionOnPlace = positionOnPlace;
+            _rotationOnPlace = rotationOnPlace;
+
+            _timeRange = timeRange;
+            _accuracyRange = accuracyRange;
+            _accuracyMinimum = accuracyRange.x;
+            _playersToWin = playersToWin;
+            
+            _gameFinishCounter = new GameFinishCounter(_playersToWin, _clientCounter);
+        }
+
+        public bool IsOrderFinished()
+        {
+            if (_isFinished)
+            {
+                _isFinished = false;
+                
+                return true;
+            }
+            
+            return false;
+        }
+
+        public Vector3 GetOrderPosition()
+        {
+            return _orderCanvasGroup.transform.position;
         }
         
         public void StartOrder()
         {
             if (GenerateOrder())
             {
-                enchantmentName.text = _orderEnchantment.name;
-                enchantmentRequiredAccuracy.text = _accuracyMinimum.ToString();
+                _enchantmentName.text = _orderEnchantment.name;
+                _enchantmentRequiredAccuracy.text = _accuracyMinimum.ToString();
                 
-                StartCoroutine(SetCanvasAlpha(1f));
+                _coroutineRunner.StartCoroutine(SetCanvasAlpha(1f));
                 
                 if (GenerateSword())
                 {
-                    _timerCoroutine = StartCoroutine(TimerCoroutine(_timerValue, CompleteOrder));
+                    _timerCoroutine = _coroutineRunner.StartCoroutine(TimerCoroutine(_timerValue, CompleteOrder));
                 }
             }
         }
 
         private bool GenerateOrder()
         {
-            var enchantmentList = availableEnchantments.Enchantments;
+            var enchantmentList = _availableEnchantments.Enchantments;
             int enchantmentCount = enchantmentList.Count;
             
             if (enchantmentCount <= 0)
@@ -85,8 +138,8 @@ namespace Game.Scripts.AI
             var enchantmentId = Random.Range(0, enchantmentCount);
             
             _orderEnchantment = enchantmentList[enchantmentId].Enchantment;
-            _accuracyMinimum = Mathf.Round(Random.Range(accuracyRange.x, accuracyRange.y));
-            _timerValue = Random.Range(timeRange.x, timeRange.y);
+            _accuracyMinimum = Mathf.Round(Random.Range(_accuracyRange.x, _accuracyRange.y));
+            _timerValue = Random.Range(_timeRange.x, _timeRange.y);
 
             return true;
         }
@@ -119,10 +172,10 @@ namespace Game.Scripts.AI
             _accuracyMinimum = 0;
             _timerValue = 0;
             
-            enchantmentName.text = "";
-            enchantmentRequiredAccuracy.text = "";
+            _enchantmentName.text = "";
+            _enchantmentRequiredAccuracy.text = "";
             
-            StartCoroutine(SetCanvasAlpha(1f, false));
+            _coroutineRunner.StartCoroutine(SetCanvasAlpha(1f, false));
         }
 
         public void SkipOrder()
@@ -168,11 +221,11 @@ namespace Game.Scripts.AI
                 _gameFinishCounter.ClientExpired();
             }
             
-            isFinished = true;
+            _isFinished = true;
             
             if (_timerCoroutine != null)
             {
-                StopCoroutine(_timerCoroutine);
+                _coroutineRunner.StopCoroutine(_timerCoroutine);
                 
                 _timerCoroutine = null;
             }
@@ -182,15 +235,15 @@ namespace Game.Scripts.AI
 
         private bool GenerateSword()
         {
-            if (!swordPrefab || !swordParent)
+            if (!_swordPrefab || !_swordParent)
             {
                 return false;
             }
             
-            var sword = Instantiate(swordPrefab, swordParent);
-            sword.transform.localScale *= swordScaleOnPlace;
-            sword.transform.localPosition = positionOnPlace;
-            sword.transform.localRotation = Quaternion.Euler(rotationOnPlace);
+            var sword = Object.Instantiate(_swordPrefab, _swordParent);
+            sword.transform.localScale *= _swordScaleOnPlace;
+            sword.transform.localPosition = _positionOnPlace;
+            sword.transform.localRotation = Quaternion.Euler(_rotationOnPlace);
 
             return true;
         }
@@ -201,12 +254,12 @@ namespace Game.Scripts.AI
             while (timer < time)
             {
                 var t = timer / time;
-                enchantmentProgressBar.fillAmount = 1 - t;
+                _enchantmentProgressBar.fillAmount = 1 - t;
                 timer += Time.deltaTime;
                 yield return null;
             }
 
-            enchantmentProgressBar.fillAmount = 0f;
+            _enchantmentProgressBar.fillAmount = 0f;
             
             callback?.Invoke(false);
         }
@@ -221,6 +274,11 @@ namespace Game.Scripts.AI
                 timer += Time.deltaTime;
                 yield return null;
             }
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }

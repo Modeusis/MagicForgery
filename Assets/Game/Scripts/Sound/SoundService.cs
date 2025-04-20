@@ -6,39 +6,30 @@ using Random = UnityEngine.Random;
 
 namespace Sounds
 {
-    public class SoundService : MonoBehaviour
+    public class SoundService : IDisposable
     {
-        public static SoundService Instance;
+        private SoundType startBackgroundSound;
         
-        [SerializeField] private SoundType startBackgroundSound;
+        private AudioPlayer _audioPlayer;
         
-        [SerializeField] private int _minPoolSize = 1;
-        [SerializeField] private int _maxPoolSize = 10;
-        
-        [SerializeField] private AudioPlayer _audioPlayer;
-        
-        [SerializeField] private SoundDataSetup _musicSounds;
-        [SerializeField] private SoundDataSetup _sfxSounds;
+        private SoundDataSetup _musicSounds;
+        private SoundDataSetup _sfxSounds;
         
         private AbstractPool<AudioPlayer> _soundPlayersPool;
         private float BackgroundVolume { get; set; } = 0.02f;
         public AudioPlayer BackgroundAudioPlayer { get; set; }
         
         private SoundType _currentBackgroundSound;
-        private void Awake()
+        
+        public SoundService(AudioPlayer audioPlayer, SoundDataSetup sfxSounds, SoundDataSetup musicSounds,
+            Transform parent ,int minPoolSize, int maxPoolSize)
         {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            _audioPlayer = audioPlayer;
             
-            var parent = transform;
+            _sfxSounds = sfxSounds;
+            _musicSounds = musicSounds;
             
-            _soundPlayersPool = new AbstractPool<AudioPlayer>(_audioPlayer, parent, _minPoolSize, _maxPoolSize);
+            _soundPlayersPool = new AbstractPool<AudioPlayer>(_audioPlayer, parent, minPoolSize, maxPoolSize);
 
             BackgroundAudioPlayer = Play2DMusicLooped(startBackgroundSound, BackgroundVolume);
         }
@@ -147,7 +138,11 @@ namespace Sounds
             
             _soundPlayersPool.Release(audioPlayer);
         }
-        
-        
+
+
+        public void Dispose()
+        {
+            _soundPlayersPool?.Dispose();
+        }
     }
 }

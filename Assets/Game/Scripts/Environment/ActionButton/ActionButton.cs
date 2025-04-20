@@ -1,14 +1,16 @@
 using System;
 using DG.Tweening;
-using Game.Scripts.AI;
 using Game.Scripts.Interface;
 using Sounds;
 using UnityEngine;
+using Zenject;
 
 namespace Environment
 {
     public class ActionButton : MonoBehaviour, IPressable
     {
+        [Inject] private SoundService _soundService;
+        
         [SerializeField] private float ToggleVolume = 2f;
         
         [SerializeField] private Transform buttonTransform;
@@ -32,7 +34,7 @@ namespace Environment
         {
             OnPressed?.Invoke();
             ButtonClickAnimation();
-            SoundService.Instance.Play3DSfx(SoundType.ActionButtonClick, transform, 3f, ToggleVolume);
+            _soundService.Play3DSfx(SoundType.ActionButtonClick, transform, 3f, ToggleVolume);
         }
 
         private void ButtonClickAnimation()
