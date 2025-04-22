@@ -2,11 +2,11 @@
 
 namespace Game.Scripts.TargetMarks.ArrowStates
 {
-    public class ArrowIdleState : State
+    public class ArrowHideState : State
     {
         private readonly Arrow _arrow;
         
-        public ArrowIdleState(StateType type, Arrow arrow)
+        public ArrowHideState(StateType type, Arrow arrow)
         {
             StateType = type;
             
@@ -15,7 +15,9 @@ namespace Game.Scripts.TargetMarks.ArrowStates
         
         public override void Enter()
         {
-
+            _arrow.ResetRotation();
+            
+            _arrow.HideArrow();
         }
 
         public override void Update()

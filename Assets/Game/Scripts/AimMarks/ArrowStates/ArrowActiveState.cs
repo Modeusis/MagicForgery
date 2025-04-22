@@ -21,8 +21,13 @@ namespace Game.Scripts.TargetMarks.ArrowStates
         private Coroutine _messageShowingCoroutine;
 
         private TargetMark _target;
+
+        private int _wordsOnOneRow;
         
-        public ArrowActiveState(StateType stateType, TargetMarksConfig targets, Arrow arrow, TMP_Text textField, EventBus eventBus)
+        private float _minAimMarkDistance;
+        
+        public ArrowActiveState(StateType stateType, TargetMarksConfig targets, Arrow arrow, TMP_Text textField,
+            EventBus eventBus, int wordsMax, float minDistance)
         {
             StateType = stateType;
             
@@ -33,19 +38,32 @@ namespace Game.Scripts.TargetMarks.ArrowStates
             _targetsConfig = targets;
             
             _eventBus = eventBus;
-            
             _eventBus?.Subscribe<MarkType>(TargetChangeHandler);
+            
+            _wordsOnOneRow = wordsMax;
+            
+            _minAimMarkDistance = minDistance;
         }
         
         public override void Enter()
         {
-            _arrow.ShowArrow();
-            
-            _arrow.RotateArrowToTarget(_target.TargetPosition);
+            _arrow.ShowArrow(_target.TargetPosition);
         }
 
         public override void Update()
         {
+            if (!_arrow.isArrowFree)
+            {
+                return;
+            }
+
+            if (_arrow.GetDistanceToAim(_target.TargetPosition) < _minAimMarkDistance)
+            {
+                _eventBus?.Publish(new TagCloseToAim());
+                
+                return;
+            }
+            
             _arrow.LookAtTarget(_target.TargetPosition);
         }
 
@@ -58,7 +76,7 @@ namespace Game.Scripts.TargetMarks.ArrowStates
             _messageShowingCoroutine = null;
         }
         
-        private void ShowMessage(List<string> message, float duration = 1f)
+        private void ShowMessage(string message, float duration = 1f)
         {
             if (_messageShowingCoroutine != null)
             {
@@ -67,24 +85,42 @@ namespace Game.Scripts.TargetMarks.ArrowStates
                 _messageShowingCoroutine = null;
             }
             
-            _messageShowingCoroutine = _textField.StartCoroutine(MessageWriteCoroutine(message[0], duration));
+            _messageShowingCoroutine = _textField.StartCoroutine(MessageWriteCoroutine(message, _wordsOnOneRow,duration));
         }
 
-        private IEnumerator MessageWriteCoroutine(string message, float duration, Action onComplete = null)
+        private IEnumerator MessageWriteCoroutine(string message, int wordsPerRow, float duration, float delayBetweenMessages = 2f, Action onComplete = null)
         {
             string actualMessage = "";
             
             int letterIndex = 0;
             
+            var wordCounter = 0;
+            
             float eachLetterDelay = duration / message.Length;
             float timer = 0f;
             
             YieldInstruction waitLetterDelay = new WaitForSeconds(eachLetterDelay);
-
+            
             while (timer < duration)
             {
                 actualMessage += message[letterIndex];
-                _textField.text = actualMessage;
+
+                if (message[letterIndex] == ' ')
+                {
+                    wordCounter++;
+                    Debug.Log("word counted");
+                };
+
+                if (wordCounter == wordsPerRow)
+                {
+                    _textField.text = "";
+                    actualMessage = "";
+                }
+                else
+                {
+                    _textField.text = actualMessage;
+                }
+                
                 
                 letterIndex++;
                 
@@ -116,10 +152,14 @@ namespace Game.Scripts.TargetMarks.ArrowStates
             {
                 targetMark = findMark;
                 
+                Debug.Log($"Found mark {markType}");
+                
                 return true;
             }
             
             targetMark = null;
+            
+            Debug.Log($"Mark not found");
             
             return false;
         }

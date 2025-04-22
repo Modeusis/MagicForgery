@@ -12,15 +12,18 @@ namespace Game.Scripts.TargetMarks
     {
         private EventBus _eventBus;
         
-        private TargetMarksConfig _targets;
+        [SerializeField] private float _disappearTime = 0.5f;
+        [SerializeField] private float _appearTime = 0.5f;
+        [SerializeField] private float _rotationTime = 0.5f;
         
-        private Transform _arrowTransform;
+        [SerializeField] private int wordsOnOneRow = 8;
+        [SerializeField] private float hideGuidLineDistance = 2f;
         
-        private TMP_Text _stepTextField;
+        [SerializeField] private TargetMarksConfig _targets;
         
-        private float _disappearTime = 0.5f;
-        private float _appearTime = 0.5f;
-        private float _rotationTime = 0.5f;
+        [SerializeField] private Transform _arrowTransform;
+        
+        [SerializeField] private TMP_Text _stepTextField;
         
         private FSM _arrowTargetStateMachine;
         
@@ -32,13 +35,16 @@ namespace Game.Scripts.TargetMarks
             var arrow = new Arrow(_arrowTransform, _appearTime, _disappearTime, _rotationTime);
 
             var idleState = new ArrowIdleState(StateType.Idle, arrow);
-            var activeState = new ArrowActiveState(StateType.Active, _targets, arrow, _stepTextField, _eventBus);
+            var hideState = new ArrowIdleState(StateType.Hide, arrow);
+            var activeState = new ArrowActiveState(StateType.Active, _targets, arrow, _stepTextField,
+                _eventBus, wordsOnOneRow, hideGuidLineDistance);
             
             var transitions = new List<Transition>()
             {
                 new Transition(StateType.Idle, StateType.Active, () => _eventBus.WasInvokedThisFrame<MarkType>()),
                 new Transition(StateType.Active, StateType.Active, () => _eventBus.WasInvokedThisFrame<MarkType>()),
-                // new Transition(StateType.Active, StateType.Idle, () => EventBus.Instance.WasInvokedThisFrame<MarkType>()),
+                new Transition(StateType.Active, StateType.Hide, () => _eventBus.WasInvokedThisFrame<TagCloseToAim>()),
+                new Transition(StateType.Hide, StateType.Active, () => _eventBus.WasInvokedThisFrame<MarkType>())
                 
             };
 
@@ -46,6 +52,7 @@ namespace Game.Scripts.TargetMarks
             {
                 { StateType.Idle, idleState },
                 { StateType.Active, activeState },
+                { StateType.Hide, hideState },
             };
             
             _arrowTargetStateMachine = new FSM(transitions, states, StateType.Idle);
@@ -53,12 +60,22 @@ namespace Game.Scripts.TargetMarks
 
         private void Update()
         {
-            _arrowTargetStateMachine?.Update();
-        }
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                _eventBus.Publish(MarkType.Engine);
+            }
 
-        public void ChangeTarget(MarkType mark)
-        {
-            _eventBus.Publish(mark);   
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                _eventBus.Publish(MarkType.DrawWell);
+            }
+
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                _eventBus.Publish(MarkType.EnchantmentBook);
+            }
+            
+            _arrowTargetStateMachine?.Update();
         }
     }
 }

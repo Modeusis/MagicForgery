@@ -18,6 +18,6 @@ namespace Game.Scripts.TargetMarks
         
         [field: SerializeField] public Vector3 TargetPosition {get; private set;}
         
-        [field: SerializeField] public List<string> MessagesForStep {get; private set;}
+        [field: SerializeField] public string MessagesForStep {get; private set;}
     }
 }

@@ -4,6 +4,7 @@
     {
         Idle,
         Active,
+        Hide,
         Movement,
         Order
     }
