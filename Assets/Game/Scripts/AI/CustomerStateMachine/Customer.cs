@@ -35,6 +35,7 @@ namespace Game.Scripts.AI.CustomerStateMachine
         public void Initialize(EventBus eventBus, OrderGenerator orderGenerator, Transform spawnPoint, DestinationType destinationType)
         {
             _eventBus = eventBus;
+            
             _eventBus.Subscribe<string>(HandleLastDestinationReached);
             
             _orderGenerator = orderGenerator;

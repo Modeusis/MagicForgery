@@ -204,7 +204,7 @@ namespace Environment
             
             component.CopyFrom(enchantedSword);
             
-            _itemGenerator.SetItemData(0, _swordPackageName, swordPackageSprite, "Enchanted sword", tempPrefab, 0.4f, Quaternion.Euler(0f, 270f, 0f));
+            _itemGenerator.SetItemData("Temp", _swordPackageName, swordPackageSprite, "Enchanted sword", tempPrefab, 0.4f, Quaternion.Euler(0f, 270f, 0f));
             var itemInfo = _itemGenerator.GenerateItem();
 
             _item = itemInfo;

@@ -29,6 +29,11 @@ namespace Player
 
         private void Update()
         {
+            if (Player.instance.IsFinalScreenShown)
+            {
+                return;
+            }
+            
             if (Player.instance.IsPlayerEnabled && !Player.instance.IsOverlayShowed)
             {
                 HandleCameraMovement();

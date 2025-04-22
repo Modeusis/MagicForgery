@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -104,6 +105,10 @@ namespace Game.Scripts.MainMenu
 
         private void QuitToMenuAction()
         {
+            Player.Player.instance.IsFinalScreenShown = true;
+
+            DOTween.KillAll();
+            
             GameLoader.Instance.ToMainMenu();
             
             Cursor.lockState = CursorLockMode.None;

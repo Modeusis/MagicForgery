@@ -1,4 +1,5 @@
 using TMPro;
+using UI;
 using UnityEngine;
 
 namespace Environment
@@ -10,14 +11,20 @@ namespace Environment
         
         private TMP_Text _clientCounterText;
         
-        public GameFinishCounter(int clientsToWin, TMP_Text clientsCounter)
+        private GameFinishScreen _gameFinishScreen;
+        
+        public GameFinishCounter(int clientsToWin, TMP_Text clientsCounter, GameFinishScreen gameFinishScreen)
         {
             _clientsToWin = clientsToWin;
             
             _clientCounterText = clientsCounter;
             
+            _gameFinishScreen = gameFinishScreen;
+            
             RenewClientCounter();
         }
+        
+        public int GetCurrentCount() => _servedClients;
         
         public void ClientSuccess()
         {
@@ -49,6 +56,8 @@ namespace Environment
         private void ShowFinalScreen()
         {
             Debug.Log("Game finished!");
+            
+            _gameFinishScreen?.ShowFinalScreen();
         }
     }
 }

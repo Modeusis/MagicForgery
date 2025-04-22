@@ -40,6 +40,7 @@ namespace Game.Scripts.AI
         private Coroutine _timerCoroutine;
 
         public CustomerFaceChanger faceChanger;
+        private GameFinishScreen _gameFinishScreen;
         
         private MonoBehaviour _coroutineRunner;
         
@@ -64,6 +65,7 @@ namespace Game.Scripts.AI
 
             Vector2 timeRange,
             Vector2 accuracyRange,
+            GameFinishScreen gameFinishScreen,
             int playersToWin)
         {
             _coroutineRunner = coroutineRunner;
@@ -86,8 +88,9 @@ namespace Game.Scripts.AI
             _accuracyRange = accuracyRange;
             _accuracyMinimum = accuracyRange.x;
             _playersToWin = playersToWin;
+            _gameFinishScreen = gameFinishScreen;
             
-            _gameFinishCounter = new GameFinishCounter(_playersToWin, _clientCounter);
+            _gameFinishCounter = new GameFinishCounter(_playersToWin, _clientCounter, _gameFinishScreen);
         }
 
         public bool IsOrderFinished()
@@ -146,6 +149,13 @@ namespace Game.Scripts.AI
 
         private bool ValidateOrder(Sword enchantedSword)
         {
+            if (!enchantedSword)
+            {
+                TooltipController.Instance.ShowMechanicsDescription("No sword in hands");
+                
+                return false;
+            }
+            
             if (!enchantedSword.IsEnchanted)
             {
                 TooltipController.Instance.ShowMechanicsDescription("Sword is not enchanted");
@@ -276,6 +286,8 @@ namespace Game.Scripts.AI
             }
         }
 
+        public int GetCurrentCustomerCounter() => _gameFinishCounter.GetCurrentCount();
+        
         public void Dispose()
         {
             

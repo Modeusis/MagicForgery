@@ -6,7 +6,7 @@ namespace UI
     public class ItemData : ScriptableObject
     {
         [Header("Basic stats")]
-        public int id;
+        public string id;
         public string itemName;
         public Sprite itemSprite;
         public string itemDescription;

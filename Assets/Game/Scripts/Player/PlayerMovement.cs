@@ -35,6 +35,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (Player.instance.IsFinalScreenShown)
+        {
+            return;
+        }
+        
         if (Player.instance.IsPlayerEnabled && !Player.instance.IsOverlayShowed && !Player.instance.IsMiniGamePlayed)
         {
             HandleMovement();
@@ -66,18 +71,18 @@ public class PlayerMovement : MonoBehaviour
             
             if (_horizontal == 0 && _vertical == 0)
             {
-                Player.instance.State = Player.PlayerState.Standing;
+                Player.instance.State = PlayerState.Standing;
             }
             else
             {
                 HandleRunning();
             }
             
-            if (Player.instance.State == Player.PlayerState.Walking)
+            if (Player.instance.State == PlayerState.Walking)
             {
                 _speed = walkSpeed;
             }
-            else if (Player.instance.State == Player.PlayerState.Running)
+            else if (Player.instance.State == PlayerState.Running)
             {
                 _speed = runSpeed;
             }
@@ -94,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_charIsGrounded && Input.GetKey(jumpKey))
         {
-            Player.instance.State = Player.PlayerState.Jumping; 
+            Player.instance.State = PlayerState.Jumping; 
             _yVelocity = jumpStrength;
         }
     }
@@ -103,11 +108,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_charIsGrounded && Input.GetKey(runKey))
         {
-            Player.instance.State = Player.PlayerState.Running;
+            Player.instance.State = PlayerState.Running;
         }
         else
         {
-            Player.instance.State = Player.PlayerState.Walking;
+            Player.instance.State = PlayerState.Walking;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace UI
         [SerializeField] private List<ItemData> items;
         [SerializeField] private List<InventorySlot> slots;
         
+        public IReadOnlyList<ItemData> Items => items;
         
         private void Awake()
         {

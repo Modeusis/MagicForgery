@@ -2,6 +2,7 @@
 using Environment;
 using Game.Scripts.AI;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -33,6 +34,7 @@ namespace Game.Scripts.DI.Installers
         [Header("GameFinish setup")] 
         [SerializeField] private int playersToWin = 5;
         [SerializeField] private TMP_Text clientCounter;
+        [SerializeField] private GameFinishScreen gameFinishScreen;
         
         public override void InstallBindings()
         {
@@ -60,6 +62,7 @@ namespace Game.Scripts.DI.Installers
                 
                 timeRange,
                 accuracyRange,
+                gameFinishScreen,
                 playersToWin
             );
         }

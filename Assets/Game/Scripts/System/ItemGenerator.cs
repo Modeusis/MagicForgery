@@ -5,7 +5,7 @@ namespace System
 {
     public class ItemGenerator
     {
-        private int _id;
+        private string _id;
         private string _itemName;
         private Sprite _itemSprite;
         private string _itemDescription;
@@ -16,7 +16,7 @@ namespace System
 
         public bool IsItemDataSet;
         
-        public void SetItemData(int id, string itemName, Sprite itemSprite, string itemDescription, GameObject prefab, float scaleOnPickUp, Quaternion rotationOnPickUp)
+        public void SetItemData(string id, string itemName, Sprite itemSprite, string itemDescription, GameObject prefab, float scaleOnPickUp, Quaternion rotationOnPickUp)
         {
             _id = id;
             _itemName = itemName;

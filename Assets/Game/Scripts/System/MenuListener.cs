@@ -9,6 +9,11 @@ namespace Game.Scripts.System
         
         private void Update()
         {
+            if (Player.Player.instance.IsFinalScreenShown)
+            {
+                return;
+            }
+            
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 menu.ToggleMenu();

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Player
 {
-    public class Player : MonoBehaviour
+    public partial class Player : MonoBehaviour
     {
         public static Player instance;
         
@@ -26,7 +26,7 @@ namespace Player
         
         [Header("Keys")]
         [SerializeField] private KeyCode interactKey = KeyCode.E;
-        [SerializeField] private KeyCode breakKey = KeyCode.Escape;
+        [SerializeField] private KeyCode breakKey = KeyCode.F;
         
         public Camera mainCamera;
         private bool _isOverlayShowed;
@@ -37,6 +37,8 @@ namespace Player
         private IDrawable _drawableObject = null;
         
         private int _currentMana;
+        
+        public bool IsFinalScreenShown { get; set; } = false;
         
         public ItemData selectedItem;
         
@@ -112,14 +114,7 @@ namespace Player
                 }
             }
         }
-        public enum PlayerState
-        {
-            Standing,
-            Walking,
-            Running,
-            Jumping
-        }
-        
+
         private PlayerState _state = PlayerState.Standing;
 
         public PlayerState State
@@ -164,6 +159,11 @@ namespace Player
 
         private void Update()
         {
+            if (instance.IsFinalScreenShown)
+            {
+                return;
+            }
+            
             if (IsPlayerEnabled && !IsOverlayShowed && !IsMiniGamePlayed)
             {
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
