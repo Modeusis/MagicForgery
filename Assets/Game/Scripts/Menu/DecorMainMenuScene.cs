@@ -72,8 +72,6 @@ namespace Game.Scripts.MainMenu
 
         private void FeatherAnimation(float delay)
         {
-            Debug.Log("Called");
-            
             if (_featherCoroutine != null)
             {
                 StopCoroutine(_featherCoroutine);
@@ -89,8 +87,6 @@ namespace Game.Scripts.MainMenu
         
         private IEnumerator FeatherCoroutine(float delay, Action callback = null)
         {
-            Debug.Log("Called and started");
-            
             yield return new WaitForSeconds(delay);
             
             featherAnimator.SetTrigger("WriteDownTrigger");
