@@ -106,13 +106,8 @@ namespace Game.Scripts.MainMenu
         private void QuitToMenuAction()
         {
             Player.Player.instance.IsFinalScreenShown = true;
-
-            DOTween.KillAll();
             
             GameLoader.Instance.ToMainMenu();
-            
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
         }
     }
 }
