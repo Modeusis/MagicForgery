@@ -17,6 +17,8 @@ namespace UI
         [SerializeField] private TMP_Text swordInfo;
         [SerializeField] private TMP_Text converterEnchantmentName;
         [SerializeField] private TMP_Text enchantmentName;
+        [SerializeField] private TMP_Text enchantmentClass;
+        [SerializeField] private TMP_Text enchantmentAccuracyPercentage;
         [SerializeField] private List<TMP_Text> swordStats;
         
         [Header("Hover tooltip")]
@@ -129,7 +131,7 @@ namespace UI
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
-            swordSpriteBlock.TryGetComponent<Image>(out _swordImage);
+            swordSpriteBlock.TryGetComponent(out _swordImage);
         }
 
         
@@ -159,6 +161,8 @@ namespace UI
                     enchantmentName.color = Color.green;
                     enchantmentName.text = _placedSword.SwordEnchantment.enchantmentName;
 
+                    SetEnchantmentClass(_placedSword.EnchantmentAccuracy);
+                    
                     if (swordStats.Count == 5)
                     {
                         swordStats[0].text = _placedSword.PhysicalBonusDamageByAccuracy.ToString();
@@ -172,6 +176,9 @@ namespace UI
                 {
                     enchantmentName.color = Color.red;
                     enchantmentName.text = "Unset";
+                    
+                    enchantmentAccuracyPercentage.text = "";
+                    enchantmentClass.text = "None";
                     
                     foreach (var stat in swordStats)
                     {
@@ -193,7 +200,6 @@ namespace UI
                     stat.text = "-";
                 }
             }
-            
 
             if (CurrentEnchantment)
             {
@@ -212,8 +218,6 @@ namespace UI
             rootSphereScript.Toggle();
             IsTooltipShown = false;
         }
-
-        
         
         public void ConfirmEnchantment()
         {
@@ -221,6 +225,60 @@ namespace UI
             drawPlace.SetActive(true);
         }
 
-        
+        private void SetEnchantmentClass(float accuracy)
+        {
+            var textField = enchantmentClass;
+            var textPercentage = enchantmentAccuracyPercentage;
+            
+            var accuracyPercentage = Mathf.Ceil(accuracy * 100);
+            
+            textPercentage.text = accuracyPercentage + "%";
+            
+            switch (accuracyPercentage)
+            {
+                case > 80:
+                {
+                    textField.text = "A";
+                    textField.color = new Color(39, 124, 160);
+                    
+                    break;
+                }
+                case > 60:
+                {
+                    textField.text = "B";
+                    textField.color = new Color(145, 190, 111);
+                    
+                    break;
+                }
+                case > 50:
+                {
+                    textField.text = "C";
+                    textField.color = new Color(249, 197, 78);
+                    
+                    break;
+                }
+                case > 40:
+                {
+                    textField.text = "D";
+                    textField.color = new Color(218, 185, 109);
+                    
+                    break;
+                }
+                case > 20:
+                {
+                    textField.text = "E";
+                    textField.color = new Color(195, 176, 132);
+                    
+                    break;
+                }
+                case >= 0:
+                {
+                    textField.text = "F";
+                    textField.color = Color.gray;
+                    
+                    break;
+                }
+            }
+        }
     }
 }

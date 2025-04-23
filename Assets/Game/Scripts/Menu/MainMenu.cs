@@ -11,6 +11,9 @@ namespace Game.Scripts.MainMenu
         
         private void OnEnable()
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            
             StartGameButton.onClick.AddListener(StartAction);
             QuitButton.onClick.AddListener(LeaveAction);
         }

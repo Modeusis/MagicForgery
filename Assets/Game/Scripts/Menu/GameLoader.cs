@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -33,6 +34,11 @@ namespace Game.Scripts.MainMenu
 
         public void ToMainMenu()
         {
+            DOTween.KillAll();
+            
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            
             LoadingScreen.Instance.ShowLoadingScreen(MainMenuSceneId);
         }
         
