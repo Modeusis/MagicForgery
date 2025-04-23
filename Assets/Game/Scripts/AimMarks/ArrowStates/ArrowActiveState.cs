@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Game.Scripts.Utilities;
 using Game.Scripts.Utilities.FSM;
+using Sounds;
 using TMPro;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ namespace Game.Scripts.TargetMarks.ArrowStates
         private readonly EventBus _eventBus;
         
         private readonly TargetMarksConfig _targetsConfig;
+        
+        private readonly SoundService _soundService;
         
         private Arrow _arrow;
         
@@ -27,11 +30,13 @@ namespace Game.Scripts.TargetMarks.ArrowStates
         private float _minAimMarkDistance;
         
         public ArrowActiveState(StateType stateType, TargetMarksConfig targets, Arrow arrow, TMP_Text textField,
-            EventBus eventBus, int wordsMax, float minDistance)
+            EventBus eventBus, int wordsMax, float minDistance, SoundService soundService)
         {
             StateType = stateType;
             
             _arrow = arrow;
+            
+            _soundService = soundService;
             
             _textField = textField;
             
@@ -47,16 +52,19 @@ namespace Game.Scripts.TargetMarks.ArrowStates
         
         public override void Enter()
         {
-            _arrow.ShowArrow(_target.TargetPosition);
+            Debug.Log($"Entering ActiveState, target: {_target != null}");
+            if (_target == null)
+            {
+                Debug.LogWarning("Entered ActiveState with null target!");
+                return;
+            }
+            _arrow.ShowArrow();
+            
+            ShowMessage(_target.MessagesForStep, _target.MessageSymbolsDelay);
         }
 
         public override void Update()
         {
-            if (!_arrow.isArrowFree)
-            {
-                return;
-            }
-
             if (_arrow.GetDistanceToAim(_target.TargetPosition) < _minAimMarkDistance)
             {
                 _eventBus?.Publish(new TagCloseToAim());
@@ -69,11 +77,14 @@ namespace Game.Scripts.TargetMarks.ArrowStates
 
         public override void Exit()
         {
-            
-            
-            _target = null;
-            
-            _messageShowingCoroutine = null;
+            _textField.text = "";
+
+            if (_messageShowingCoroutine != null)
+            {
+                _textField.StopCoroutine(_messageShowingCoroutine);
+                
+                _messageShowingCoroutine = null;
+            }
         }
         
         private void ShowMessage(string message, float duration = 1f)
@@ -83,36 +94,36 @@ namespace Game.Scripts.TargetMarks.ArrowStates
                 _textField.StopCoroutine(_messageShowingCoroutine);
                 
                 _messageShowingCoroutine = null;
+                
+                _textField.text = message;
             }
             
-            _messageShowingCoroutine = _textField.StartCoroutine(MessageWriteCoroutine(message, _wordsOnOneRow,duration));
+            _messageShowingCoroutine = _textField.StartCoroutine(MessageWriteCoroutine(message, _wordsOnOneRow, duration));
         }
 
-        private IEnumerator MessageWriteCoroutine(string message, int wordsPerRow, float duration, float delayBetweenMessages = 2f, Action onComplete = null)
+        private IEnumerator MessageWriteCoroutine(string message, int wordsPerRow, float delayChars = .2f, float delayBeforeCleaning = 2f)
         {
-            string actualMessage = "";
-            
             int letterIndex = 0;
+            
+            string actualMessage = "";
             
             var wordCounter = 0;
             
-            float eachLetterDelay = duration / message.Length;
-            float timer = 0f;
+            YieldInstruction waitLetterDelay = new WaitForSeconds(delayChars);
             
-            YieldInstruction waitLetterDelay = new WaitForSeconds(eachLetterDelay);
-            
-            while (timer < duration)
+            while (letterIndex < message.Length)
             {
                 actualMessage += message[letterIndex];
 
                 if (message[letterIndex] == ' ')
                 {
                     wordCounter++;
-                    Debug.Log("word counted");
                 };
 
                 if (wordCounter == wordsPerRow)
                 {
+                    wordCounter = 0;
+                    
                     _textField.text = "";
                     actualMessage = "";
                 }
@@ -124,19 +135,21 @@ namespace Game.Scripts.TargetMarks.ArrowStates
                 
                 letterIndex++;
                 
-                timer += eachLetterDelay;
-                
                 yield return waitLetterDelay;
             }
                 
-            _textField.text = message;
+            _textField.text = actualMessage;
+            
+            yield return new WaitForSeconds(delayBeforeCleaning);
+            
+            _textField.text = "";
         }
 
         public void TargetChangeHandler(MarkType markType)
         {
             if (TryGetTarget(markType, out _target))
             {
-                ShowMessage(_target.MessagesForStep, _target.TimeToShowMessage);
+                Debug.Log("Target changed call");
                 
                 return;
             }

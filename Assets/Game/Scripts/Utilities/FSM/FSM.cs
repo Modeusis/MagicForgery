@@ -22,13 +22,18 @@ namespace Game.Scripts.Utilities.FSM
         
         public void Update()
         {
-            _currentState.Update();
-            
+            _currentState?.Update();
+        }
+
+        public void LateUpdate()
+        {
             for (int i = 0; i < _transitions.Count; i++)
             {
-                if (_transitions[i].From == _currentState.StateType && _transitions[i].Condition())
+                if (_transitions[i].From == _currentState?.StateType && _transitions[i].Condition())
                 {
                     ChangeState(_transitions[i].To);
+                    
+                    return;
                 }
             }
         }

@@ -13,7 +13,7 @@ namespace Game.Scripts.TargetMarks
     [Serializable]
     public class TargetMark
     {
-        [field: SerializeField] public float TimeToShowMessage { get; private set; }
+        [field: SerializeField] public float MessageSymbolsDelay { get; private set; } = 0.2f;
         [field: SerializeField] public MarkType Target {get; private set;}
         
         [field: SerializeField] public Vector3 TargetPosition {get; private set;}

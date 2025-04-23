@@ -69,6 +69,11 @@ namespace Game.Scripts.AI.CustomerStateMachine
             _customerStateMachine?.Update();
         }
 
+        private void LateUpdate()
+        {
+            _customerStateMachine?.LateUpdate();
+        }
+
         private void OnDestroy()
         {
             _eventBus.Unsubscribe<string>(HandleLastDestinationReached);

@@ -1,4 +1,5 @@
 ﻿using Game.Scripts.Utilities.FSM;
+using UnityEngine;
 
 namespace Game.Scripts.TargetMarks.ArrowStates
 {
@@ -15,7 +16,7 @@ namespace Game.Scripts.TargetMarks.ArrowStates
         
         public override void Enter()
         {
-
+            Debug.Log("arrow idle state entered");
         }
 
         public override void Update()

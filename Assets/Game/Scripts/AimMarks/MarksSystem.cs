@@ -2,6 +2,7 @@
 using Game.Scripts.TargetMarks.ArrowStates;
 using Game.Scripts.Utilities;
 using Game.Scripts.Utilities.FSM;
+using Sounds;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -28,16 +29,16 @@ namespace Game.Scripts.TargetMarks
         private FSM _arrowTargetStateMachine;
         
         [Inject]
-        private void Initialize(EventBus eventBus)
+        private void Initialize(EventBus eventBus, SoundService soundService)
         {
             _eventBus = eventBus;
             
             var arrow = new Arrow(_arrowTransform, _appearTime, _disappearTime, _rotationTime);
 
             var idleState = new ArrowIdleState(StateType.Idle, arrow);
-            var hideState = new ArrowIdleState(StateType.Hide, arrow);
+            var hideState = new ArrowHideState(StateType.Hide, arrow);
             var activeState = new ArrowActiveState(StateType.Active, _targets, arrow, _stepTextField,
-                _eventBus, wordsOnOneRow, hideGuidLineDistance);
+                _eventBus, wordsOnOneRow, hideGuidLineDistance, soundService);
             
             var transitions = new List<Transition>()
             {
@@ -55,7 +56,7 @@ namespace Game.Scripts.TargetMarks
                 { StateType.Hide, hideState },
             };
             
-            _arrowTargetStateMachine = new FSM(transitions, states, StateType.Idle);
+            _arrowTargetStateMachine = new FSM(transitions, states, StateType.Hide);
         }
 
         private void Update()
@@ -74,8 +75,18 @@ namespace Game.Scripts.TargetMarks
             {
                 _eventBus.Publish(MarkType.EnchantmentBook);
             }
+
+            if (_eventBus.WasInvokedThisFrame<TagCloseToAim>())
+            {
+                Debug.Log("Tag close to aim is triggered");   
+            }
             
             _arrowTargetStateMachine?.Update();
+        }
+
+        private void LateUpdate()
+        {
+            _arrowTargetStateMachine?.LateUpdate();
         }
     }
 }

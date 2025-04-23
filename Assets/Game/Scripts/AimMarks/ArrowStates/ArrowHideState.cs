@@ -1,4 +1,5 @@
 ﻿using Game.Scripts.Utilities.FSM;
+using UnityEngine;
 
 namespace Game.Scripts.TargetMarks.ArrowStates
 {
@@ -15,9 +16,9 @@ namespace Game.Scripts.TargetMarks.ArrowStates
         
         public override void Enter()
         {
-            _arrow.ResetRotation();
+            Debug.Log("arrow hide state entered");
             
-            _arrow.HideArrow();
+            _arrow.ResetRotation();
         }
 
         public override void Update()
