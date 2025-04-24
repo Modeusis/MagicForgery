@@ -43,10 +43,17 @@ namespace Game.Scripts.Utilities
 
         public void Publish<T>(T eventData)
         {
-            if (_events.TryGetValue(typeof(T), out var list))
+            if (!_thisFrameEvents.TryGetValue(eventData.GetType(), out var thisFrameEvent))
+            {
+                _thisFrameEvents.Add(typeof(T), Time.frameCount);
+            }
+            else
             {
                 _thisFrameEvents[typeof(T)] = Time.frameCount;
-                
+            }  
+            
+            if (_events.TryGetValue(typeof(T), out var list))
+            {
                 var listeners = new List<Delegate>(list);
                 
                 foreach (var listener in listeners)
@@ -66,6 +73,8 @@ namespace Game.Scripts.Utilities
         public bool WasInvokedThisFrame<T>()
         {
             _thisFrameEvents.TryGetValue(typeof(T), out var frameCount);
+            
+            Debug.Log($"{typeof(T)}: {Time.frameCount} && {frameCount} called");
             
             if (frameCount == Time.frameCount)
             {

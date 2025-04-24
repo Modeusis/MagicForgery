@@ -75,11 +75,6 @@ namespace Game.Scripts.TargetMarks
             {
                 _eventBus.Publish(MarkType.EnchantmentBook);
             }
-
-            if (_eventBus.WasInvokedThisFrame<TagCloseToAim>())
-            {
-                Debug.Log("Tag close to aim is triggered");   
-            }
             
             _arrowTargetStateMachine?.Update();
         }
