@@ -74,8 +74,6 @@ namespace Game.Scripts.Utilities
         {
             _thisFrameEvents.TryGetValue(typeof(T), out var frameCount);
             
-            Debug.Log($"{typeof(T)}: {Time.frameCount} && {frameCount} called");
-            
             if (frameCount == Time.frameCount)
             {
                 return true;

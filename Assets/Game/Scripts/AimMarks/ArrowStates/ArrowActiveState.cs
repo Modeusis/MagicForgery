@@ -52,12 +52,11 @@ namespace Game.Scripts.TargetMarks.ArrowStates
         
         public override void Enter()
         {
-            Debug.Log($"Entering ActiveState, target: {_target != null}");
             if (_target == null)
             {
-                Debug.LogWarning("Entered ActiveState with null target!");
                 return;
             }
+            
             _arrow.ShowArrow();
             
             ShowMessage(_target.MessagesForStep, _target.MessageSymbolsDelay);
@@ -149,8 +148,6 @@ namespace Game.Scripts.TargetMarks.ArrowStates
         {
             if (TryGetTarget(markType, out _target))
             {
-                Debug.Log("Target changed call");
-                
                 return;
             }
             
@@ -164,8 +161,6 @@ namespace Game.Scripts.TargetMarks.ArrowStates
             if (findMark != null)
             {
                 targetMark = findMark;
-                
-                Debug.Log($"Found mark {markType}");
                 
                 return true;
             }

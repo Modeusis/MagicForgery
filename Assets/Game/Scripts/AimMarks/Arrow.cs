@@ -26,6 +26,8 @@ namespace Game.Scripts.TargetMarks
         
         public void LookAtTarget(Vector3 position)
         {
+            //Remake to work only on Y axis
+            
             _arrowTransform.LookAt(position, Vector3.up);
         }
 

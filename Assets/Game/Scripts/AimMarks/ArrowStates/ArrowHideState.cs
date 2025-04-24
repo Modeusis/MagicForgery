@@ -16,8 +16,6 @@ namespace Game.Scripts.TargetMarks.ArrowStates
         
         public override void Enter()
         {
-            Debug.Log("arrow hide state entered");
-            
             _arrow.ResetRotation();
         }
 

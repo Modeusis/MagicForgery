@@ -56,7 +56,7 @@ namespace Game.Scripts.TargetMarks
                 { StateType.Hide, hideState },
             };
             
-            _arrowTargetStateMachine = new FSM(transitions, states, StateType.Hide);
+            _arrowTargetStateMachine = new FSM(transitions, states, StateType.Idle);
         }
 
         private void Update()

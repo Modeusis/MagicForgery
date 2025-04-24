@@ -16,5 +16,4 @@ MonoBehaviour:
   - <Type>k__BackingField: 0
     <PopUpDescription>k__BackingField: Leave the game already?
   - <Type>k__BackingField: 1
-    <PopUpDescription>k__BackingField: You want to quit? Last save was when you finish
-      order
+    <PopUpDescription>k__BackingField: You want to quit? Okay

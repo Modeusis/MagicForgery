@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: TargetsSetup
   m_EditorClassIdentifier: 
   <TargetMarks>k__BackingField:
-  - <MessageSymbolsDelay>k__BackingField: 0.2
+  - <MessageSymbolsDelay>k__BackingField: 0.05
     <Target>k__BackingField: 1
     <TargetPosition>k__BackingField: {x: 134.78477, y: 4.1709995, z: 19.45227}
     <MessagesForStep>k__BackingField: this is realy cool message
-  - <MessageSymbolsDelay>k__BackingField: 0.1
+  - <MessageSymbolsDelay>k__BackingField: 0.05
     <Target>k__BackingField: 4
     <TargetPosition>k__BackingField: {x: 166.71, y: 0, z: 62.35}
     <MessagesForStep>k__BackingField: asd asd asd bsdf bsdf ajsdwe djjf
-  - <MessageSymbolsDelay>k__BackingField: 0.2
+  - <MessageSymbolsDelay>k__BackingField: 0.05
     <Target>k__BackingField: 6
     <TargetPosition>k__BackingField: {x: 144.70085, y: 1.6499996, z: 20.87075}
     <MessagesForStep>k__BackingField: No message yet
