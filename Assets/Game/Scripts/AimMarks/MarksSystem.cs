@@ -61,21 +61,6 @@ namespace Game.Scripts.TargetMarks
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                _eventBus.Publish(MarkType.Engine);
-            }
-
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                _eventBus.Publish(MarkType.DrawWell);
-            }
-
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                _eventBus.Publish(MarkType.EnchantmentBook);
-            }
-            
             _arrowTargetStateMachine?.Update();
         }
 
