@@ -29,6 +29,8 @@ namespace Game.Scripts.MainMenu
         
         public void StartGame()
         {
+            DOTween.KillAll();
+            
             LoadingScreen.Instance.ShowLoadingScreen(GameSceneId);
         }
 

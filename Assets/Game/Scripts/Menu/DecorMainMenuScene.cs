@@ -2,19 +2,21 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Game.Scripts.MainMenu
 {
     public class DecorMainMenuScene : MonoBehaviour
     {
+        //Add butterfly
+        
         [Header("Animation delay range")]
         [SerializeField] private Vector2 animationDelayRange = new Vector2(12f, 20f);
         
         [SerializeField] private GameObject magicCrystal;
         [SerializeField] private GameObject magicSphere;
-        
-        [SerializeField] private GameObject butterfly;
+        [SerializeField] private GameObject magicConverterHead;
         
         [SerializeField] private Animator featherAnimator;
         
@@ -24,7 +26,8 @@ namespace Game.Scripts.MainMenu
         private Tweener _crystalMoveTween;
         private Tweener _crystalTween;
         
-        private Tweener _butterflyTween;
+        private Tweener _headMoveTween;
+        private Tweener _headTween;
         
         private Coroutine _featherCoroutine;
         private void Start()
@@ -33,15 +36,23 @@ namespace Game.Scripts.MainMenu
                 .SetEase(Ease.Linear)
                 .SetLoops(-1, LoopType.Restart);
 
-            _crystalMoveTween = magicCrystal.transform.DOLocalMoveY(0.78f, 5)
+            _crystalMoveTween = magicCrystal.transform.DOLocalMoveY(0.72f, 5)
                 .SetEase(Ease.InOutSine)
                 .SetLoops(-1, LoopType.Yoyo);
             
-            _sphereTween = magicSphere.transform.DORotate(new Vector3(0f, 360f, 0f), 8f, RotateMode.FastBeyond360)
+            _sphereTween = magicSphere.transform.DORotate(new Vector3(0f, 360f, 0f), 5f, RotateMode.FastBeyond360)
                 .SetEase(Ease.InOutSine)
                 .SetLoops(-1, LoopType.Yoyo);
 
-            _sphereMoveTween = magicSphere.transform.DOLocalMoveY(2.2f, 8)
+            _sphereMoveTween = magicSphere.transform.DOLocalMoveY(2.3f, 3)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(-1, LoopType.Yoyo);
+
+            _headTween = magicConverterHead.transform.DOLocalRotate(new Vector3(0f, 360, 0f), 7f, RotateMode.FastBeyond360)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(-1, LoopType.Yoyo);
+            
+            _headTween = magicConverterHead.transform.DOLocalMoveY(1.1f, 9f)
                 .SetEase(Ease.InOutSine)
                 .SetLoops(-1, LoopType.Yoyo);
         }
@@ -61,6 +72,9 @@ namespace Game.Scripts.MainMenu
             
             _sphereTween?.Kill();
             _sphereMoveTween?.Kill();
+            
+            _headTween?.Kill();
+            _headMoveTween?.Kill();
             
             if (_featherCoroutine != null)
             {

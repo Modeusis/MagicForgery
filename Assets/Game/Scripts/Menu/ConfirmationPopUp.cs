@@ -56,7 +56,7 @@ namespace Game.Scripts.MainMenu
             gameObject.SetActive(false);
         }
 
-        public void Confirm()
+        private void Confirm()
         {
             _currentAction?.Invoke();
             
@@ -66,7 +66,7 @@ namespace Game.Scripts.MainMenu
             }
         }
 
-        public Action GetAction(MenuAction action)
+        private Action GetAction(MenuAction action)
         {
             if (definedActionsSetup == null)
             {
@@ -99,8 +99,6 @@ namespace Game.Scripts.MainMenu
         private void QuitAction()
         {
             Application.Quit();
-            
-            Debug.Log("Quit action");
         }
 
         private void QuitToMenuAction()

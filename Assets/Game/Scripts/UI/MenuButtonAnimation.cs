@@ -7,45 +7,50 @@ using UnityEngine.UI;
 namespace UI
 {
     [RequireComponent(typeof(Button))]
-    public class MenuButtonAnimation : MonoBehaviour
+    public class MenuButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
     {
         [SerializeField] private float scaleSpeed = 0.5f;
         [SerializeField] private float clickDuration = 0.2f;
 
-        [SerializeField] private float scaleOnEnter = 1.5f;
-        [SerializeField] private float scaleOnClick = 0.8f;
+        [SerializeField] private float scaleOnEnter = 1.1f;
+        [SerializeField] private float scaleOnClick = 0.9f;
         
         private float _startScale;
-        
-        private Button _button;
+        private Vector3 _startScaleVector;
+
         private void Awake()
         {
-            _button = GetComponent<Button>();
+            _startScaleVector = transform.localScale;
+            _startScale = _startScaleVector.x;
         }
 
-        private void OnMouseDown()
+        public void OnPointerDown(PointerEventData eventData)
         {
-            _button.transform.DOKill();
-
-            _button.transform.DOScale(_startScale * scaleOnClick, clickDuration)
-                .OnComplete(() =>
-                {
-                    _button.transform.DOScale(_startScale, clickDuration);
-                });
-        }
-
-        private void OnMouseEnter()
-        {
-            _button.transform.DOKill();
-
-            _button.transform.DOScale(_startScale * scaleOnEnter, scaleSpeed);
-        }
-
-        private void OnMouseExit()
-        {
-            _button.transform.DOKill();
+            transform.DOKill();
             
-            _button.transform.DOScale(_startScale, scaleSpeed);
+            Sequence clickSequence = DOTween.Sequence();
+            clickSequence.Append(transform.DOScale(_startScale * scaleOnClick, clickDuration));
+            clickSequence.Append(transform.DOScale(_startScale, clickDuration));
+            clickSequence.SetUpdate(true);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            transform.DOKill();
+            transform.DOScale(_startScale * scaleOnEnter, scaleSpeed)
+                .SetUpdate(true);;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            transform.DOKill();
+            transform.DOScale(_startScale, scaleSpeed)
+                .SetUpdate(true);
+        }
+
+        private void OnDisable()
+        {
+            transform.DOKill();
         }
     }
 }
