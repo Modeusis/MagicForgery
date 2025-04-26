@@ -21065,7 +21065,7 @@ MonoBehaviour:
   swordParent: {fileID: 543450653136628238}
   positionOnPlace: {x: -14.507, y: 1.8203611, z: 2.866}
   rotationOnPlace: {x: 90, y: 0, z: 0}
-  playersToWin: 1
+  playersToWin: 2
   clientCounter: {fileID: 1227020021}
   gameFinishScreen: {fileID: 16336290}
 --- !u!1 &1584562385

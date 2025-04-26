@@ -149,7 +149,7 @@ namespace Player
             {
                 instance = this;
                 mainCamera = Camera.main;
-                CurrentMana = 100;
+                CurrentMana = 0;
             }
             else
             {
