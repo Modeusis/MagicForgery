@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace UI
 {
-    public class PickUpZone : MonoBehaviour, IPointerClickHandler
+    public class PickUpZone : MonoBehaviour
     {
         [SerializeField] private GameObject pickUp;
         [SerializeField] private ItemData itemData;
@@ -25,11 +25,6 @@ namespace UI
                 TooltipController.Instance.TooltipMessage = $"Press E to take {itemData.itemName}";
                 TooltipController.Instance.IsTooltipShowed = value;
             }
-        }
-        
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            
         }
 
         private void Update()
