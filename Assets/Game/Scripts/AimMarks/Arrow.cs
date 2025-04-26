@@ -44,12 +44,6 @@ namespace Game.Scripts.TargetMarks
             _arrowTransform.DOScale(Vector3.zero, _disappearDuration);
         }
 
-        private void PlayEffect()
-        {
-            Debug.Log("on hide effect played");
-        }
-        
-
         public float GetDistanceToAim(Vector3 aimPosition)
         {
             return Vector3.Distance(_arrowTransform.position, aimPosition);

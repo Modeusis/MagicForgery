@@ -2,17 +2,25 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using Environment;
+using Game.Scripts.Tutorial;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class MagicBookOverlayScript : MonoBehaviour
     {
+        [Inject] private TutorialController _tutorialController;
+        
+        [Header("Tutorial")]
+        [SerializeField] private int stepId = 4;
+        
+        [Header("Book overlay settings")]
         [SerializeField] private List<GameObject> pageList;
         [SerializeField] private Button nextButton;
         [SerializeField] private Button previousButton;
@@ -145,6 +153,8 @@ namespace UI
             Player.Player.instance.IsOverlayShowed = false;
             _canvasGroup.blocksRaycasts = false;
             magicBook.Toggle();
+            
+            _tutorialController.CompleteStep(stepId);
         }
 
         public void IconFocused(TooltipButton focusedButton)

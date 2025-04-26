@@ -18,6 +18,9 @@ namespace Sounds
         BookOpen,
         BookClose,
         PageToggle,
-        SphereToggle
+        SphereToggle,
+        CharacterPrinted,
+        LeverActivate,
+        LeverDeactivate,
     }
 }

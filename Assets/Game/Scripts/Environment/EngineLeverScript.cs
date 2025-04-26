@@ -1,7 +1,9 @@
 using System;
 using Game.Scripts.Interface;
+using Game.Scripts.Tutorial;
 using UI;
 using UnityEngine;
+using Zenject;
 
 namespace Environment
 {

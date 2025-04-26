@@ -1,7 +1,9 @@
 using System;
 using DG.Tweening;
 using Game.Scripts.Interface;
+using Game.Scripts.Tutorial;
 using Game.Scripts.Utilities;
+using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,6 +14,10 @@ namespace Environment.Hydromat
     public class BucketGeneratorScript : MonoBehaviour, IToggle
     {
         [Inject] private EventBus _eventBus;
+        [Inject] private TutorialController _tutorialController;
+        
+        [Header("Tutorial")]
+        [SerializeField] private int stepId = 0;
         
         [Header("Spawner")]
         [SerializeField] private ItemData bucketData;
@@ -42,7 +48,8 @@ namespace Environment.Hydromat
 
                 if (_bucketInstance != null)
                 {
-                    _bucketInstance.layer = _isFocused ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
+                    _bucketInstance.layer = _isFocused ? LayerMask.NameToLayer("Interactable")
+                        : LayerMask.NameToLayer("Default");
                 }
             }
         }
@@ -106,6 +113,8 @@ namespace Environment.Hydromat
 
             flowMaterial?.DOFloat(0.2f, "_FlowPower", 1f);
             hydromatAnimator?.SetBool(boolParameterName, false);
+            
+            _tutorialController.CompleteStep(stepId);
             
             IsSpawnAvailable?.Invoke(true);
         }

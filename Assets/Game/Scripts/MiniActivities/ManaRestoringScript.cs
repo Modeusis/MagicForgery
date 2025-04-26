@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Game.Scripts.Interface;
+using Game.Scripts.Tutorial;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Zenject;
 
 namespace Game.Scripts.MiniActivities
 {
@@ -14,6 +16,12 @@ namespace Game.Scripts.MiniActivities
     {
         //Написать отображение маны когда правильно слово написано
         
+        [Inject] private TutorialController _tutorialController;
+
+        [Header("Tutorial")]
+        [SerializeField] private int stepId = 2;
+        
+        [Header("Mini game settings")]
         [SerializeField] private GameObject player;
         
         [SerializeField] private Transform toggleTransform;
@@ -98,6 +106,7 @@ namespace Game.Scripts.MiniActivities
                 if (Input.GetKeyDown(Player.Player.instance.BreakKey))
                 {
                     Toggle();
+                    _tutorialController.CompleteStep(stepId);
                 }
                 if (Input.GetKeyDown(KeyCode.Space))
                 {

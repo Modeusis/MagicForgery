@@ -22,6 +22,8 @@ namespace Game.Scripts.Tutorial
                     _currentTutorialStep.OnCompleted -= SelectNextStep;
                 }
                 
+                Debug.Log($"current aim: {value.TutorialMark}");
+                
                 _currentTutorialStep = value;
                 _currentTutorialStep.OnCompleted += SelectNextStep;
             }
@@ -44,15 +46,19 @@ namespace Game.Scripts.Tutorial
             {
                 tutorialSteps[i].SetId(i);
                 _tutorialStepsOrdered.Add(i, tutorialSteps[i]);
+                
+                Debug.Log($"Initialized: {i} steps, with data [{_tutorialStepsOrdered[i].StepId} : {_tutorialStepsOrdered[i].TutorialMark}]");
             }
         }
 
         public void StartTutorial()
         {
-            if (!_tutorialStepsOrdered.LastOrDefault().Value.IsCompleted)
-            {
-                return;
-            }
+            // if (!_tutorialStepsOrdered.LastOrDefault().Value.IsCompleted)
+            // {
+            //     Debug.Log($"Last item is not completed");
+            //     
+            //     return;
+            // }
             
             foreach (var tutorialStep in _tutorialStepsOrdered)
             {
@@ -66,6 +72,11 @@ namespace Game.Scripts.Tutorial
         
         public void CompleteStep(int stepId)
         {
+            if (_tutorialStepsOrdered[stepId].IsCompleted)
+            {
+                return;
+            }
+            
             _tutorialStepsOrdered[stepId].Complete(stepId);
         }
 

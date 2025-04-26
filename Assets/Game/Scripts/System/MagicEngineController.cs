@@ -2,8 +2,10 @@
 using DG.Tweening;
 using Environment;
 using Game.Scripts.Interface;
+using Game.Scripts.Tutorial;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Zenject;
 using Random = System.Random;
 
 namespace UI
@@ -11,6 +13,11 @@ namespace UI
     public class MagicEngineController : MonoBehaviour
     {
         public static MagicEngineController Instance;
+        
+        [Inject] private TutorialController _tutorialController;
+
+        [Header("Tutorial")]
+        [SerializeField] private int stepId = 3;
         
         [Header("General")]
         [SerializeField] private MagicConverterScript magicConverter;
@@ -119,6 +126,7 @@ namespace UI
                     if (ValidateEngineStartUp())
                     {
                         _isEngineWorking = true;
+                        _tutorialController.CompleteStep(stepId);
                         StartEngineAnimation();
                     }
                 }

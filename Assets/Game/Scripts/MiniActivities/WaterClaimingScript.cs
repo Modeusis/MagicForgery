@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using DG.Tweening;
+using Game.Scripts.Tutorial;
 using TMPro;
 using UI;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 using Sequence = DG.Tweening.Sequence;
 
 namespace Game.Scripts.MiniActivities
 {
     public class WaterClaimingScript : MonoBehaviour
     {
+        [Inject] private TutorialController _tutorialController;
+
+        [Header("Tutorial")]
+        [SerializeField] private int stepId = 1;
+        
         [Header("Mini Activities UI")]
         [SerializeField] private Image progressBarBorder;
         [SerializeField] private Image progressBar;
@@ -180,6 +185,8 @@ namespace Game.Scripts.MiniActivities
             {
                 Inventory.instance.AddItem(filledWater);
             }
+            
+            _tutorialController.CompleteStep(stepId);
         }
         
         private IEnumerator DecreaseProgressOverTime()
