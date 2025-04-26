@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Game.Scripts.Utilities;
 using UnityEngine;
 
@@ -14,7 +15,6 @@ namespace Game.Scripts.Tutorial
 
         private TutorialStep CurrentTutorialStep
         {
-            get => _currentTutorialStep;
             set
             {
                 if (_currentTutorialStep != null)
@@ -27,7 +27,7 @@ namespace Game.Scripts.Tutorial
             }
         }
         
-        public TutorialController(EventBus eventBus, List<TutorialStep> tutorialSteps)
+        public TutorialController(List<TutorialStep> tutorialSteps, EventBus eventBus)
         {
             _eventBus = eventBus;
             
@@ -49,12 +49,17 @@ namespace Game.Scripts.Tutorial
 
         public void StartTutorial()
         {
+            if (!_tutorialStepsOrdered.LastOrDefault().Value.IsCompleted)
+            {
+                return;
+            }
+            
             foreach (var tutorialStep in _tutorialStepsOrdered)
             {
                 tutorialStep.Value.Reset();
             }
             
-            _currentTutorialStep = _tutorialStepsOrdered[0];
+            CurrentTutorialStep = _tutorialStepsOrdered[0];
             
             _eventBus?.Publish(_currentTutorialStep.TutorialMark);
         }
@@ -74,7 +79,7 @@ namespace Game.Scripts.Tutorial
                 if (_tutorialStepsOrdered[i].IsCompleted) 
                     continue;
                 
-                _currentTutorialStep = _tutorialStepsOrdered[i];
+                CurrentTutorialStep = _tutorialStepsOrdered[i];
                 
                 break;
             }

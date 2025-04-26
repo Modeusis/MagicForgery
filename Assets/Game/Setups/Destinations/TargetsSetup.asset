@@ -16,12 +16,29 @@ MonoBehaviour:
   - <MessageSymbolsDelay>k__BackingField: 0.05
     <Target>k__BackingField: 1
     <TargetPosition>k__BackingField: {x: 134.78477, y: 4.1709995, z: 19.45227}
-    <MessagesForStep>k__BackingField: this is realy cool message
+    <MessagesForStep>k__BackingField: Fill engine with water and mana to start up
   - <MessageSymbolsDelay>k__BackingField: 0.05
     <Target>k__BackingField: 4
     <TargetPosition>k__BackingField: {x: 166.71, y: 0, z: 62.35}
-    <MessagesForStep>k__BackingField: asd asd asd bsdf bsdf ajsdwe djjf
+    <MessagesForStep>k__BackingField: Play minigame with bucket fill it
   - <MessageSymbolsDelay>k__BackingField: 0.05
     <Target>k__BackingField: 6
     <TargetPosition>k__BackingField: {x: 144.70085, y: 1.6499996, z: 20.87075}
-    <MessagesForStep>k__BackingField: No message yet
+    <MessagesForStep>k__BackingField: Check enchantments and take potions if need
+  - <MessageSymbolsDelay>k__BackingField: 0.05
+    <Target>k__BackingField: 2
+    <TargetPosition>k__BackingField: {x: 29.340477, y: 1.9081764, z: 27.776848}
+    <MessagesForStep>k__BackingField: Type words on speed to restore mana
+  - <MessageSymbolsDelay>k__BackingField: 0.05
+    <Target>k__BackingField: 3
+    <TargetPosition>k__BackingField: {x: 133.41745, y: 1.6499996, z: 28.261112}
+    <MessagesForStep>k__BackingField: Press button to spawn a bucket
+  - <MessageSymbolsDelay>k__BackingField: 0.05
+    <Target>k__BackingField: 5
+    <TargetPosition>k__BackingField: {x: 126.36893, y: 3.6899996, z: 27.972948}
+    <MessagesForStep>k__BackingField: Press bottom button to call customer, top button
+      to skip.
+  - <MessageSymbolsDelay>k__BackingField: 0.05
+    <Target>k__BackingField: 7
+    <TargetPosition>k__BackingField: {x: 127.18216, y: 3.9536333, z: 25.050135}
+    <MessagesForStep>k__BackingField: Give enchanted sword to customer
