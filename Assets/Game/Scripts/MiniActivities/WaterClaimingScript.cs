@@ -159,7 +159,6 @@ namespace Game.Scripts.MiniActivities
                     if (Player.Player.instance.selectedItem.itemName == "Bucket")
                     {
                         IsEmptyBucketSelected = true;
-                        IsInDrawWellZone = false;
                     }
                     else
                     {

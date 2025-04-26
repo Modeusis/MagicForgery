@@ -181,6 +181,9 @@ namespace UI
             WaterAmount -= amount;
         }
 
+        public float GetMaxWater() => waterStorageCapacity;
+        public float GetMaxMana() => manaStorageCapacity;
+        
         void StartEngineAnimation()
         {
             Sequence sequence = DOTween.Sequence();

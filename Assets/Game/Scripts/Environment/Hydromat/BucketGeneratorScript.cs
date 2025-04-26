@@ -42,7 +42,7 @@ namespace Environment.Hydromat
 
                 if (_bucketInstance != null)
                 {
-                    _bucketInstance.layer = _isFocused ? LayerMask.NameToLayer("Default") : LayerMask.NameToLayer("Interactable");
+                    _bucketInstance.layer = _isFocused ? LayerMask.NameToLayer("Interactable") : LayerMask.NameToLayer("Default");
                 }
             }
         }
@@ -96,13 +96,16 @@ namespace Environment.Hydromat
             {
                 return;
             }
+
+            if (!Inventory.instance.AddItem(bucketData))
+            {
+                return;
+            }
             
             Destroy(_bucketInstance);
 
             flowMaterial?.DOFloat(0.2f, "_FlowPower", 1f);
             hydromatAnimator?.SetBool(boolParameterName, false);
-            
-            Inventory.instance.AddItem(bucketData);
             
             IsSpawnAvailable?.Invoke(true);
         }

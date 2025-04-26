@@ -37,6 +37,14 @@ namespace Environment
                 {
                     if (playerItem.itemName == "Filled bucket")
                     {
+                        if (MagicEngineController.Instance.WaterAmount >= MagicEngineController.Instance.GetMaxWater())
+                        {
+                            TooltipController.Instance.ShowMechanicsDescription("Water already at max");
+                            
+                            return;
+                        }
+                            
+                        
                         MagicEngineController.Instance.AddWater(waterAddValue);
                         fillEffect.Play();
                         EmptyBucket();
