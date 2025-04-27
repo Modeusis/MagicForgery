@@ -113,7 +113,9 @@ namespace Game.Scripts.TargetMarks.ArrowStates
             while (letterIndex < message.Length)
             {
                 actualMessage += message[letterIndex];
-
+                
+                _soundService.Play2DSfx(SoundType.CharacterPrinted, 0.5f);
+                
                 if (message[letterIndex] == ' ')
                 {
                     wordCounter++;

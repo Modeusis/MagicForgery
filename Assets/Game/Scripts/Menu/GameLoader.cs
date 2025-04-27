@@ -10,8 +10,8 @@ namespace Game.Scripts.MainMenu
     {
         public static GameLoader Instance { get; private set; }
 
-        private const int GameSceneId = 0;
-        private const int MainMenuSceneId = 1;
+        private const int MainMenuSceneId = 0;
+        private const int GameSceneId = 1;
 
         public void Awake()
         {

@@ -1,14 +1,18 @@
 ﻿using System;
 using DG.Tweening;
 using Game.Scripts.Interface;
+using Sounds;
 using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Zenject;
 
 namespace Environment
 {
     public class MagicSphereScript : MonoBehaviour, IToggle
     {
+        [Inject] private SoundService _soundService;
+        
         [SerializeField] private PlaceHolderScript placeHolder;
         [SerializeField] private GameObject magicSphereCanvasGroup;
         [SerializeField] private QuestionSpriteScript questionMark;
@@ -87,6 +91,7 @@ namespace Environment
             if (IsBlocked)
                 return;
             IsToggled = !IsToggled;
+            _soundService.Play3DSfx(SoundType.SphereToggle, transform, 3f, 1f);
         }
 
         bool ValidateMagicSphereToggle()

@@ -39,7 +39,7 @@ namespace Game.Scripts.MiniActivities
         
         private bool _isFocused;
         private bool _isToggled;
-        private Transform _playerTransform;
+        private Vector3 _playerPosition;
 
         private int _wordsCapacity;
         private int _textBlocksCapacity;
@@ -68,7 +68,7 @@ namespace Game.Scripts.MiniActivities
 
                 if (value)
                 {
-                    _playerTransform = player.transform;
+                    _playerPosition = player.transform.position;
                     _wordsCapacity = wordsDataBase.Words.Count;
                     _textBlocksCapacity = WordBlocks.Count;
                     IsFocused = false;
@@ -89,8 +89,8 @@ namespace Game.Scripts.MiniActivities
                     }
                 }                
                 
-                player.transform.position = _isToggled ? toggleTransform.position : _playerTransform.position;
-                player.transform.rotation = _isToggled ? toggleTransform.rotation : _playerTransform.rotation;
+                player.transform.position = _isToggled ? toggleTransform.position : _playerPosition;
+                player.transform.rotation = _isToggled ? toggleTransform.rotation : Quaternion.identity;
                 Player.Player.instance.IsMiniGamePlayed = _isToggled;
             }
         }

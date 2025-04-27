@@ -7,9 +7,11 @@ namespace Game.Scripts.System
     {
         [SerializeField] private SettingsMenu menu;
         
+        private Player.Player _player;
+        
         private void Update()
         {
-            if (Player.Player.instance.IsFinalScreenShown)
+            if (Player.Player.instance.IsMiniGamePlayed || Player.Player.instance.IsFinalScreenShown)
             {
                 return;
             }

@@ -57,6 +57,14 @@ MonoBehaviour:
     - {fileID: 8300000, guid: d2c3647ebe83eed4787dee40231087f7, type: 3}
     - {fileID: 8300000, guid: 2e4c55e92d5409344aef86ebceeaf33e, type: 3}
     - {fileID: 8300000, guid: 34e4c765371bb7f48aa690fae6156de3, type: 3}
-  - <Type>k__BackingField: 8
+  - <Type>k__BackingField: 17
     <Sounds>k__BackingField:
     - {fileID: 8300000, guid: 80d7584c939d78b479ea17b35f9af0c0, type: 3}
+  - <Type>k__BackingField: 8
+    <Sounds>k__BackingField:
+    - {fileID: 8300000, guid: 3e40132cc5bbb6b4389d51113550d548, type: 3}
+  - <Type>k__BackingField: 18
+    <Sounds>k__BackingField:
+    - {fileID: 8300000, guid: fe38d02781cf24d4da7e0828bf1d9788, type: 3}
+    - {fileID: 8300000, guid: 54b94ff69415c7e4c83b2845ae311011, type: 3}
+    - {fileID: 8300000, guid: d2c4dfe4916ce5b44a13193054dbe996, type: 3}

@@ -21,11 +21,6 @@ namespace Game.Scripts.MainMenu
             
             Time.timeScale = _menuCurrentState ? 0f : 1f;
         }
-
-        public void CloseMenu()
-        {
-            ToggleMenu();
-        }
         
         public void QuitGame()
         {
@@ -39,11 +34,6 @@ namespace Game.Scripts.MainMenu
             confirmationPopUp.ShowConfirmationPopUp(MenuAction.QuitToMenu);
             
             confirmationPopUp.OnPopUpConfirmed.AddListener(ToggleMenu);
-        }
-
-        public void OpenSettingsScreen()
-        {
-            Debug.Log("Settings opened");
         }
     }
 }

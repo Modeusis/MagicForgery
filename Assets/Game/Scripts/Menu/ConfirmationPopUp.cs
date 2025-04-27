@@ -11,8 +11,7 @@ namespace Game.Scripts.MainMenu
     {
         [SerializeField] private DefinedActionsSetup definedActionsSetup;
         
-        [SerializeField] private float scaleOnCall;
-        [SerializeField] private float scaleDuration;
+        [SerializeField] private float scaleDuration = 0.4f;
         
         [SerializeField] private TMP_Text popUpText;
         
@@ -22,17 +21,28 @@ namespace Game.Scripts.MainMenu
         private string _actionDescription = "";
         
         private Action _currentAction;
+
+        private Tweener _toggleTween;
         
         public UnityEvent OnPopUpConfirmed;
         
         private void OnEnable()
         {
+            transform.localScale = Vector3.zero;
+            
+            _toggleTween?.Kill();
+            
             dismissActionButton.onClick.AddListener(Dismiss);
             confirmActionButton.onClick.AddListener(Confirm);
+
+            _toggleTween = transform.DOScale(Vector3.one, scaleDuration)
+                .SetUpdate(true);
         }
 
         private void OnDisable()
         {
+            _toggleTween?.Kill();
+            
             dismissActionButton.onClick.RemoveAllListeners();
             confirmActionButton.onClick.RemoveAllListeners();
             
