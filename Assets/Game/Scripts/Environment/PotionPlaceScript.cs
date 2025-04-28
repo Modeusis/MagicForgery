@@ -1,12 +1,16 @@
 using System.Collections;
 using Game.Scripts.Interface;
+using Sounds;
 using UI;
 using UnityEngine;
+using Zenject;
 
 namespace Environment
 {
     public class PotionPlaceScript : MonoBehaviour, IToggle
     {
+        [Inject] private SoundService _soundService;
+        
         private ItemData _potionData;
         private GameObject _potionMesh;
         public MagicEnchanterController.PotionType PlacedPotionType { get; set; }
@@ -34,7 +38,9 @@ namespace Environment
                 }
                 if (!value.isPotion)
                     return;
+                
                 _potionData = value;
+                
                 switch (_potionData.itemName)
                 {
                     case "Red potion":
@@ -134,6 +140,9 @@ namespace Environment
                     }
                 }
                 _isToggled = value;
+                
+                _soundService.Play3DSfx(SoundType.PotionToggle, transform, 4f, 0.6f);
+                
                 TooltipController.Instance.TooltipMessage =
                     $"Press {Player.Player.instance.InteractKey} to {(_isToggled ? "take" : "place")} potion";
             }

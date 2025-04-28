@@ -1,13 +1,17 @@
 using System.Collections;
 using DG.Tweening;
 using Game.Scripts.Interface;
+using Sounds;
 using UI;
 using UnityEngine;
+using Zenject;
 
 namespace Environment
 {
     public class MagicBookScript : MonoBehaviour, IToggle
     {
+        [Inject] private SoundService _soundService;
+        
         [SerializeField] private Animator bookAnimator;
         [SerializeField] private GameObject bookMesh;
         [SerializeField] private GameObject bookCanvas;
@@ -75,6 +79,7 @@ namespace Environment
         {
             yield return new WaitForSeconds(time);
             bookCanvas.gameObject.SetActive(true);
+            _soundService.Play2DSfx(SoundType.BookToggle, 0.6f);
         }
             
         IEnumerator AwaitForBookCloseCoroutine(Animator localBookAnimator)

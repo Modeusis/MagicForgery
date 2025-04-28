@@ -3,6 +3,7 @@ using DG.Tweening;
 using Game.Scripts.Interface;
 using Game.Scripts.Tutorial;
 using Game.Scripts.Utilities;
+using Sounds;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace Environment.Hydromat
     {
         [Inject] private EventBus _eventBus;
         [Inject] private TutorialController _tutorialController;
+        [Inject] private SoundService _soundService;
         
         [Header("Tutorial")]
         [SerializeField] private int stepId = 0;
@@ -87,6 +89,8 @@ namespace Environment.Hydromat
                 Destroy(bucketCollider);
             }
             
+            _soundService.Play3DSfx(SoundType.BucketGeneration, transform, 5f, 0.6f);
+            
             _bucketInstance.transform.SetParent(transform);
             _bucketInstance.transform.localPosition = spawnTransform.localPosition;
             
@@ -113,6 +117,8 @@ namespace Environment.Hydromat
 
             flowMaterial?.DOFloat(0.2f, "_FlowPower", 1f);
             hydromatAnimator?.SetBool(boolParameterName, false);
+            
+            _soundService.Play2DSfx(SoundType.BucketTake, 0.6f);
             
             _tutorialController.CompleteStep(stepId);
             

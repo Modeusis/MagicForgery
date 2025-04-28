@@ -3,6 +3,7 @@ using DG.Tweening;
 using Environment;
 using Game.Scripts.Interface;
 using Game.Scripts.Tutorial;
+using Sounds;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Zenject;
@@ -15,7 +16,8 @@ namespace UI
         public static MagicEngineController Instance;
         
         [Inject] private TutorialController _tutorialController;
-
+        [Inject] private SoundService _soundService;
+        
         [Header("Tutorial")]
         [SerializeField] private int stepId = 3;
         
@@ -56,6 +58,8 @@ namespace UI
         [SerializeField] private int _manaAmount;
         [SerializeField] private int _waterAmount;
         private bool _isEngineWorking;
+        
+        private AudioPlayer _audioPlayer;
 
         public  int ManaAmount
         {
@@ -197,6 +201,8 @@ namespace UI
             Sequence sequence = DOTween.Sequence();
             Sequence lightSequence = DOTween.Sequence();
 
+            _soundService.Play3DSfx(SoundType.MagicEngineStartup, transform, 5f, 0.6f);
+            
             goldenLoop.transform.DOLocalMoveY(3f, 1.5f).SetEase(Ease.OutSine).OnComplete(() => InfiniteGoldenLoop());
             goldenLoopMini.transform.DOLocalMoveY(3f, 1f).SetEase(Ease.OutSine);
             
@@ -211,7 +217,12 @@ namespace UI
             sequence.Append(mainCrystal.transform.DOLocalMoveY(3f, 1f).SetEase(Ease.OutSine));
             sequence.Append(mainCrystal.transform.DOScale(3f, .6f));
             
-            sequence.OnComplete(() => InfiniteCrystalRotation());
+            sequence.OnComplete(() =>
+            {
+                _audioPlayer = _soundService.Play3DSfxLooped(SoundType.MagicEngineIdle, transform, 5f, 0.6f);
+                
+                InfiniteCrystalRotation();
+            });
             
             sequence.SetId("StartEngineAnimation");
             lightSequence.SetId("StartLightEngineAnimation");
@@ -243,6 +254,7 @@ namespace UI
                 engineLightEffect.enabled = false;
                 sphereLightEffect.enabled = false;
                 sphereSecondLightEffect.enabled = false;
+                _audioPlayer?.StopSound();
             });
             
             sequence.SetId("TurnOffCrystalEngineAnimation");

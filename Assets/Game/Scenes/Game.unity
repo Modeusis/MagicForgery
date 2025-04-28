@@ -10829,7 +10829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startBackgroundSound: 0
   _minPoolSize: 1
-  _maxPoolSize: 10
+  _maxPoolSize: 20
   _audioPlayer: {fileID: 5168102899741307924, guid: 4a5b87e8641119445b5fcf923671a279, type: 3}
   _musicSounds: {fileID: 11400000, guid: f23fb6ceac7dd5a43981bd87a9dd00f5, type: 2}
   _sfxSounds: {fileID: 11400000, guid: 785948c5c8ca1f74a9cba58e2d4d8c26, type: 2}
@@ -32579,7 +32579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stepVolume: 0.6
-  interactVolume: 0.2
+  interactVolume: 0.05
 --- !u!33 &3469287837510429417
 MeshFilter:
   m_ObjectHideFlags: 0

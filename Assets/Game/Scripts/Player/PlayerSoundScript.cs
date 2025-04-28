@@ -36,7 +36,7 @@ namespace Player
 
         public void OnInteract()
         {
-            // _soundService.Play2DSfx(SoundType.InteractSound, interactVolume);
+            _soundService.Play2DSfx(SoundType.Interact, interactVolume);
         }
     }
 }

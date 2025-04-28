@@ -1,12 +1,17 @@
 using Game.Scripts.Interface;
+using Sounds;
 using UI;
 using UnityEngine;
+using Zenject;
 
 namespace Environment
 {
     public class PlaceHolderLeverScript : MonoBehaviour, IToggle
     {
         //передалать эту хуятину в рэйкаст с интерфейсом и еще чето там и вообще на плеера рейкасты на плеера
+        
+        [Inject] private SoundService _soundService;
+        
         [SerializeField] private GameObject lever;
         [SerializeField] private KeyCode interactKey = KeyCode.E;
         [SerializeField] private PlaceHolderScript placeHolder;
@@ -54,6 +59,8 @@ namespace Environment
             if (placeHolder.IsBlocked)
                 return;
             IsToggled = !IsToggled;
+            
+            _soundService.Play3DSfx(SoundType.LeverToggle, transform, 4f, 0.8f);
         }
     }
 }

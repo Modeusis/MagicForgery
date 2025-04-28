@@ -1,14 +1,18 @@
 using System;
 using DG.Tweening;
+using Sounds;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI
 {
     [RequireComponent(typeof(Button))]
     public class MenuButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
     {
+        [Inject] private SoundService _soundService;
+        
         [SerializeField] private float scaleSpeed = 0.5f;
         [SerializeField] private float clickDuration = 0.2f;
 
@@ -27,6 +31,8 @@ namespace UI
         public void OnPointerDown(PointerEventData eventData)
         {
             transform.DOKill();
+            
+            _soundService.Play2DSfx(SoundType.UiButton, 0.5f);
             
             Sequence clickSequence = DOTween.Sequence();
             clickSequence.Append(transform.DOScale(_startScale * scaleOnClick, clickDuration));

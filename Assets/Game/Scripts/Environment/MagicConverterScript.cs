@@ -3,14 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Game.Scripts.Interface;
+using Sounds;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
 namespace Environment
 {
     public class MagicConverterScript : MonoBehaviour, IToggle
     {
+        [Inject] private SoundService _soundService;
+        
         [Header("Objects")]
         [SerializeField] private GameObject magicConverterHead;
         [SerializeField] private GameObject magicCrystal;
@@ -154,6 +158,8 @@ namespace Environment
                 if (_isToggled == value)
                     return;
 
+                _soundService.Play3DSfx(SoundType.MagicConverter, transform, 3f, 0.4f);
+                
                 ToggleMagicConverter();
             }
         }

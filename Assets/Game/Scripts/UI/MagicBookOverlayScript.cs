@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Environment;
 using Game.Scripts.Tutorial;
+using Sounds;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace UI
     public class MagicBookOverlayScript : MonoBehaviour
     {
         [Inject] private TutorialController _tutorialController;
+        [Inject] private SoundService _soundService;
         
         [Header("Tutorial")]
         [SerializeField] private int stepId = 4;
@@ -95,7 +97,11 @@ namespace UI
             {
                 if (_currentPage == value)
                     return;
+                
+                _soundService.Play2DSfx(SoundType.BookPage, 0.6f);
+                
                 _currentPage = value;
+                
                 for (int i = 0; i < _pageCount; i++)
                 {
                     if (i != _currentPage)

@@ -1,12 +1,16 @@
 ﻿using System;
 using Game.Scripts.Interface;
+using Sounds;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 namespace UI
 {
     public class PickUpZone : MonoBehaviour
     {
+        [Inject] private SoundService _soundService;
+        
         [SerializeField] private GameObject pickUp;
         [SerializeField] private ItemData itemData;
         
@@ -43,6 +47,8 @@ namespace UI
                         if (Inventory.instance.AddItem(itemData))
                         {
                             Player.Player.instance.staffAnimator.SetTrigger("OnInteract");
+                            
+                            _soundService.Play3DSfx(SoundType.PotionToggle, transform, 4f, 0.6f);
                         }
                         else
                         {

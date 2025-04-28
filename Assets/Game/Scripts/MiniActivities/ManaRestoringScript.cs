@@ -5,6 +5,7 @@ using System.Linq;
 using DG.Tweening;
 using Game.Scripts.Interface;
 using Game.Scripts.Tutorial;
+using Sounds;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -17,7 +18,8 @@ namespace Game.Scripts.MiniActivities
         //Написать отображение маны когда правильно слово написано
         
         [Inject] private TutorialController _tutorialController;
-
+        [Inject] private SoundService _soundService;
+        
         [Header("Tutorial")]
         [SerializeField] private int stepId = 2;
         
@@ -66,6 +68,8 @@ namespace Game.Scripts.MiniActivities
                     return;
                 _isToggled = value;
 
+                _soundService.Play3DSfx(SoundType.SeatToggle, player.transform, 3f, 1f);
+                
                 if (value)
                 {
                     _playerPosition = player.transform.position;
@@ -151,13 +155,19 @@ namespace Game.Scripts.MiniActivities
             if (string.IsNullOrEmpty(inputWordField.text))
                 return;
             var showedWordBlocks = WordBlocks.Where(block => block.IsShowed && !string.IsNullOrEmpty(block.TextBlockValue));
-
+            
+            _soundService.Play2DSfx(SoundType.CharacterPrinted, 0.5f);
+            
             foreach (var block in showedWordBlocks)
             {
                 if (string.Equals(block.TextBlockValue, inputWordField.text, StringComparison.CurrentCultureIgnoreCase))
                 {
                     block.IsShowed = false;
+                    
                     inputWordField.text = String.Empty;
+                    
+                    _soundService.Play2DSfx(SoundType.Success, 1f);
+                    
                     RestoreMana(manaRestoreValue);
                 }
             } 
@@ -168,6 +178,7 @@ namespace Game.Scripts.MiniActivities
             while (IsToggled)
             {
                 yield return new WaitForSeconds(timeGenerationDelay);
+                
                 GenerateWords();
             }
         }

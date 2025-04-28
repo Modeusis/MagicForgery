@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Game.Scripts.Utilities;
+using Sounds;
 using UnityEngine;
 
 namespace Game.Scripts.Tutorial
@@ -8,6 +9,8 @@ namespace Game.Scripts.Tutorial
     public class TutorialController
     {
         private readonly EventBus _eventBus;
+        
+        private readonly SoundService _soundService;
         
         private readonly Dictionary<int, TutorialStep> _tutorialStepsOrdered;
         
@@ -27,9 +30,11 @@ namespace Game.Scripts.Tutorial
             }
         }
         
-        public TutorialController(List<TutorialStep> tutorialSteps, EventBus eventBus)
+        public TutorialController(List<TutorialStep> tutorialSteps, EventBus eventBus, SoundService soundService)
         {
             _eventBus = eventBus;
+
+            _soundService = soundService;
             
             if (tutorialSteps.Count < 1)
             {
@@ -85,6 +90,7 @@ namespace Game.Scripts.Tutorial
             }
             
             _eventBus?.Publish(_currentTutorialStep.TutorialMark);
+            _soundService.Play2DSfx(SoundType.Success, 1f);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using DG.Tweening;
 using Game.Scripts.Tutorial;
+using Sounds;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -13,7 +14,8 @@ namespace Game.Scripts.MiniActivities
     public class WaterClaimingScript : MonoBehaviour
     {
         [Inject] private TutorialController _tutorialController;
-
+        [Inject] private SoundService _soundService;
+        
         [Header("Tutorial")]
         [SerializeField] private int stepId = 1;
         
@@ -45,6 +47,9 @@ namespace Game.Scripts.MiniActivities
                     progressBar.fillAmount = 1;
                     IsEmptyBucketSelected = false;
                     FillBucket();
+                    
+                    _soundService.Play3DSfx(SoundType.Water, transform, 6f, 0.6f);
+                    
                     return;
                 }
                 if (value <= 0)

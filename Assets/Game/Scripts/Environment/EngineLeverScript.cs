@@ -1,6 +1,7 @@
 using System;
 using Game.Scripts.Interface;
 using Game.Scripts.Tutorial;
+using Sounds;
 using UI;
 using UnityEngine;
 using Zenject;
@@ -9,6 +10,8 @@ namespace Environment
 {
     public class EngineLeverScript : MonoBehaviour, IToggle
     {
+        [Inject] private SoundService _soundService;
+        
         [SerializeField] private GameObject lever;
         [SerializeField] private KeyCode interactKey = KeyCode.E;
         
@@ -46,10 +49,11 @@ namespace Environment
         }
         private void Awake()
         {
-                _leverAnimator = lever.GetComponent<Animator>();
+            _leverAnimator = lever.GetComponent<Animator>();
         }
         public void Toggle()
         {
+            _soundService.Play3DSfx(SoundType.LeverToggle, transform, 5f, 1f);
             IsToggled = !IsToggled;
         }
     }
