@@ -1,12 +1,16 @@
 using System;
 using Game.Scripts.Interface;
+using Sounds;
 using UI;
 using UnityEngine;
+using Zenject;
 
 namespace Environment
 {
     public class ManaControllerScript : MonoBehaviour, IToggle
     {
+        [Inject] private SoundService _soundService;
+        
         [SerializeField] private ParticleSystem manaEffect;
         [SerializeField] private int manaTransferValue;
         
@@ -42,8 +46,9 @@ namespace Environment
                     return;
                 }
 
-                TransferMana(manaTransferValue);
+                _soundService.Play3DSfx(SoundType.EngineManaRestore, transform, 5f, 0.8f);
                 
+                TransferMana(manaTransferValue);
             }
         }
         public void Toggle()

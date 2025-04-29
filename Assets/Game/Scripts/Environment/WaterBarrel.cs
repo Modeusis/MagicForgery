@@ -1,11 +1,15 @@
 ﻿using Game.Scripts.Interface;
+using Sounds;
 using UI;
 using UnityEngine;
+using Zenject;
 
 namespace Environment
 {
     public class WaterBarrel : MonoBehaviour, IToggle
     {
+        [Inject] private SoundService _soundService;
+        
         [SerializeField] private ParticleSystem fillEffect;
         [SerializeField] private ItemData emptyBucket; 
         
@@ -46,7 +50,11 @@ namespace Environment
                             
                         
                         MagicEngineController.Instance.AddWater(waterAddValue);
-                        fillEffect.Play();
+                        
+                        fillEffect?.Play();
+                        
+                        _soundService.Play3DSfx(SoundType.EngineWaterRestore, transform, 5f, 0.6f);
+                        
                         EmptyBucket();
                     }
                     else

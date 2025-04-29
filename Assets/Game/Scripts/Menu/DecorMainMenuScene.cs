@@ -1,15 +1,17 @@
 using System;
 using System.Collections;
 using DG.Tweening;
+using Sounds;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace Game.Scripts.MainMenu
 {
     public class DecorMainMenuScene : MonoBehaviour
     {
-        //Add butterfly
+        [Inject] private SoundService _soundService;
         
         [Header("Animation delay range")]
         [SerializeField] private Vector2 animationDelayRange = new Vector2(12f, 20f);
@@ -32,6 +34,8 @@ namespace Game.Scripts.MainMenu
         private Coroutine _featherCoroutine;
         private void Start()
         {
+            _soundService.Play2DMusicLooped(SoundType.MainMenu, 0.1f);
+            
             _crystalTween = magicCrystal.transform.DORotate(new Vector3(0f, 360f, 0f), 10f, RotateMode.FastBeyond360)
                 .SetEase(Ease.Linear)
                 .SetLoops(-1, LoopType.Restart);

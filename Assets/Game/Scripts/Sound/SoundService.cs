@@ -16,7 +16,7 @@ namespace Sounds
         private SoundDataSetup _sfxSounds;
         
         private AbstractPool<AudioPlayer> _soundPlayersPool;
-        private float BackgroundVolume { get; set; } = 0.02f;
+        private float BackgroundVolume { get; set; } = 0.01f;
         public AudioPlayer BackgroundAudioPlayer { get; set; }
         
         private SoundType _currentBackgroundSound;

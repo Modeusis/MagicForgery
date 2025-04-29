@@ -28,6 +28,9 @@ namespace Sounds
         MagicEngineStartup,
         MagicConverter,
         Feather,    
-        MagicEngineIdle
+        MagicEngineIdle,
+        EngineManaRestore,
+        EngineWaterRestore,
+        MainMenu
     }
 }

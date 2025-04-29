@@ -107,3 +107,9 @@ MonoBehaviour:
   - <Type>k__BackingField: 26
     <Sounds>k__BackingField:
     - {fileID: 8300000, guid: 34d165c0e59483a4f911ea5558689415, type: 3}
+  - <Type>k__BackingField: 27
+    <Sounds>k__BackingField:
+    - {fileID: 8300000, guid: 0a745eb3e55fa7149b39ac411226f9ac, type: 3}
+  - <Type>k__BackingField: 28
+    <Sounds>k__BackingField:
+    - {fileID: 8300000, guid: 0e0e8fda8e3f2c14aa08f4c478596678, type: 3}
